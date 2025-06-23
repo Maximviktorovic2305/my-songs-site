@@ -22,14 +22,14 @@ const titleVariants = cva('font-bold', {
 
 type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span' | 'div'
 
-interface UiTitleProps
+interface TitleProps
 	extends React.HTMLAttributes<HTMLElement>,
 		VariantProps<typeof titleVariants> {
 	asChild?: boolean
 	as?: HeadingTag
 }
 
-const UiTitle = React.forwardRef<HTMLHeadingElement, UiTitleProps>(
+const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
 	({ className, size, asChild = false, as, ...props }, ref) => {
 		const Comp = asChild ? Slot : as || 'span'
 
@@ -49,6 +49,6 @@ const UiTitle = React.forwardRef<HTMLHeadingElement, UiTitleProps>(
 	},
 )
 
-UiTitle.displayName = 'UiTitle'
+Title.displayName = 'Title'
 
-export { UiTitle, titleVariants }
+export { Title, titleVariants }

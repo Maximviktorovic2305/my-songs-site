@@ -35,7 +35,7 @@ const buttonVariants = cva(
   }
 )
 
-function UiButton({
+function Button({
   className,
   variant,
   size,
@@ -56,4 +56,4 @@ function UiButton({
   )
 }
 
-export { UiButton, buttonVariants }
+export { Button, buttonVariants }

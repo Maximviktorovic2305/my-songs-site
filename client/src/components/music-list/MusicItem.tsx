@@ -1,9 +1,10 @@
 import { useDispatch } from 'react-redux'
 import { Track } from '@/types'
-import { Download, Star } from 'lucide-react'
+import { Download } from 'lucide-react'
 import Image from 'next/image'
 import { usePlayer } from '@/hooks/useSelectors'
 import { setCurrentTrack } from '@/store/playerSlice/player.slice'
+import StarRating from '../StarRating'
 
 interface Props {
 	song: Track
@@ -24,15 +25,20 @@ const MusicItem = ({ song }: Props) => {
 	}
 
 	return (
-		<li
-			className='px-3 py-2 flex gap-3 justify-between items-center w-full min-w-full border-t'
-			onClick={handleClick}>
+		<li className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-t'>
 			<div className='flex items-center gap-3'>
 				<span className='cursor-pointer'>
 					{isActive ? (
 						<Image src={'/rocker.gif'} width={40} height={40} alt='song' />
 					) : (
-						<Image src={'/rocker.png'} width={30} height={30} alt='song' />
+						<Image
+							src={'/rocker.png'}
+							width={30}
+							height={30}
+							alt='song'
+							className='opacity-80 hover:opacity-100 duration-200'
+							onClick={handleClick}
+						/>
 					)}
 				</span>
 				<Image
@@ -40,7 +46,9 @@ const MusicItem = ({ song }: Props) => {
 					width={40}
 					height={40}
 					alt='song'
-					className='rounded overflow-hidden'
+					className={`rounded overflow-hidden opacity-80 ${
+						isActive && 'opacity-100'
+					}`}
 				/>
 				<div className='flex flex-col justify-between'>
 					<span className='font-bold'>{song.title}</span>
@@ -57,7 +65,11 @@ const MusicItem = ({ song }: Props) => {
 					className='text-primary/90 w-4 h-auto cursor-pointer hover:text-muted-foreground duration-200 z-10'
 					onClick={handleDownload}
 				/>
-				<Star fill='#D3D3D3' className='text-gray-300' width={20} />
+				{/* <Star fill='#D3D3D3' className='text-gray-300' width={20} /> */}
+
+				<div className='z-50'>
+					<StarRating />
+				</div>
 			</div>
 		</li>
 	)

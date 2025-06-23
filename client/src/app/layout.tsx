@@ -28,7 +28,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased px-3 max-w-[80rem] mx-auto`}>
+				className={`${geistSans.variable} ${geistMono.variable} antialiased sm:px-3 max-w-[80rem] mx-auto`}>
 				<MainProvider>
 					<Header />
 					<div className='mt-17 flex gap-3 bg-background'>
