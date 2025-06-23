@@ -6,6 +6,8 @@ export interface Track {
 	endlessTime?: string
 	rayting?: number
 	img?: string
+	comments?: Comment[]
+	isNew: boolean
 }
 
 export interface User {
