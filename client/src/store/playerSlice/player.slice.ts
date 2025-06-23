@@ -7,6 +7,9 @@ interface PlayerState {
 		title: string | null
 		artist: string | null
 		id: number | null
+		endlessTime?: string | null
+		rayting?: number | null
+		img?: string | null
 	}
 }
 
@@ -16,6 +19,9 @@ const initialState: PlayerState = {
 		title: null,
 		artist: null,
 		id: null,
+		endlessTime: null,
+		rayting: null,
+		img: null,
 	},
 }
 
@@ -24,18 +30,20 @@ const playerSlice = createSlice({
 	initialState,
 	reducers: {
 		setCurrentTrack: (state, action: PayloadAction<Track>) => {
-			state.currentTrack ? (state.currentTrack.src = action.payload.src) : null
-			state.currentTrack
-				? (state.currentTrack.title = action.payload.title)
-				: null
-			state.currentTrack
-				? (state.currentTrack.artist = action.payload.artist)
-				: null
+			state.currentTrack.src = action.payload.src
+			state.currentTrack.title = action.payload.title
+			state.currentTrack.artist = action.payload.artist
+			state.currentTrack.endlessTime = action.payload.endlessTime
+			state.currentTrack.rayting = action.payload.rayting
+			state.currentTrack.img = action.payload.img
 		},
 		clearTrack: (state) => {
 			state.currentTrack.artist = null
 			state.currentTrack.title = null
 			state.currentTrack.src = null
+			state.currentTrack.endlessTime = null
+			state.currentTrack.rayting = null
+			state.currentTrack.img = null
 		},
 	},
 })

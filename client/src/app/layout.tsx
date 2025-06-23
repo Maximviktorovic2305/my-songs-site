@@ -35,7 +35,7 @@ export default function RootLayout({
 						<div className='w-[20%] min-w-[11rem] max-sm:hidden'>
 							<Sidebar />
 						</div>
-						<div className='w-[80%] min-w-full'>{children}</div>
+						<div className='w-full'>{children}</div>
 					</div>
 				</MainProvider>
 			</body>
