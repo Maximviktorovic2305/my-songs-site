@@ -4,9 +4,9 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion'
-import { albums } from '@/data/playlist'
+import { genres } from '@/data/playlist'
 
-const Albums = () => {
+const Genres = () => {
 	return (
 		<section>
 			<Accordion
@@ -15,10 +15,10 @@ const Albums = () => {
 				className='w-full'
 				defaultValue='item-1'>
 				<AccordionItem value='item-1'>
-					<AccordionTrigger>Albums</AccordionTrigger>
+					<AccordionTrigger>Жанры</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
-						{albums.map((album, i) => (
-							<p key={i}>{album}</p>
+						{genres.map((genre, i) => (
+							<p key={i}>{genre}</p>
 						))}
 					</AccordionContent>
 				</AccordionItem>
@@ -27,4 +27,4 @@ const Albums = () => {
 	)
 }
 
-export default Albums
+export default Genres

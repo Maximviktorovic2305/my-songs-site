@@ -3,7 +3,7 @@ import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils' // Убедитесь, что у вас есть этот файл утилит
 
-const titleVariants = cva('', {
+const titleVariants = cva('font-bold', {
 	variants: {
 		size: {
 			h1: 'text-2xl',
