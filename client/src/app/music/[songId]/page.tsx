@@ -10,8 +10,6 @@ interface SongDetailPageProps {
 
 // Заглушка для получения данных о песне
 async function getSongDetails(songId: number): Promise<Track | null> {
-	// Имитация задержки сети
-
 	return playlist.find((song) => song.id === songId) || null
 }
 
@@ -32,7 +30,7 @@ export default async function SongDetailPage({ params }: SongDetailPageProps) {
 		return (
 			<div className='flex flex-col items-center justify-center min-h-screen text-red-500'>
 				<h1>Песня не найдена</h1>
-				<p>К сожалению, песня с ID ${songId} не существует.</p>
+				<p>К сожалению, песня не существует.</p>
 			</div>
 		)
 	}

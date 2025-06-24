@@ -20,6 +20,42 @@ export const playlist: Track[] = [
 		title: 'Do not know',
 		artist: 'Максим Переверзев',
 		src: '/music/song3.mp3',
+		comments: [
+			{
+				id: 1,
+				createdAt: '10.03.1998',
+				text: 'Отличная песня',
+				user: {
+					id: 1,
+					name: 'Иван',
+					email: 'ivan@gmail.com',
+					avatar: 'https://github.com/leerob.png',
+				},
+			},
+			{
+				id: 2,
+				createdAt: '10.03.1998',
+				text: 'Отличная песня',
+				user: {
+					id: 2,
+					name: 'Гришка',
+					email: 'grishka@gmail.com',
+					avatar: 'https://github.com/shadcn.png',
+				},
+			},
+			{
+				id: 3,
+				createdAt: '10.03.1987',
+				text: 'Отличная песня',
+				user: {
+					id: 3,
+					name: 'Никитка',
+					email: 'nikitka@gmail.com',
+					avatar: 'https://github.com/evilrabbit.png',
+				},
+			},
+		],
+
 		isNew: true,
 	},
 	{
@@ -41,6 +77,75 @@ export const playlist: Track[] = [
 		title: 'Песня6',
 		artist: 'Максим Переверзев',
 		src: '/music/song2.mp3',
+		comments: [
+			{
+				id: 1,
+				createdAt: '10.03.1998',
+				text: 'Отличная песня',
+				user: {
+					id: 1,
+					name: 'Иван',
+					email: 'ivan@gmail.com',
+					avatar: 'https://github.com/leerob.png',
+				},
+			},
+			{
+				id: 2,
+				createdAt: '10.03.1998',
+				text: 'Отличная песня',
+				user: {
+					id: 2,
+					name: 'Гришка',
+					email: 'grishka@gmail.com',
+					avatar: 'https://github.com/shadcn.png',
+				},
+			},
+			{
+				id: 3,
+				createdAt: '10.03.1987',
+				text: 'Отличная песня',
+				user: {
+					id: 3,
+					name: 'Никитка',
+					email: 'nikitka@gmail.com',
+					avatar: 'https://github.com/evilrabbit.png',
+				},
+			},
+			{
+				id: 4,
+				createdAt: '10.03.1987',
+				text: 'Отличная песня',
+				user: {
+					id: 3,
+					name: 'Никитка',
+					email: 'nikitka@gmail.com',
+					avatar: 'https://github.com/evilrabbit.png',
+				},
+			},
+			{
+				id: 5,
+				createdAt: '10.03.1987',
+				text: 'Отличная песня',
+				user: {
+					id: 3,
+					name: 'Никитка',
+					email: 'nikitka@gmail.com',
+					avatar: 'https://github.com/evilrabbit.png',
+				},
+			},
+			{
+				id: 6,
+				createdAt: '10.03.1987',
+				text: 'Отличная песня uyrtweyrewurtweuyr weurytweurytwe ruwteruwetruewyrtweuyrtwe uyweytruwertweuyrtwe uwteruweturwe uwteruwetruewrtwe  uywetruwertweurt weuywetruwertweurt uwyetruwertweurtweurt uwertuwertuwert uwetruwert uweytrwe ruywetrwe rweuryt weurytweutrtweur weurtweuryweurtwe rw uwertuwer tweury weur weruywetr uwetrweu',
+				user: {
+					id: 3,
+					name: 'Никитка',
+					email: 'nikitka@gmail.com',
+					avatar: 'https://github.com/evilrabbit.png',
+				},
+			},
+		],
+
 		isNew: false,
 	},
 	{
@@ -48,6 +153,41 @@ export const playlist: Track[] = [
 		title: 'Песня7',
 		artist: 'Максим Переверзев',
 		src: '/music/song3.mp3',
+		comments: [
+			{
+				id: 1,
+				createdAt: '10.03.1998',
+				text: 'Отличная песня',
+				user: {
+					id: 1,
+					name: 'Иван',
+					email: 'ivan@gmail.com',
+					avatar: 'https://github.com/leerob.png',
+				},
+			},
+			{
+				id: 2,
+				createdAt: '10.03.1998',
+				text: 'Отличная песня',
+				user: {
+					id: 2,
+					name: 'Гришка',
+					email: 'grishka@gmail.com',
+					avatar: 'https://github.com/shadcn.png',
+				},
+			},
+			{
+				id: 3,
+				createdAt: '10.03.1987',
+				text: 'Отличная песня',
+				user: {
+					id: 3,
+					name: 'Никитка',
+					email: 'nikitka@gmail.com',
+					avatar: 'https://github.com/evilrabbit.png',
+				},
+			},
+		],
 
 		isNew: false,
 	},

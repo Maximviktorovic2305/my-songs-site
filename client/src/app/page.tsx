@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Music from '@/components/widgets/Music'
-import Footer from '@/components/layout/footer/footer'
 
 export default function Home() {
 	return (
@@ -16,7 +15,6 @@ export default function Home() {
 			<main>
 				<Music />
 			</main>
-			<Footer />
 		</div>
 	)
 }

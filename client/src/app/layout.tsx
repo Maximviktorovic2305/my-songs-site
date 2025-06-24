@@ -4,6 +4,7 @@ import './globals.css'
 import Sidebar from '@/components/layout/sidebar/Sidebar'
 import Header from '@/components/layout/header/Header'
 import MainProvider from '@/providers/MainProvider'
+import Footer from '@/components/layout/footer/footer'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -31,12 +32,13 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased sm:px-3 max-w-[80rem] mx-auto`}>
 				<MainProvider>
 					<Header />
-					<div className='mt-17 flex gap-3 bg-background'>
+					<div className='mt-17 mb-26 flex gap-3 bg-background'>
 						<div className='w-[20%] min-w-[11rem] max-sm:hidden'>
 							<Sidebar />
 						</div>
 						<div className='w-full'>{children}</div>
 					</div>
+					<Footer />
 				</MainProvider>
 			</body>
 		</html>

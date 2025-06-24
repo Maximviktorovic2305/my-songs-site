@@ -19,7 +19,8 @@ const MusicItem = ({ song }: Props) => {
 	const dispatch = useDispatch()
 	const isActive = currentTrack.title === song.title
 
-	const handleClick = () => {
+	const handleClick = (e: React.MouseEvent) => {
+		e.stopPropagation()
 		dispatch(setCurrentTrack(song))
 	}
 
@@ -33,8 +34,10 @@ const MusicItem = ({ song }: Props) => {
 	}
 	return (
 		<li className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-t'>
-			<div className='flex cursor-pointer items-center gap-3' onClick={handleRedirect}>
-				<span className='cursor-pointer'>
+			<div
+				className='flex cursor-pointer items-center gap-3'
+				onClick={handleRedirect}>
+				<span className='cursor-pointer' onClick={handleClick}>
 					{isActive ? (
 						<Image src={'/rocker.gif'} width={40} height={40} alt='song' />
 					) : (
@@ -44,7 +47,6 @@ const MusicItem = ({ song }: Props) => {
 							height={30}
 							alt='song'
 							className='opacity-80 hover:opacity-100 duration-200'
-							onClick={handleClick}
 						/>
 					)}
 				</span>
@@ -74,7 +76,7 @@ const MusicItem = ({ song }: Props) => {
 				/>
 
 				<div className='z-50'>
-					<StarRating />
+					<StarRating type='popup' />
 				</div>
 			</div>
 		</li>
