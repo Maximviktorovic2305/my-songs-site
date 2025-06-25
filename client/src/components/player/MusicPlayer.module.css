@@ -1,19 +1,22 @@
+/* MusicPlayer.module.css */
+
 .playerContainer {
   margin: 0 auto;
   background-color: #1e1e1e;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   position: relative;
+  overflow: hidden; 
 }
 
-/* Новая секция для названий внутри плеера */
+/* Секция для названий трека внутри плеера */
 .trackInfoInside {
-   padding: 0 2rem;
-   position: absolute;
-   bottom: 1.2rem;
-   display: flex;
-   justify-content: space-between;
-   z-index: 10;
-   width: 100%;
+  padding: 0 2rem;
+  position: absolute;
+  bottom: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+  width: 100%;
 }
 
 .title {
@@ -29,23 +32,24 @@
   margin: 0;
 }
 
-/* Остальные стили остаются без изменений */
+/* Стили основного аудиоплеера */
 .audioPlayer {
   width: 100%;
   /* background-color: #212528; */
   
   @media (width >= 40rem /* 640px */) {
-      padding-inline: 5%;
-   }
+    padding-inline: 5%;
+  }
 }
 
-/* Кастомизация прогресс-бара и кнопок остаются без изменений */
+/* Кастомизация прогресс-бара */
 .rhap_progress-container {
   height: 8px;
   background-color: #444;
   border-radius: 4px;
 }
 
+/* Кастомизация кнопок плеера */
 .rhap_button {
   cursor: pointer;
   transition: transform 0.2s;
@@ -55,7 +59,7 @@
   transform: scale(1.2);
 }
 
-
+/* Медиа-запрос для скрытия информации о треке на маленьких экранах */
 @media (max-width: 500px) {
   .trackInfoInside {
     display: none;
