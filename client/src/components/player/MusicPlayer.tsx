@@ -1,11 +1,20 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import styles from './MusicPlayer.module.css'
 import SVGPlay from '../svg/play'
 import SVGPause from '../svg/pause'
+import { pause, play } from '@/store/playerSlice/player.slice'
+import { useDispatch } from 'react-redux'
+import { usePlayer } from '@/hooks/useSelectors'
+
+interface AudioPlayerRef {
+	audio: {
+		current: HTMLAudioElement | null
+	}
+}
 
 interface MusicPlayerProps {
 	src?: string
@@ -15,6 +24,20 @@ interface MusicPlayerProps {
 }
 
 const MusicPlayer: FC<MusicPlayerProps> = ({ src, onEnded }) => {
+	const dispatch = useDispatch()
+	const playerRef = useRef<AudioPlayerRef | null>(null)
+	const { isPlaying } = usePlayer()
+
+	useEffect(() => {
+		if (playerRef.current) {
+			if (isPlaying) {
+				playerRef?.current?.audio?.current?.play()
+			} else {
+				playerRef?.current?.audio?.current?.pause()
+			}
+		}
+	}, [isPlaying])
+
 	const customIcons = {
 		play: <SVGPlay />,
 		pause: <SVGPause />,
@@ -22,24 +45,18 @@ const MusicPlayer: FC<MusicPlayerProps> = ({ src, onEnded }) => {
 
 	return (
 		<div className={styles.playerContainer}>
-			{/* <div className={styles.trackInfoInside}>
-				<h2 className={styles.title}>{title || 'Unknown Track'}</h2>
-				<p className={styles.artist}>{artist || 'Unknown Artist'}</p>
-			</div> */}
-
 			<AudioPlayer
 				autoPlay
 				src={src}
-				onPlay={(e) => console.log('onPlay', e)}
+				onPlay={() => dispatch(play())}
+				onPause={() => dispatch(pause())}
 				onEnded={onEnded}
 				customAdditionalControls={[]}
 				customIcons={customIcons}
 				className={styles.audioPlayer}
-				style={{
-					backgroundColor: '#222',
-				}}
 				showSkipControls={true}
 				showJumpControls={false}
+				ref={playerRef}
 			/>
 		</div>
 	)

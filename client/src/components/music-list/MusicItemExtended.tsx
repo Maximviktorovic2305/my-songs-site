@@ -5,23 +5,29 @@ import { Track } from '@/types'
 import { Download } from 'lucide-react'
 import Image from 'next/image'
 
-import { setCurrentTrack } from '@/store/playerSlice/player.slice'
+import { pause, play, setCurrentTrack } from '@/store/playerSlice/player.slice'
 import StarRating from '../StarRating'
 import SongComments from './SongComments'
+import { usePlayer } from '@/hooks/useSelectors'
 
 interface Props {
 	song: Track
-	isActive?: boolean
-	setIsActive?: (value: boolean) => void
 }
 
-const MusicItemExtended = ({ song, isActive = false, setIsActive }: Props) => {
+const MusicItemExtended = ({ song }: Props) => {
 	const dispatch = useDispatch()
+	const { currentTrack, isPlaying } = usePlayer()
+	const isActive = currentTrack.title === song.title
 
-	const handleClick = (e: React.MouseEvent) => {
+	const handlePlay = (e: React.MouseEvent) => {
 		e.stopPropagation()
 		dispatch(setCurrentTrack(song))
-		if (setIsActive) setIsActive(!isActive)
+		dispatch(play())
+	}         
+
+	const handlePause = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		dispatch(pause())
 	}
 
 	const handleDownload = (e: React.MouseEvent) => {
@@ -33,11 +39,11 @@ const MusicItemExtended = ({ song, isActive = false, setIsActive }: Props) => {
 		<section>
 			<div className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-t'>
 				<div className='flex cursor-pointer items-center gap-3'>
-					<span className='cursor-pointer' onClick={handleClick}>
-						{isActive ? (
-							<Image src={'/rocker.gif'} width={40} height={40} alt='song' />
+					<span className='cursor-pointer' >
+						{isActive && isPlaying ? (
+							<Image src={'/rocker.gif'} width={40} height={40} alt='song' onClick={handlePause} />
 						) : (
-							<Image
+							<Image onClick={handlePlay}
 								src={'/rocker.png'}
 								width={30}
 								height={30}

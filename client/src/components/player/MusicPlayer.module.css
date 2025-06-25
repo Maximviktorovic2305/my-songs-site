@@ -32,6 +32,7 @@
 /* Остальные стили остаются без изменений */
 .audioPlayer {
   width: 100%;
+  /* background-color: #212528; */
   
   @media (width >= 40rem /* 640px */) {
       padding-inline: 5%;

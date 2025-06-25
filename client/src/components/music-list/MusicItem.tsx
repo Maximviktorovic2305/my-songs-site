@@ -5,7 +5,7 @@ import { Track } from '@/types'
 import { Download } from 'lucide-react'
 import Image from 'next/image'
 import { usePlayer } from '@/hooks/useSelectors'
-import { setCurrentTrack } from '@/store/playerSlice/player.slice'
+import { pause, play, setCurrentTrack } from '@/store/playerSlice/player.slice'
 import StarRating from '../StarRating'
 import { useRouter } from 'next/navigation'
 
@@ -15,13 +15,19 @@ interface Props {
 
 const MusicItem = ({ song }: Props) => {
 	const router = useRouter()
-	const { currentTrack } = usePlayer()
+	const { currentTrack, isPlaying } = usePlayer()
 	const dispatch = useDispatch()
 	const isActive = currentTrack.title === song.title
 
-	const handleClick = (e: React.MouseEvent) => {
+	const handlePlay = (e: React.MouseEvent) => {
 		e.stopPropagation()
 		dispatch(setCurrentTrack(song))
+		dispatch(play())
+	}
+
+	const handlePause = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		dispatch(pause())
 	}
 
 	const handleDownload = (e: React.MouseEvent) => {
@@ -37,11 +43,11 @@ const MusicItem = ({ song }: Props) => {
 			<div
 				className='flex cursor-pointer items-center gap-3'
 				onClick={handleRedirect}>
-				<span className='cursor-pointer' onClick={handleClick}>
-					{isActive ? (
-						<Image src={'/rocker.gif'} width={40} height={40} alt='song' />
+				<span className='cursor-pointer' >
+					{isActive && isPlaying ? (
+						<Image src={'/rocker.gif'} width={40} height={40} alt='song' onClick={handlePause} />
 					) : (
-						<Image
+						<Image onClick={handlePlay}
 							src={'/rocker.png'}
 							width={30}
 							height={30}

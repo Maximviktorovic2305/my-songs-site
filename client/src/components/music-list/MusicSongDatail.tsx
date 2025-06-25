@@ -6,22 +6,24 @@ import { Card } from '../ui/card'
 import { Title } from '../ui/title'
 import SongDetailItem from './SongDetailItem'
 import MusicItemExtended from './MusicItemExtended'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { usePlayer } from '@/hooks/useSelectors'
+import { play } from '@/store/playerSlice/player.slice'
+import { useDispatch } from 'react-redux'
 
 interface Props {
 	song: Track
 }
 
 const MusicSongDatail = ({ song }: Props) => {
-	const { currentTrack } = usePlayer()
-	const [isActive, setIsActive] = useState(false)
+	const { currentTrack, isPlaying } = usePlayer()
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		if (currentTrack.title === song.title) {
-			setIsActive(true)
+			dispatch(play())
 		}
-	}, [currentTrack.title, song.title])
+	}, [currentTrack.title, dispatch, song.title])
 
 	return (
 		<Card className=''>
@@ -40,15 +42,11 @@ const MusicSongDatail = ({ song }: Props) => {
 				height={200}
 				alt={song.title}
 				className={`max-h-[15.7rem] rounded-lg shadow-md mb-4 mx-auto ${
-					isActive ? 'pulse-animation' : ''
+					isPlaying ? 'pulse-animation' : ''
 				}`}
 			/>
 
-			<MusicItemExtended
-				song={song}
-				isActive={isActive}
-				setIsActive={setIsActive}
-			/>
+			<MusicItemExtended song={song} />
 		</Card>
 	)
 }

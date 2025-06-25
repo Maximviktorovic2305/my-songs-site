@@ -10,7 +10,8 @@ interface PlayerState {
 		endlessTime?: string | null
 		rayting?: number | null
 		img?: string | null
-	}
+	},
+	isPlaying: boolean
 }
 
 const initialState: PlayerState = {
@@ -23,6 +24,7 @@ const initialState: PlayerState = {
 		rayting: null,
 		img: null,
 	},
+	isPlaying: false
 }
 
 const playerSlice = createSlice({
@@ -44,9 +46,16 @@ const playerSlice = createSlice({
 			state.currentTrack.endlessTime = null
 			state.currentTrack.rayting = null
 			state.currentTrack.img = null
+			state.isPlaying = false
 		},
+		play: (state) => {
+			state.isPlaying = true
+		},
+		pause: (state) => {
+			state.isPlaying = false
+		}
 	},
 })
 
-export const { setCurrentTrack, clearTrack } = playerSlice.actions
+export const { setCurrentTrack, clearTrack, play, pause } = playerSlice.actions
 export default playerSlice
