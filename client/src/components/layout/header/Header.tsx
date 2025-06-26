@@ -1,3 +1,4 @@
+import { MusicAddSong } from '@/components/music-list/add-song/MusicAddSong'
 import Image from 'next/image'
 
 const Header = () => {
@@ -10,6 +11,7 @@ const Header = () => {
 				alt='music'
 				className='w-auto h-auto'
 			/>
+			<MusicAddSong />         
 			<span className='text-lg font-bold'>Войти</span>
 		</header>
 	)
