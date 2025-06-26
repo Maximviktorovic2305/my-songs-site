@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 interface FormData {
 	title: string
 	artist: string
-	imageUrl?: string
+	imageFile?: FileList | null
 }
 
 export default function AddSongForm() {
@@ -17,9 +17,31 @@ export default function AddSongForm() {
 		formState: { errors },
 	} = useForm<FormData>()
 
-	const onSubmit: SubmitHandler<FormData> = (data) => {
+	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		console.log('Форма отправлена:', data)
-		// Здесь можно отправить данные на бэкенд
+
+		const formData = new FormData()
+		formData.append('title', data.title)
+		formData.append('artist', data.artist)
+
+		if (data.imageFile && data.imageFile[0]) {
+			formData.append('image', data.imageFile[0])
+		}
+
+		try {
+			const response = await fetch('/api/upload-song', {
+				method: 'POST',
+				body: formData,
+			})
+
+			if (response.ok) {
+				console.log('Песня добавлена')
+			} else {
+				console.error('Ошибка при добавлении песни')
+			}
+		} catch (error) {
+			console.error('Ошибка сети:', error)
+		}
 	}
 
 	return (
@@ -30,7 +52,7 @@ export default function AddSongForm() {
 			<div>
 				<Label
 					htmlFor='title'
-					className='mb-1  text-sm font-medium text-gray-700'>
+					className='mb-1 text-sm font-medium text-gray-700'>
 					Название:
 				</Label>
 				<Input
@@ -61,15 +83,15 @@ export default function AddSongForm() {
 
 			<div>
 				<Label
-					htmlFor='imageUrl'
+					htmlFor='imageFile'
 					className='mb-1 text-sm font-medium text-gray-700'>
 					Обложка (необязательно):
 				</Label>
 				<Input
-					type='text'
-					id='imageUrl'
-					{...register('imageUrl')}
-					placeholder='Загрузи обложку'
+					type='file'
+					id='imageFile'
+					accept='image/*'
+					{...register('imageFile')}
 				/>
 			</div>
 		</form>
