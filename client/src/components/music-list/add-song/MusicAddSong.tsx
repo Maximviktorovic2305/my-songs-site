@@ -10,12 +10,13 @@ import {
 	DrawerTrigger,
 } from '@/components/ui/drawer'
 import AddSongForm from './AddSongForm'
+import Image from 'next/image'
 
 export function MusicAddSong() {
 	return (
 		<Drawer>
 			<DrawerTrigger asChild>
-				<Button variant='outline'>Добавть песню</Button>
+				<Image width={24} height={24} src='/upload-song.png' alt='upload-song' className='cursor-pointer' />
 			</DrawerTrigger>
 			<DrawerContent>
 				<div className='w-full min-w-full'>

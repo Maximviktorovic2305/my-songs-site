@@ -7,7 +7,6 @@ import Image from 'next/image'
 
 import { pause, play, setCurrentTrack } from '@/store/playerSlice/player.slice'
 import StarRating from '../StarRating'
-import SongComments from './SongComments'
 import { usePlayer } from '@/hooks/useSelectors'
 
 interface Props {
@@ -23,7 +22,7 @@ const MusicItemExtended = ({ song }: Props) => {
 		e.stopPropagation()
 		dispatch(setCurrentTrack(song))
 		dispatch(play())
-	}         
+	}
 
 	const handlePause = (e: React.MouseEvent) => {
 		e.stopPropagation()
@@ -37,13 +36,20 @@ const MusicItemExtended = ({ song }: Props) => {
 
 	return (
 		<section>
-			<div className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-t'>
+			<div className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-y'>
 				<div className='flex cursor-pointer items-center gap-3'>
-					<span className='cursor-pointer' >
+					<span className='cursor-pointer'>
 						{isActive && isPlaying ? (
-							<Image src={'/rocker.gif'} width={40} height={40} alt='song' onClick={handlePause} />
+							<Image
+								src={'/rocker.gif'}
+								width={40}
+								height={40}
+								alt='song'
+								onClick={handlePause}
+							/>
 						) : (
-							<Image onClick={handlePlay}
+							<Image
+								onClick={handlePlay}
 								src={'/rocker.png'}
 								width={30}
 								height={30}
@@ -72,10 +78,6 @@ const MusicItemExtended = ({ song }: Props) => {
 						<StarRating />
 					</div>
 				</div>
-			</div>
-
-			<div>
-				<SongComments song={song} />
 			</div>
 		</section>
 	)

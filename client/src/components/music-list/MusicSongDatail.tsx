@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { usePlayer } from '@/hooks/useSelectors'
 import { play } from '@/store/playerSlice/player.slice'
 import { useDispatch } from 'react-redux'
+import SongComments from './SongComments'
 
 interface Props {
 	song: Track
@@ -46,7 +47,11 @@ const MusicSongDatail = ({ song }: Props) => {
 				}`}
 			/>
 
-			<MusicItemExtended song={song} />
+			<div className='mb-4'>
+				<MusicItemExtended song={song} />
+			</div>
+
+			<SongComments song={song} />
 		</Card>
 	)
 }

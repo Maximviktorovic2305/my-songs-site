@@ -11,7 +11,7 @@ import SVGPause from '../svg/pause'
 import { pause, play } from '@/store/playerSlice/player.slice'
 import { useDispatch } from 'react-redux'
 import { usePlayer } from '@/hooks/useSelectors'
-import EqualizerWave from './EqualizerWave'
+import EqualizerWave from './Equalizer/EqualizerWave'
 
 interface MusicPlayerProps {
 	src?: string

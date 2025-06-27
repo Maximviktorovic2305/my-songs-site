@@ -11,8 +11,10 @@ const Header = () => {
 				alt='music'
 				className='w-auto h-auto'
 			/>
-			<MusicAddSong />         
-			<span className='text-lg font-bold'>Войти</span>
+			<div className='flex items-center gap-4'>
+				<MusicAddSong />
+				<span className='text-lg font-bold'>Войти</span>
+			</div>
 		</header>
 	)
 }

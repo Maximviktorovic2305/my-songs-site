@@ -1,8 +1,9 @@
 'use client'
 
+import { useState, ChangeEvent } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useForm, SubmitHandler } from 'react-hook-form'
 
 interface FormData {
 	title: string
@@ -14,8 +15,11 @@ export default function AddSongForm() {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<FormData>()
+
+	const [selectedFileName, setSelectedFileName] = useState<string | null>(null)
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		console.log('Форма отправлена:', data)
@@ -36,11 +40,23 @@ export default function AddSongForm() {
 
 			if (response.ok) {
 				console.log('Песня добавлена')
+				setSelectedFileName(null)
 			} else {
 				console.error('Ошибка при добавлении песни')
 			}
 		} catch (error) {
 			console.error('Ошибка сети:', error)
+		}
+	}
+
+	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files.length > 0) {
+			const file = e.target.files[0]
+			setSelectedFileName(file.name)
+			setValue('imageFile', e.target.files)
+		} else {
+			setSelectedFileName(null)
+			setValue('imageFile', null)
 		}
 	}
 
@@ -87,12 +103,18 @@ export default function AddSongForm() {
 					className='mb-1 text-sm font-medium text-gray-700'>
 					Обложка (необязательно):
 				</Label>
-				<Input
+				<input
 					type='file'
 					id='imageFile'
 					accept='image/*'
-					{...register('imageFile')}
+					onChange={handleFileChange}
+					className='sr-only'
 				/>
+				<Label
+					htmlFor='imageFile'
+					className='cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full'>
+					{selectedFileName ? selectedFileName : 'Выберите файл'}
+				</Label>
 			</div>
 		</form>
 	)
