@@ -22,4 +22,6 @@ export interface Comment {
 	createdAt: string
 	text: string
 	user?: User
+	like?: number
+	dislike?: number
 }

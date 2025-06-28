@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 import { usePlayer } from '@/hooks/useSelectors'
 import { play } from '@/store/playerSlice/player.slice'
 import { useDispatch } from 'react-redux'
-import SongComments from './SongComments'
+import SongComments from './comments/SongComments'
 
 interface Props {
 	song: Track
@@ -27,27 +27,61 @@ const MusicSongDatail = ({ song }: Props) => {
 	}, [currentTrack.title, dispatch, song.title])
 
 	return (
-		<Card className=''>
-			<Title as='h1' className='mb-1 text-center text-primary/90'>
-				{song.title}
-			</Title>
-			<div className='mb-4'>
-				<SongDetailItem title='Артист' value={song.artist ?? '--'} />
-				<SongDetailItem title='Рейтинг' value={song.rayting ?? '--'} />
-				<SongDetailItem title='Новинка' value={song.rayting ?? false} />
-				<SongDetailItem title='Дата размещения' value={song.isNew ?? '--'} />
-			</div>
-			<Image
-				src={song.img ?? '/no-image.png'}
-				width={200}
-				height={200}
-				alt={song.title}
-				className={`max-h-[15.7rem] rounded-lg shadow-md mb-4 mx-auto ${
-					isPlaying ? 'pulse-animation' : ''
-				}`}
-			/>
+		// <Card className=''>
+		// 	<Title as='h1' className='mb-1 text-center text-primary/90'>
+		// 		{song.title}
+		// 	</Title>
+		// 	<div className='mb-4'>
+		// 		<SongDetailItem title='Артист' value={song.artist ?? '--'} />
+		// 		<SongDetailItem title='Рейтинг' value={song.rayting ?? '--'} />
+		// 		<SongDetailItem title='Новинка' value={song.rayting ?? false} />
+		// 		<SongDetailItem title='Дата размещения' value={song.isNew ?? '--'} />
+		// 	</div>
+		// 	<Image
+		// 		src={song.img ?? '/no-image.png'}
+		// 		width={200}
+		// 		height={200}
+		// 		alt={song.title}
+		// 		className={`max-h-[15.7rem] rounded-lg shadow-md mb-4 mx-auto ${
+		// 			isPlaying ? 'pulse-animation' : ''
+		// 		}`}
+		// 	/>
 
-			<div className='mb-4'>
+		// 	<div className='mb-4'>
+		// 		<MusicItemExtended song={song} />
+		// 	</div>
+
+		// 	<SongComments song={song} />
+		// </Card>
+
+		<Card className=''>
+			<div className='mb-4 flex items-center gap-3 max-sm:flex max-sm:flex-col'>
+				<Image
+					src={song.img ?? '/no-image.png'}
+					width={200}
+					height={200}
+					alt={song.title}
+					className={`sm:max-h-[15.7rem] rounded-lg max-sm:justify-self-center shadow-md ${
+						isPlaying ? 'pulse-animation' : ''
+					}`}
+				/>
+				<div className='max-sm:self-start'>
+					<Title as='h1' className='mb-1 text-primary/90'>
+						{song.title}
+					</Title>
+					<SongDetailItem title='Артист' value={song.artist ?? '--'} />
+					<div className='max-sm:hidden'>
+						<SongDetailItem title='Рейтинг' value={song.rayting ?? '--'} />
+						<SongDetailItem title='Новинка' value={song.rayting ?? false} />
+						<SongDetailItem
+							title='Дата размещения'
+							value={song.isNew ?? '--'}
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div className='mb-5'>
 				<MusicItemExtended song={song} />
 			</div>
 

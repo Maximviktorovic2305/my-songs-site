@@ -25,6 +25,8 @@ export const playlist: Track[] = [
 				id: 1,
 				createdAt: '10.03.1998',
 				text: 'Отличная песня',
+				like: 5,
+				dislike: 5,
 				user: {
 					id: 1,
 					name: 'Иван',
@@ -36,6 +38,8 @@ export const playlist: Track[] = [
 				id: 2,
 				createdAt: '10.03.1998',
 				text: 'Отличная песня',
+				like: 5,
+				dislike: 7,
 				user: {
 					id: 2,
 					name: 'Гришка',
@@ -47,8 +51,11 @@ export const playlist: Track[] = [
 				id: 3,
 				createdAt: '10.03.1987',
 				text: 'Отличная песня',
+				like: 12,
+				dislike: 32,
 				user: {
 					id: 3,
+
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
 					avatar: 'https://github.com/evilrabbit.png',

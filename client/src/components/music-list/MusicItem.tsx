@@ -2,7 +2,7 @@
 
 import { useDispatch } from 'react-redux'
 import { Track } from '@/types'
-import { Download } from 'lucide-react'
+import { Download, MessageSquare } from 'lucide-react'
 import Image from 'next/image'
 import { usePlayer } from '@/hooks/useSelectors'
 import { pause, play, setCurrentTrack } from '@/store/playerSlice/player.slice'
@@ -19,18 +19,20 @@ const MusicItem = ({ song }: Props) => {
 	const dispatch = useDispatch()
 	const isActive = currentTrack.title === song.title
 
-	const handlePlay = (e: React.MouseEvent) => {
+	type InteractionEvent = React.MouseEvent | React.TouchEvent | Event
+
+	const handlePlay = (e: InteractionEvent) => {
 		e.stopPropagation()
 		dispatch(setCurrentTrack(song))
 		dispatch(play())
 	}
 
-	const handlePause = (e: React.MouseEvent) => {
+	const handlePause = (e: InteractionEvent) => {
 		e.stopPropagation()
 		dispatch(pause())
 	}
 
-	const handleDownload = (e: React.MouseEvent) => {
+	const handleDownload = (e: InteractionEvent) => {
 		e.stopPropagation()
 		console.log('download', song)
 	}
@@ -43,18 +45,15 @@ const MusicItem = ({ song }: Props) => {
 			<div
 				className='flex cursor-pointer items-center gap-3'
 				onClick={handleRedirect}>
-				<span className='cursor-pointer' >
-					{isActive && isPlaying ? (
-						<Image src={'/rocker.gif'} width={40} height={40} alt='song' onClick={handlePause} />
-					) : (
-						<Image onClick={handlePlay}
-							src={'/rocker.png'}
-							width={30}
-							height={30}
-							alt='song'
-							className='opacity-80 hover:opacity-100 duration-200'
-						/>
-					)}
+				<span className='cursor-pointer'>
+					<Image
+						src={isActive && isPlaying ? '/rocker.gif' : '/rocker.png'}
+						width={isActive && isPlaying ? 40 : 30}
+						height={40}
+						alt='song'
+						className='opacity-80 hover:opacity-100 duration-200'
+						onClick={isActive && isPlaying ? handlePause : handlePlay}
+					/>
 				</span>
 				<Image
 					src={song.img ?? '/no-image.png'}
@@ -73,9 +72,12 @@ const MusicItem = ({ song }: Props) => {
 				</div>
 			</div>
 			<div className='flex items-center gap-3'>
-				<span className='text-muted-foreground/80 font-semibold'>
-					{song.endlessTime ?? 0}
-				</span>
+				<div className='relative'>
+					<MessageSquare className='size-4 text-primary/90 w-4 h-auto cursor-pointer hover:text-muted-foreground duration-200 z-10' />
+					<span className='absolute -top-1.5 -right-1.5 text-[0.5rem] text-primary'>
+						{song.comments?.length ?? 12}
+					</span>
+				</div>
 				<Download
 					className='text-primary/90 w-4 h-auto cursor-pointer hover:text-muted-foreground duration-200 z-10'
 					onClick={handleDownload}
