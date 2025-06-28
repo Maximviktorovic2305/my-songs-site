@@ -1,16 +1,16 @@
-import MusicSongDatail from '@/components/music-list/MusicSongDatail'
+import MusicArtist from '@/components/music-list/MusicArtist'
 import { playlist } from '@/data/playlist'
 import { Track } from '@/types'
 
 interface SongDetailPageProps {
 	params: {
-		songId: string
+		title: string
 	}
 }
 
 // Заглушка для получения данных о песне
-async function getSongDetails(songId: number): Promise<Track | null> {
-	return playlist.find((song) => song.id === songId) || null
+async function getSongs(title: string): Promise<Track[] | null> {
+	return playlist.filter((song) => song.title === title) || null
 }
 
 // Статически генерировать маршруты во время сборки (SSG)
@@ -21,19 +21,22 @@ async function getSongDetails(songId: number): Promise<Track | null> {
 //   }));
 // }
 
-export default async function SongDetailPage({ params }: SongDetailPageProps) {
-	const { songId } = await params
+export default async function SongArtistPage({ params }: SongDetailPageProps) {
+	const { title } = params
 
-	const song = await getSongDetails(+songId)
+	const songs = await getSongs(title)
 
-	if (!song) {
+	console.log(title)
+	console.log(songs)
+
+	if (!songs) {
 		return (
 			<div className='flex flex-col items-center justify-center min-h-screen text-red-500'>
-				<h1>Песня не найдена</h1>
-				<p>К сожалению, песня не существует.</p>
+				<h1>Песен исполнителя нет</h1>
+				<p>К сожалению, песен не существует.</p>
 			</div>
 		)
 	}
 
-	return <MusicSongDatail song={song} />
+	return <MusicArtist songs={songs} />
 }
