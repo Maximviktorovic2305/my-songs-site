@@ -11,6 +11,7 @@ import { usePlayer } from '@/hooks/useSelectors'
 import { play } from '@/store/playerSlice/player.slice'
 import { useDispatch } from 'react-redux'
 import SongComments from './comments/SongComments'
+import StarRating from '../StarRating'
 
 interface Props {
 	song: Track
@@ -70,6 +71,11 @@ const MusicSongDatail = ({ song }: Props) => {
 						{song.title}
 					</Title>
 					<SongDetailItem title='Артист' value={song.artist ?? '--'} />
+					<div className='flex items-center gap-2'>
+						<span className='mt-1'>Рейтинг песни:</span>
+						<StarRating rating={song.rayting ?? 4} readonly />
+					</div>
+
 					<div className='max-sm:hidden'>
 						<SongDetailItem title='Рейтинг' value={song.rayting ?? '--'} />
 						<SongDetailItem title='Новинка' value={song.rayting ?? false} />
@@ -81,7 +87,7 @@ const MusicSongDatail = ({ song }: Props) => {
 				</div>
 			</div>
 
-			<div className='mb-5'>
+			<div className='mb-3'>
 				<MusicItemExtended song={song} />
 			</div>
 

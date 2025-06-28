@@ -37,18 +37,16 @@ const MusicItemExtended = ({ song }: Props) => {
 	return (
 		<section>
 			<div className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-y'>
-				<div className='flex cursor-pointer items-center gap-3'>
+				<div className='flex cursor-pointer items-center gap-3 max-sm:h-10'>
 					<span className='cursor-pointer'>
-						<span className='cursor-pointer'>
-							<Image
-								src={isActive && isPlaying ? '/rocker.gif' : '/rocker.png'}
-								width={isActive && isPlaying ? 40 : 30}
-								height={40}
-								alt='song'
-								className='opacity-80 hover:opacity-100 duration-200'
-								onClick={isActive && isPlaying ? handlePause : handlePlay}
-							/>
-						</span>
+						<Image
+							src={isActive && isPlaying ? '/rocker.gif' : '/rocker.png'}
+							width={isActive && isPlaying ? 40 : 30}
+							height={40}
+							alt='song'
+							className='opacity-80 hover:opacity-100 duration-200'
+							onClick={isActive && isPlaying ? handlePause : handlePlay}
+						/>
 					</span>
 					<div className='flex flex-col justify-between max-sm:hidden'>
 						<span className='font-bold'>{song.title}</span>
