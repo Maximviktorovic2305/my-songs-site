@@ -37,7 +37,7 @@ export const playlist: Track[] = [
 			{
 				id: 2,
 				createdAt: '10.03.1998',
-				text: 'Отличная песня',
+				text: 'Отличная песня skjhakjdhask aodhjasodjas aosjdsaodjasoiidj oadjasodjasoid joasidjasodjsoadj oasijdoasdjasoiid joasijdasodjaos oasjdoasdaa doasjdaso asdsad asdaasdasd',
 				like: 5,
 				dislike: 7,
 				user: {

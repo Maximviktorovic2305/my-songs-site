@@ -12,7 +12,7 @@ interface CommentProps {
 
 const Comment = ({ comment, onToggleLike, likeStatus }: CommentProps) => {
 	return (
-		<div key={comment.id} className='flex gap-3 border-b py-3'>
+		<div key={comment.id} className='pb-3 flex gap-3 border-b'>
 			<div>
 				<Image
 					width={100}
@@ -23,7 +23,7 @@ const Comment = ({ comment, onToggleLike, likeStatus }: CommentProps) => {
 				/>
 			</div>
 			<div className='flex flex-col w-full'>
-				<div className='flex justify-between items-start'>
+				<div className='flex gap-1 justify-between '>
 					<div>
 						<span className='font-bold text-primary/90'>
 							{comment.user?.name}
@@ -32,24 +32,23 @@ const Comment = ({ comment, onToggleLike, likeStatus }: CommentProps) => {
 							{comment.text}
 						</p>
 					</div>
-					<div className='text-sm text-muted-foreground self-end'>
+					<div className='text-sm text-muted-foreground'>
 						<span>{comment.createdAt}</span>
+						<div className='mt-3 flex items-center gap-2 justify-self-end'>
+							<LikeButton
+								type='like'
+								onClick={() => onToggleLike(comment.id, 'like')}
+								active={likeStatus === 'like'}
+								count={comment.like}
+							/>
+							<LikeButton
+								type='dislike'
+								onClick={() => onToggleLike(comment.id, 'dislike')}
+								active={likeStatus === 'dislike'}
+								count={comment.dislike}
+							/>
+						</div>
 					</div>
-				</div>
-
-				<div className='mt-3 flex items-center gap-2 self-end'>
-					<LikeButton
-						type='like'
-						onClick={() => onToggleLike(comment.id, 'like')}
-						active={likeStatus === 'like'}
-						count={comment.like}
-					/>
-					<LikeButton
-						type='dislike'
-						onClick={() => onToggleLike(comment.id, 'dislike')}
-						active={likeStatus === 'dislike'}
-						count={comment.dislike}
-					/>
 				</div>
 			</div>
 		</div>
