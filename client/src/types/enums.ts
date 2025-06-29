@@ -1,7 +1,6 @@
 export enum GenresEnum {
 	rock = 'rock',
 	liric = 'liric',
-	electro = 'electro',
 	pop = 'pop',
 	hipHop = 'hip-hop',
 	electronic = 'electronic',
@@ -13,10 +12,7 @@ export enum GenresEnum {
 	punk = 'punk',
 	metal = 'metal',
 	latin = 'latin',
-	trance = 'trance',
-	dubstep = 'dubstep',
 	alternative = 'alternative',
-	indie = 'indie',
 	funk = 'funk',
 	soul = 'soul',
 	rnb = 'rnb',

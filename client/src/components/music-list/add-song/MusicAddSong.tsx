@@ -21,11 +21,11 @@ export function MusicAddSong() {
 			<DrawerContent>
 				<div className='w-full min-w-full'>
 					<div className='mx-auto max-w-2xl'>
-						<DrawerHeader>
+						<DrawerHeader className='-mb-4'>
 							<DrawerTitle className='text-lg'>Добавь песню</DrawerTitle>
 							<DrawerDescription>Заполни форму</DrawerDescription>
 						</DrawerHeader>
-						<div className='mb-2 p-4 pb-0'>
+						<div className='mb-2 p-4 max-sm:px-0 pb-0'>
 							<AddSongForm />
 						</div>
 						<DrawerFooter>
