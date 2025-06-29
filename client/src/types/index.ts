@@ -1,27 +1,30 @@
+import { GenresEnum } from './enums'
+
 export interface Track {
 	id: number
 	title: string
-	artist: string
 	src: string
 	endlessTime?: string
 	rayting?: number
 	img?: string
 	comments?: Comment[]
+	genre?: GenresEnum
 	isNew: boolean
-}
-
-export interface User {
-	id: number
-	name: string
-	avatar?: string
-	email: string
+	artist: Artist
 }
 
 export interface Comment {
 	id: number
 	createdAt: string
 	text: string
-	user?: User
+	artist?: Artist
 	like?: number
 	dislike?: number
+}
+
+export interface Artist {
+	id: number
+	name: string
+	avatar?: string
+	email: string
 }

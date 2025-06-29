@@ -23,7 +23,7 @@ const LikeButton = ({
                 onClick={onClick}
             />
             {count && (
-                <span className='absolute -top-2.5 -right-1 text-[0.5rem]'>
+                <span className='absolute -top-2 -right-1 text-[0.5rem] bg-red-400 rounded-full px-1 text-white'>
                     {count}
                 </span>
             )}

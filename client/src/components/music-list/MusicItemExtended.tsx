@@ -51,7 +51,7 @@ const MusicItemExtended = ({ song }: Props) => {
 					<div className='flex flex-col justify-between max-sm:hidden'>
 						<span className='font-bold'>{song.title}</span>
 						<span className='text-sm text-muted-foreground/80 font-semibold'>
-							{song.artist}
+							{song.artist.name}
 						</span>
 					</div>
 				</div>

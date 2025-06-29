@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation'
 interface Props {
 	title?: string
 	value?: string | number | boolean
-	redirect?: string
+	redirectId?: number
 }
 
-const SongDetailItem = ({ title, value, redirect }: Props) => {
+const SongDetailItem = ({ title, value, redirectId }: Props) => {
 	const router = useRouter()
 
 	const renderIcon = () => {
@@ -24,8 +24,8 @@ const SongDetailItem = ({ title, value, redirect }: Props) => {
 	}
 
 	const handleRedirect = () => {
-		if (redirect) {
-			router.push(`/music/${redirect}`)
+		if (redirectId) {
+			router.push(`/music/artist/${redirectId}`)
 		}
 	}
 
@@ -33,7 +33,7 @@ const SongDetailItem = ({ title, value, redirect }: Props) => {
 		<div className='flex items-center gap-1'>
 			<span className='font-semibold'>{title}:</span>
 			<span
-				className={`font-normal flex items-center gap-1 text-gray-500 ${redirect ? 'cursor-pointer hover:text-primary/90 duration-200' : ''}`}
+				className={`font-normal flex items-center gap-1 text-gray-500 ${redirectId ? 'cursor-pointer hover:text-primary/90 duration-200' : ''}`}
 				onClick={handleRedirect}>
 				{renderIcon()}
 				{typeof value !== 'boolean' && value}

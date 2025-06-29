@@ -2,15 +2,15 @@ import MusicArtist from '@/components/music-list/MusicArtist'
 import { playlist } from '@/data/playlist'
 import { Track } from '@/types'
 
-interface SongDetailPageProps {
-	params: {
-		title: string
-	}
+interface SongArtistPageProps {
+	params: Promise<{
+		artistId: string
+	}>
 }
 
 // Заглушка для получения данных о песне
-async function getSongs(title: string): Promise<Track[] | null> {
-	return playlist.filter((song) => song.title === title) || null
+async function getSongs(artistId: string): Promise<Track[] | null> {
+	return playlist.filter((song) => song.artist.id === +artistId)
 }
 
 // Статически генерировать маршруты во время сборки (SSG)
@@ -21,12 +21,11 @@ async function getSongs(title: string): Promise<Track[] | null> {
 //   }));
 // }
 
-export default async function SongArtistPage({ params }: SongDetailPageProps) {
-	const { title } = params
+export default async function SongArtistPage({ params }: SongArtistPageProps) {
+	const { artistId } = await params
+	const songs = await getSongs(artistId)
 
-	const songs = await getSongs(title)
-
-	console.log(title)
+	console.log(artistId)
 	console.log(songs)
 
 	if (!songs) {

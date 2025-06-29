@@ -3,9 +3,9 @@ import { playlist } from '@/data/playlist'
 import { Track } from '@/types'
 
 interface SongDetailPageProps {
-	params: {
+	params: Promise<{
 		songId: string
-	}
+	}>
 }
 
 // Заглушка для получения данных о песне

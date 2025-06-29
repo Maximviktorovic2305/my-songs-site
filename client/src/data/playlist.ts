@@ -1,24 +1,39 @@
 import { Comment, Track } from '@/types'
+import { GenresEnum } from '@/types/enums'
 
 export const playlist: Track[] = [
 	{
 		id: 1,
 		title: 'Анаконда',
-		artist: 'Максим Переверзев',
+		artist: {
+			id: 4,
+			name: 'Максим Викторович',
+			email: 'maxim@gmail.com',
+		},
 		src: '/music/song1.mp3',
 		isNew: false,
+		genre: GenresEnum.rock
 	},
 	{
 		id: 2,
 		title: 'Турецкая',
-		artist: 'Максим Переверзев',
+		artist: {
+			id: 4,
+			name: 'Максим Викторович',
+			email: 'maxim@gmail.com',
+		},
 		src: '/music/song2.mp3',
 		isNew: false,
+		genre: GenresEnum.reggae
 	},
 	{
 		id: 3,
 		title: 'Do not know',
-		artist: 'Максим Переверзев',
+		artist: {
+			id: 4,
+			name: 'Максим Викторович',
+			email: 'maxim@gmail.com',
+		},
 		src: '/music/song3.mp3',
 		comments: [
 			{
@@ -27,7 +42,7 @@ export const playlist: Track[] = [
 				text: 'Отличная песня',
 				like: 5,
 				dislike: 5,
-				user: {
+				artist: {
 					id: 1,
 					name: 'Иван',
 					email: 'ivan@gmail.com',
@@ -40,7 +55,7 @@ export const playlist: Track[] = [
 				text: 'Отличная песня skjhakjdhask aodhjasodjas aosjdsaodjasoiidj oadjasodjasoid joasidjasodjsoadj oasijdoasdjasoiid joasijdasodjaos oasjdoasdaa doasjdaso asdsad asdaasdasd 23qwasdasasdasd qweqwe qw asd asasd asasd asas ',
 				like: 5,
 				dislike: 7,
-				user: {
+				artist: {
 					id: 2,
 					name: 'Гришка',
 					email: 'grishka@gmail.com',
@@ -53,7 +68,7 @@ export const playlist: Track[] = [
 				text: 'Отличная песня',
 				like: 12,
 				dislike: 32,
-				user: {
+				artist: {
 					id: 3,
 
 					name: 'Никитка',
@@ -64,32 +79,47 @@ export const playlist: Track[] = [
 		],
 
 		isNew: true,
+		genre: GenresEnum.soul
 	},
 	{
 		id: 4,
 		title: '5',
-		artist: 'Максим Переверзев',
+		artist: {
+			id: 3,
+			name: 'Максим',
+			email: 'maxim@gmail.com',
+		},
 		src: '/music/5.wav',
 		isNew: true,
+		genre: GenresEnum.classical
 	},
 	{
 		id: 5,
 		title: 'Do not know original',
-		artist: 'Максим Переверзев',
+		artist: {
+			id: 2,
+			name: 'Максим Переверзев',
+			email: 'maxim@gmail.com',
+		},
 		src: '/music/song3.mp3',
 		isNew: false,
+		genre: GenresEnum.trance
 	},
 	{
 		id: 6,
 		title: 'Песня6',
-		artist: 'Максим Переверзев',
+		artist: {
+			id: 1,
+			name: 'Максим',
+			email: 'maxim@gmail.com',
+		},
 		src: '/music/song2.mp3',
 		comments: [
 			{
 				id: 1,
 				createdAt: '10.03.1998',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 1,
 					name: 'Иван',
 					email: 'ivan@gmail.com',
@@ -100,7 +130,7 @@ export const playlist: Track[] = [
 				id: 2,
 				createdAt: '10.03.1998',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 2,
 					name: 'Гришка',
 					email: 'grishka@gmail.com',
@@ -111,18 +141,17 @@ export const playlist: Track[] = [
 				id: 3,
 				createdAt: '10.03.1987',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 3,
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
-					avatar: 'https://github.com/evilrabbit.png',
 				},
 			},
 			{
 				id: 4,
 				createdAt: '10.03.1987',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 3,
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
@@ -133,7 +162,7 @@ export const playlist: Track[] = [
 				id: 5,
 				createdAt: '10.03.1987',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 3,
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
@@ -144,28 +173,32 @@ export const playlist: Track[] = [
 				id: 6,
 				createdAt: '10.03.1987',
 				text: 'Отличная песня uyrtweyrewurtweuyr weurytweurytwe ruwteruwetruewyrtweuyrtwe uyweytruwertweuyrtwe uwteruweturwe uwteruwetruewrtwe  uywetruwertweurt weuywetruwertweurt uwyetruwertweurtweurt uwertuwertuwert uwetruwert uweytrwe ruywetrwe rweuryt weurytweutrtweur weurtweuryweurtwe rw uwertuwer tweury weur weruywetr uwetrweu',
-				user: {
+				artist: {
 					id: 3,
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
-					avatar: 'https://github.com/evilrabbit.png',
 				},
 			},
 		],
 
 		isNew: false,
+		genre: GenresEnum.blues
 	},
 	{
 		id: 7,
 		title: 'Песня7',
-		artist: 'Максим Переверзев',
+		artist: {
+			id: 1,
+			name: 'Максим',
+			email: 'maxim@gmail.com',
+		},
 		src: '/music/song3.mp3',
 		comments: [
 			{
 				id: 1,
 				createdAt: '10.03.1998',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 1,
 					name: 'Иван',
 					email: 'ivan@gmail.com',
@@ -176,7 +209,7 @@ export const playlist: Track[] = [
 				id: 2,
 				createdAt: '10.03.1998',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 2,
 					name: 'Гришка',
 					email: 'grishka@gmail.com',
@@ -187,7 +220,7 @@ export const playlist: Track[] = [
 				id: 3,
 				createdAt: '10.03.1987',
 				text: 'Отличная песня',
-				user: {
+				artist: {
 					id: 3,
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
@@ -197,6 +230,7 @@ export const playlist: Track[] = [
 		],
 
 		isNew: false,
+		genre: GenresEnum.funk
 	},
 ]
 
@@ -205,7 +239,7 @@ export const comments: Comment[] = [
 		id: 1,
 		createdAt: '10.03.1998',
 		text: 'Отличная песня',
-		user: {
+		artist: {
 			id: 1,
 			name: 'Иван',
 			email: 'ivan@gmail.com',
@@ -216,7 +250,7 @@ export const comments: Comment[] = [
 		id: 2,
 		createdAt: '10.03.1998',
 		text: 'Отличная песня',
-		user: {
+		artist: {
 			id: 2,
 			name: 'Гришка',
 			email: 'grishka@gmail.com',
@@ -227,7 +261,7 @@ export const comments: Comment[] = [
 		id: 3,
 		createdAt: '10.03.1987',
 		text: 'Отличная песня',
-		user: {
+		artist: {
 			id: 3,
 			name: 'Никитка',
 			email: 'nikitka@gmail.com',

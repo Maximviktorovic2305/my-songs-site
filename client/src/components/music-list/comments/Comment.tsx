@@ -17,8 +17,8 @@ const Comment = ({ comment, onToggleLike, likeStatus, isLast }: CommentProps) =>
                     <Image
                         width={100}
                         height={100}
-                        src={comment.user?.avatar ?? ''}
-                        alt={comment.user?.name ?? ''}
+                        src={comment.artist?.avatar ?? '/no-image-avatar.png'}
+                        alt={comment.artist?.name ?? ''}
                         className='rounded overflow-hidden w-[4.375rem] h-[4.375rem]'
                     />
                 </div>
@@ -28,8 +28,8 @@ const Comment = ({ comment, onToggleLike, likeStatus, isLast }: CommentProps) =>
                     <Image
                         width={100}
                         height={100}
-                        src={comment.user?.avatar ?? ''}
-                        alt={comment.user?.name ?? ''}
+                        src={comment.artist?.avatar ?? '/no-image-avatar.png'}
+                        alt={comment.artist?.name ?? ''}
                         className='rounded overflow-hidden w-[4.375rem] h-[4.375rem] float-left mr-3'
                     />
                 </div>
@@ -38,7 +38,7 @@ const Comment = ({ comment, onToggleLike, likeStatus, isLast }: CommentProps) =>
                 <div className='w-full'>
                     <div className='flex justify-between items-start'>
                         <span className='font-bold text-primary/90'>
-                            {comment.user?.name}
+                            {comment.artist?.name}
                         </span>
                         <div className='text-sm text-muted-foreground'>
                             <span>{comment.createdAt}</span>
