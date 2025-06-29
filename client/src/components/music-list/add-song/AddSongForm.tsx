@@ -4,29 +4,38 @@ import { useState, ChangeEvent } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { GenreSelector } from './GenreSelector'
 
 interface FormData {
 	title: string
-	artist: string
+	genres: string[]
 	imageFile?: FileList | null
 }
 
-export default function AddSongForm() {
+const AddSongForm = () => {
 	const {
 		register,
 		handleSubmit,
 		setValue,
 		formState: { errors },
-	} = useForm<FormData>()
+	} = useForm<FormData>({
+		defaultValues: {
+			title: '',
+			genres: [],
+		},
+	})
 
 	const [selectedFileName, setSelectedFileName] = useState<string | null>(null)
+	const [selectedGenres, setSelectedGenres] = useState<string[]>([])
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		console.log('Форма отправлена:', data)
 
 		const formData = new FormData()
 		formData.append('title', data.title)
-		formData.append('artist', data.artist)
+
+		// Добавляем жанры как строку через запятую
+		formData.append('genres', data.genres.join(', '))
 
 		if (data.imageFile && data.imageFile[0]) {
 			formData.append('image', data.imageFile[0])
@@ -41,6 +50,7 @@ export default function AddSongForm() {
 			if (response.ok) {
 				console.log('Песня добавлена')
 				setSelectedFileName(null)
+				setSelectedGenres([])
 			} else {
 				console.error('Ошибка при добавлении песни')
 			}
@@ -57,6 +67,20 @@ export default function AddSongForm() {
 		} else {
 			setSelectedFileName(null)
 			setValue('imageFile', null)
+		}
+	}
+
+	const toggleGenre = (genre: string) => {
+		if (selectedGenres.includes(genre)) {
+			// Удалить жанр
+			const updated = selectedGenres.filter((g) => g !== genre)
+			setSelectedGenres(updated)
+			setValue('genres', updated)
+		} else if (selectedGenres.length < 3) {
+			// Добавить жанр
+			const updated = [...selectedGenres, genre]
+			setSelectedGenres(updated)
+			setValue('genres', updated)
 		}
 	}
 
@@ -83,18 +107,11 @@ export default function AddSongForm() {
 
 			<div>
 				<Label
-					htmlFor='artist'
-					className='mb-1 text-sm font-medium text-gray-700'>
-					Исполнитель:
+					htmlFor='genres'
+					className='mb-2 text-sm font-medium text-gray-700'>
+					Жанр (максимум 3):
 				</Label>
-				<Input
-					type='text'
-					id='artist'
-					{...register('artist', { required: 'Исполнитель обязателен' })}
-				/>
-				{errors.artist && (
-					<p className='mt-1 text-sm text-red-600'>{errors.artist.message}</p>
-				)}
+				<GenreSelector selectedGenres={selectedGenres} onSelect={toggleGenre} />
 			</div>
 
 			<div>
@@ -119,3 +136,5 @@ export default function AddSongForm() {
 		</form>
 	)
 }
+
+export default AddSongForm
