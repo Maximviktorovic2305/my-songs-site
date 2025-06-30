@@ -32,6 +32,7 @@ const playerSlice = createSlice({
 	initialState,
 	reducers: {
 		setCurrentTrack: (state, action: PayloadAction<Track>) => {
+			state.currentTrack.id = action.payload.id 
 			state.currentTrack.src = action.payload.src
 			state.currentTrack.title = action.payload.title
 			state.currentTrack.artist = action.payload.artist
