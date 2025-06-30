@@ -1,13 +1,10 @@
 'use client'
 
-import { useDispatch } from 'react-redux'
-import { Track } from '@/types'
+import { InteractionEvent, Track } from '@/types'
 import { Download, MessageSquare } from 'lucide-react'
-import Image from 'next/image'
-import { usePlayer } from '@/hooks/useSelectors'
-import { pause, play, setCurrentTrack } from '@/store/playerSlice/player.slice'
-import StarRating from '../StarRating'
 import { useRouter } from 'next/navigation'
+import StarRating from '../base/StarRating'
+import PlayingImage from '../base/PlayingImage'
 
 interface Props {
 	song: Track
@@ -15,22 +12,6 @@ interface Props {
 
 const MusicItem = ({ song }: Props) => {
 	const router = useRouter()
-	const { currentTrack, isPlaying } = usePlayer()
-	const dispatch = useDispatch()
-	const isActive = currentTrack.title === song.title
-
-	type InteractionEvent = React.MouseEvent | React.TouchEvent | Event
-
-	const handlePlay = (e: InteractionEvent) => {
-		e.stopPropagation()
-		dispatch(setCurrentTrack(song))
-		dispatch(play())
-	}
-
-	const handlePause = (e: InteractionEvent) => {
-		e.stopPropagation()
-		dispatch(pause())
-	}
 
 	const handleDownload = (e: InteractionEvent) => {
 		e.stopPropagation()
@@ -45,25 +26,8 @@ const MusicItem = ({ song }: Props) => {
 			<div
 				className='flex cursor-pointer items-center gap-3'
 				onClick={handleRedirect}>
-				<span className='cursor-pointer'>
-					<Image
-						src={isActive && isPlaying ? '/rocker.gif' : '/rocker.png'}
-						width={isActive && isPlaying ? 40 : 30}
-						height={40}
-						alt='song'
-						className='opacity-80 hover:opacity-100 duration-200'
-						onClick={isActive && isPlaying ? handlePause : handlePlay}
-					/>
-				</span>
-				<Image
-					src={song.img ?? '/no-image.png'}
-					width={40}
-					height={40}
-					alt='song'
-					className={`rounded overflow-hidden opacity-80 ${
-						isActive && 'opacity-100'
-					}`}
-				/>
+				<PlayingImage song={song} />
+
 				<div className='flex flex-col justify-between'>
 					<span className='font-bold'>{song.title}</span>
 					<span className='text-sm text-muted-foreground/80 font-semibold'>

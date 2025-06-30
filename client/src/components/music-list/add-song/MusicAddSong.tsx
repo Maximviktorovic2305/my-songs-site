@@ -16,7 +16,7 @@ export function MusicAddSong() {
 	return (
 		<Drawer>
 			<DrawerTrigger asChild>
-				<Image width={24} height={24} src='/upload-song.png' alt='upload-song' className='cursor-pointer' />
+				<Image width={24} height={24} src='/upload-song.png' alt='upload-song' className='cursor-pointer hover:opacity-80 duration-200' />
 			</DrawerTrigger>
 			<DrawerContent>
 				<div className='w-full min-w-full'>

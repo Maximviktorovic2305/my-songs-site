@@ -1,8 +1,8 @@
 'use client'
 
 import { Rating } from 'react-simple-star-rating'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Star } from 'lucide-react'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 interface Props {
 	type?: 'normal' | 'popup'

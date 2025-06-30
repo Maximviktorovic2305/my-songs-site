@@ -11,7 +11,7 @@ import { usePlayer } from '@/hooks/useSelectors'
 import { play } from '@/store/playerSlice/player.slice'
 import { useDispatch } from 'react-redux'
 import SongComments from './comments/SongComments'
-import StarRating from '../StarRating'
+import StarRating from '../base/StarRating'
 
 interface Props {
 	song: Track

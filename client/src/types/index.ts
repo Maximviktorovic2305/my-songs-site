@@ -28,3 +28,5 @@ export interface Artist {
 	avatar?: string
 	email: string
 }
+
+export type InteractionEvent = React.MouseEvent | React.TouchEvent

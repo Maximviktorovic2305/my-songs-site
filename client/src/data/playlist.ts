@@ -12,7 +12,7 @@ export const playlist: Track[] = [
 		},
 		src: '/music/song1.mp3',
 		isNew: false,
-		genre: GenresEnum.rock
+		genre: GenresEnum.rock,
 	},
 	{
 		id: 2,
@@ -24,7 +24,7 @@ export const playlist: Track[] = [
 		},
 		src: '/music/song2.mp3',
 		isNew: false,
-		genre: GenresEnum.reggae
+		genre: GenresEnum.reggae,
 	},
 	{
 		id: 3,
@@ -79,7 +79,7 @@ export const playlist: Track[] = [
 		],
 
 		isNew: true,
-		genre: GenresEnum.soul
+		genre: GenresEnum.soul,
 	},
 	{
 		id: 4,
@@ -91,7 +91,7 @@ export const playlist: Track[] = [
 		},
 		src: '/music/5.wav',
 		isNew: true,
-		genre: GenresEnum.classical
+		genre: GenresEnum.classical,
 	},
 	{
 		id: 5,
@@ -103,7 +103,7 @@ export const playlist: Track[] = [
 		},
 		src: '/music/song3.mp3',
 		isNew: false,
-		genre: GenresEnum.trance
+		genre: GenresEnum.classical,
 	},
 	{
 		id: 6,
@@ -182,7 +182,7 @@ export const playlist: Track[] = [
 		],
 
 		isNew: false,
-		genre: GenresEnum.blues
+		genre: GenresEnum.blues,
 	},
 	{
 		id: 7,
@@ -230,7 +230,7 @@ export const playlist: Track[] = [
 		],
 
 		isNew: false,
-		genre: GenresEnum.funk
+		genre: GenresEnum.funk,
 	},
 ]
 

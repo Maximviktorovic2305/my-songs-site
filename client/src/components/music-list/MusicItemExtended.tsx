@@ -6,8 +6,8 @@ import { Download, MessageSquare } from 'lucide-react'
 import Image from 'next/image'
 
 import { pause, play, setCurrentTrack } from '@/store/playerSlice/player.slice'
-import StarRating from '../StarRating'
 import { usePlayer } from '@/hooks/useSelectors'
+import StarRating from '../base/StarRating'
 
 interface Props {
 	song: Track

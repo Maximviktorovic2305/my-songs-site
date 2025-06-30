@@ -1,11 +1,11 @@
-import { Track } from '@/types'
+import { Artist, Track } from '@/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface PlayerState {
 	currentTrack: {
 		src: string | null
 		title: string | null
-		artist: string | null
+		artist: Artist | null
 		id: number | null
 		endlessTime?: string | null
 		rayting?: number | null
