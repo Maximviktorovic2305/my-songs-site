@@ -24,10 +24,13 @@ export interface Comment {
 
 export interface Artist {
 	id: number
+	nickname: string
 	name: string
 	avatar?: string
 	email: string
 	favorites?: Track[]
+	tracks?: Track[]
+	comments?: Comment[]
 }
 
 export type InteractionEvent = React.MouseEvent | React.TouchEvent

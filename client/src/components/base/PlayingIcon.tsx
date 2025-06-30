@@ -29,19 +29,14 @@ const PlayingIcon = ({ song }: Props) => {
 
 	return (
 		<div className='relative cursor-pointer group'>
-			<div
-				className={`w-10 h-10 rounded-md border-1 flex items-center justify-center transition-colors duration-200 ${
-					isActive
-						? 'border-accent/90'
-						: 'border-accent/90 hover:border-muted-foreground/50 '
-				}`}>
+			<div className='w-10 h-10 rounded-md border-1 flex items-center justify-center transition-colors duration-200 border-accent/90'>
 				{isActive && isPlaying ? (
 					<Pause
 						size={24}
 						color='#73dde3'
 						onClick={handlePause}
 						className='text-accent opacity-90 hover:opacity-100 transition-opacity'
-					/> 
+					/>
 				) : (
 					<Play
 						size={24}

@@ -38,7 +38,7 @@ const MusicItemExtended = ({ song }: Props) => {
 
 	return (
 		<section>
-			<div className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-y'>
+			<div className='py-2 flex gap-3 justify-between items-center w-full min-w-full border-accent/30 border-y'>
 				<div className='flex cursor-pointer items-center gap-3 max-sm:h-10'>
 					<PlayingIcon song={song} />
 					<div className='flex flex-col justify-between max-sm:hidden'>

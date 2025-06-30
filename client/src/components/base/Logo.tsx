@@ -34,7 +34,7 @@ const Logo = () => {
 				height={30}
 				src='/maxmusic1.png'
 				alt='music-logo-1'
-            className='cursor-pointer'
+				className='cursor-pointer'
 				onClick={handleRedirect}
 			/>
 
