@@ -12,6 +12,7 @@ import { play } from '@/store/playerSlice/player.slice'
 import { useDispatch } from 'react-redux'
 import SongComments from './comments/SongComments'
 import StarRating from '../base/StarRating'
+import LoveIcon from '../base/LoveIcon'
 
 interface Props {
 	song: Track
@@ -20,6 +21,7 @@ interface Props {
 const MusicSongDatail = ({ song }: Props) => {
 	const { currentTrack, isPlaying } = usePlayer()
 	const dispatch = useDispatch()
+	const isFavorite = false
 
 	useEffect(() => {
 		if (currentTrack.title === song.title) {
@@ -29,21 +31,23 @@ const MusicSongDatail = ({ song }: Props) => {
 
 	return (
 		<Card className=''>
-			<div className='mb-4 flex items-center gap-3 max-sm:flex max-sm:flex-col'>
+			<div className='relative mb-4 flex items-center gap-3 max-sm:flex max-sm:flex-col'>
 				<Image
 					src={song.img ?? '/no-image.png'}
 					width={200}
 					height={200}
 					alt={song.title}
-					className={`sm:max-h-[15.7rem] rounded-lg max-sm:justify-self-center shadow-md ${
-						isPlaying ? 'pulse-animation' : ''
-					}`}
+					className={`sm:max-h-[15.7rem] rounded-lg max-sm:justify-self-center shadow-md `}
 				/>
 				<div className='max-sm:self-start'>
 					<Title as='h1' className='mb-1 text-primary/90'>
 						{song.title}
 					</Title>
-					<SongDetailItem title='Артист' value={song.artist.name ?? '--'} redirectId={song.artist.id} />
+					<SongDetailItem
+						title='Артист'
+						value={song.artist.name ?? '--'}
+						redirectId={song.artist.id}
+					/>
 					<div className='flex items-center gap-2'>
 						<span className='mt-1 font-semibold'>Рейтинг:</span>
 						<StarRating rating={song.rayting ?? 4} readonly />
@@ -56,6 +60,10 @@ const MusicSongDatail = ({ song }: Props) => {
 							value={song.isNew ?? '--'}
 						/>
 					</div>
+				</div>
+
+				<div className='absolute top-0 right-0'>
+					<LoveIcon songId={song.id} initialIsFavorite={isFavorite} size='md' />
 				</div>
 			</div>
 

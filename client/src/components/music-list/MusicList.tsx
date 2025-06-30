@@ -7,11 +7,11 @@ interface Props {
 
 const MusicList = ({ list }: Props) => {
 	return (
-		<ol>
+		<ul>
 			{list.map((song, i) => (
 				<MusicItem song={song} key={i} />
 			))}
-		</ol>
+		</ul>
 	)
 }
 export default MusicList
