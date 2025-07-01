@@ -38,6 +38,17 @@ const RegisterForm = () => {
 	>(null)
 	const [passwordError, setPasswordError] = useState<string | null>(null)
 
+	const resetForm = () => {
+		setValue('nickname', '')
+		setValue('name', '')
+		setValue('email', '')
+		setValue('password', '')
+		setValue('confirmPassword', '')
+		setValue('avatar', null)
+		setSelectedAvatarFileName(null)
+		setPasswordError(null)
+	}
+
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		console.log('Форма отправлена:', data)
 
@@ -64,15 +75,7 @@ const RegisterForm = () => {
 
 			if (response.ok) {
 				alert('Регистрация успешна')
-				// Сброс формы
-				setValue('nickname', '')
-				setValue('name', '')
-				setValue('email', '')
-				setValue('password', '')
-				setValue('confirmPassword', '')
-				setValue('avatar', null)
-				setSelectedAvatarFileName(null)
-				setPasswordError(null)
+				resetForm()
 			} else {
 				alert('Ошибка регистрации')
 			}
@@ -99,7 +102,7 @@ const RegisterForm = () => {
 		<form
 			id='register-form'
 			onSubmit={handleSubmit(onSubmit)}
-			className='space-y-6 p-6 border rounded shadow-md max-w-lg mx-auto'>
+			className='space-y-4 max-w-lg mx-auto'>
 			{/* Никнейм */}
 			<fieldset>
 				<Label
@@ -225,7 +228,9 @@ const RegisterForm = () => {
 				</Label>
 			</fieldset>
 
-			<Button type='submit' className='w-full'>Зарегистрироваться</Button>
+			<Button type='submit' className='w-full'>
+				Зарегистрироваться
+			</Button>
 		</form>
 	)
 }

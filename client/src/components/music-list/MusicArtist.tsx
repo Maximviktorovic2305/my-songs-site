@@ -26,7 +26,7 @@ const MusicArtist = ({ songs }: Props) => {
 				}`}
 			/>
 			<SongDetailItem title='Артист' value={artist.name ?? '--'} />
-			<div className='mb-3'>
+			<div className='mb-3 border-b pb-3'>
 				<SongDetailItem title='Кол-во песен' value={songs.length ?? '--'} />
 			</div>
 
