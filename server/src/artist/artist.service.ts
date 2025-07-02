@@ -1,43 +1,43 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import * as argon2 from 'argon2';
-import { returnUserObject } from './return-user.object';
+import { returnArtistObject } from './return-artist.object';
 import { RegisterAuthDto } from 'src/auth/dto/create-auth.dto';
 
 @Injectable()
-export class UserService {
+export class ArtistService {
   constructor(private readonly prisma: PrismaService) {}
 
   // Получение профиля пользователем по id
-  async getByUserId(userId: number) {
-    const user = await this.prisma.user.findUnique({
+  async getByArtistId(artistId: number) {
+    const artist = await this.prisma.artist.findUnique({
       where: {
-        id: userId,
+        id: artistId,
       },
       select: {
-        ...returnUserObject,
+        ...returnArtistObject,
       },
     });
 
-    if (!user) throw new NotFoundException('Пользователь не найден');
+    if (!artist) throw new NotFoundException('Пользователь не найден');
 
-    return user;
+    return artist;
   }
 
-  // Получение userа по id
+  // Получение artist по id
   async byId(id: number) {
-    const user = await this.prisma.user.findUnique({
+    const artist = await this.prisma.artist.findUnique({
       where: {
         id,
       },
       select: {
-        ...returnUserObject,
+        ...returnArtistObject,
       },
     });
 
-    if (!user) throw new NotFoundException('Пользователь не найден');
+    if (!artist) throw new NotFoundException('Пользователь не найден');
 
-    return user;
+    return artist;
   }
 
   async create(dto: RegisterAuthDto) {
@@ -45,29 +45,29 @@ export class UserService {
 
     const isAdmin = name === "AdminAdminAdmin" && password === "AdminAdminAdmin"
 
-    const user = await this.prisma.user.create({
+    const artist = await this.prisma.artist.create({
       data: {
         name,
         email,
         password: await argon2.hash(password),
         isAdmin: isAdmin ? true : false,
       },
-      select: { ...returnUserObject },
+      select: { ...returnArtistObject },
     });
 
-    return user;
+    return artist;
   }
 
   // Получение всех пользователей администратором
-  async getAllUsers() {
-    const users = await this.prisma.user.findMany();
-    return users;
+  async getAllArtists() {
+    const artists = await this.prisma.artist.findMany();
+    return artists;
   }
 
   // Удаление пользователя администратором
-  async deleteUser(userId: number) {
-    await this.prisma.user.delete({
-      where: { id: userId },
+  async deleteArtist(artistId: number) {
+    await this.prisma.artist.delete({
+      where: { id: artistId },
     });
 
     return {

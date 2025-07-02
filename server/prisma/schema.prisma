@@ -8,14 +8,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Artist {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  name     String?
-  email    String  @unique
+  nickname String @unique @map("nick_name")
+  name     String
+  email    String @unique
   password String
+  avatar   String @default("/uploads/default-avatar.png") @map("avatar_path")
 
-  isAdmin Boolean @default(false)
+  isAdmin Boolean @default(false) @map("is_admin")
+
+  tracks Track[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  text    String
+  like    Int?
+  dislike Int?
+
+  track   Track? @relation(fields: [trackId], references: [id])
+  trackId Int?
+}
+
+model Track {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  text        String
+  src         String
+  endlessTime String?
+  rayting     Int?
+  img         String?     @default("/uploads/no-image.png") @map("no_image")
+  genre       EnumGenres?
+  isNew       Boolean?
+  isFavorite  Boolean     @default(false) @map("is_favorite")
+
+  artist   Artist? @relation(fields: [artistId], references: [id])
+  artistId Int?
+
+  comments Comment[]
+}
+
+enum EnumGenres {
+  ROCK
+  LIRIC
+  POP
+  ELECTRONIC
+  JAZZ
+  CLASSICAL
+  BLUES
+  REGGAE
+  FOLK
+  PUNK
+  METAL
+  LATIN
+  ALTERNATIVE
+  FUNK
+  SOUL
+  RNB
+  COUNTRY
+  FUSION
+  EXPERIMENTAL
+  INDUSTRIAL
 }

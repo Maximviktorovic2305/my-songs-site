@@ -1,6 +1,6 @@
 import { Prisma } from "generated/prisma";
 
-export const returnUserObject: Prisma.UserSelect = {
+export const returnArtistObject: Prisma.ArtistSelect = {
   id: true,
   name: true,
   email: true,

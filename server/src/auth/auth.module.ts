@@ -5,16 +5,20 @@ import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
-import { UserService } from 'src/user/user.service';
-import { UserModule } from 'src/user/user.module';
+import { UserService } from 'src/artist/artist.service';
+import { UserModule } from 'src/artist/artist.module';
 import { getJwtConfig } from 'src/config/jwt.config';
 
 @Module({
-  imports: [JwtModule.registerAsync({
-    imports: [ConfigModule],   
-    inject: [ConfigService],   
-    useFactory: getJwtConfig,
-  }), ConfigModule, UserModule],   
+  imports: [
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getJwtConfig,
+    }),
+    ConfigModule,
+    UserModule,
+  ],
   controllers: [AuthController],
   providers: [AuthService, PrismaService, JwtStrategy, UserService],
 })

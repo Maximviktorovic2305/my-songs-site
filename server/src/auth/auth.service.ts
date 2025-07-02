@@ -7,7 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import { PrismaService } from 'src/prisma.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/artist/artist.service';
 import { LoginAuthDto, RegisterAuthDto } from './dto/create-auth.dto';
 import { User } from 'generated/prisma';
 
@@ -19,7 +19,7 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  // Генерируем токены         
+  // Генерируем токены
   private async issueTokens(userId: number) {
     const data = { id: userId };
 
@@ -34,7 +34,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  // Возвращаемые поля пользователя         
+  // Возвращаемые поля пользователя
   private returnUserFields(user: User) {
     return {
       id: user.id,
@@ -44,7 +44,7 @@ export class AuthService {
     };
   }
 
-  // Проверяем пароль пользователя   
+  // Проверяем пароль пользователя
   private async validateUser(loginAuthDto: LoginAuthDto) {
     const user = await this.prisma.user.findUnique({
       where: { email: loginAuthDto.email },
@@ -59,11 +59,16 @@ export class AuthService {
     return user;
   }
 
-  // Зарегистрировать пользователя 
-  async register(registerAuthDto: RegisterAuthDto) {  
-    const isUserExists = await this.prisma.user.findUnique({where: { email: registerAuthDto.email } });
-    if (isUserExists) throw new BadRequestException('Пользователь с таким email уже существует');         
-    
+  // Зарегистрировать пользователя
+  async register(registerAuthDto: RegisterAuthDto) {
+    const isUserExists = await this.prisma.user.findUnique({
+      where: { email: registerAuthDto.email },
+    });
+    if (isUserExists)
+      throw new BadRequestException(
+        'Пользователь с таким email уже существует',
+      );
+
     const user = await this.userService.create(registerAuthDto);
 
     const tokens = await this.issueTokens(user.id);
@@ -72,10 +77,9 @@ export class AuthService {
       user: this.returnUserFields(user),
       ...tokens,
     };
-
   }
 
-  // Логин пользователя         
+  // Логин пользователя
   async login(loginAuthDto: LoginAuthDto) {
     const user = await this.validateUser(loginAuthDto);
 
