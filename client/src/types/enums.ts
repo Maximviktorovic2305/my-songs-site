@@ -2,7 +2,6 @@ export enum GenresEnum {
 	rock = 'rock',
 	liric = 'liric',
 	pop = 'pop',
-	hipHop = 'hip-hop',
 	electronic = 'electronic',
 	jazz = 'jazz',
 	classical = 'classical',
