@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -7,21 +8,21 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import { PrismaService } from 'src/prisma.service';
-import { UserService } from 'src/artist/artist.service';
 import { LoginAuthDto, RegisterAuthDto } from './dto/create-auth.dto';
-import { User } from 'generated/prisma';
+import { ArtistService } from 'src/artist/artist.service';
+import { Artist } from 'generated/prisma';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private jwt: JwtService,
-    private userService: UserService,
+    private artistService: ArtistService,
   ) {}
 
   // Генерируем токены
-  private async issueTokens(userId: number) {
-    const data = { id: userId };
+  private async issueTokens(artistId: number) {
+    const data = { id: artistId };
 
     const accessToken = this.jwt.sign(data, {
       expiresIn: '15m',
@@ -35,72 +36,84 @@ export class AuthService {
   }
 
   // Возвращаемые поля пользователя
-  private returnUserFields(user: User) {
+  private returnArtistFields(artist: Artist) {
     return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      id: artist.id,
+      nickname: artist.nickname,
+      name: artist.name,
+      email: artist.email,
+      avatar: artist.avatar,
+      role: artist.role,
     };
   }
 
   // Проверяем пароль пользователя
-  private async validateUser(loginAuthDto: LoginAuthDto) {
-    const user = await this.prisma.user.findUnique({
+  private async validateArtist(loginAuthDto: LoginAuthDto) {
+    const artist = await this.prisma.artist.findUnique({
       where: { email: loginAuthDto.email },
     });
+    if (!artist) throw new NotFoundException('Пользователь не найден');
 
-    if (!user) throw new NotFoundException('Пользователь не найден');
-
-    const isValid = await argon2.verify(user.password, loginAuthDto.password);
-
+    const isValid = await argon2.verify(artist.password, loginAuthDto.password);
     if (!isValid) throw new NotFoundException('Не верный пароль');
 
-    return user;
+    return artist;
   }
 
   // Зарегистрировать пользователя
   async register(registerAuthDto: RegisterAuthDto) {
-    const isUserExists = await this.prisma.user.findUnique({
+    const isArtistWithEmailExists = await this.prisma.artist.findUnique({
       where: { email: registerAuthDto.email },
     });
-    if (isUserExists)
-      throw new BadRequestException(
-        'Пользователь с таким email уже существует',
+    if (isArtistWithEmailExists) {
+      throw new ConflictException('Пользователь с таким email уже существует');
+    }
+
+    const isArtistWithNicknameExists = await this.prisma.artist.findUnique({
+      where: { nickname: registerAuthDto.nickname },
+    });
+
+    if (isArtistWithNicknameExists) {
+      throw new ConflictException(
+        'Пользователь с таким никнеймом уже существует',
       );
+    }
 
-    const user = await this.userService.create(registerAuthDto);
-
-    const tokens = await this.issueTokens(user.id);
+    const artist = await this.artistService.create(registerAuthDto);
+    const tokens = await this.issueTokens(artist.id);
 
     return {
-      user: this.returnUserFields(user),
+      artist: this.returnArtistFields(artist),
       ...tokens,
     };
   }
 
   // Логин пользователя
   async login(loginAuthDto: LoginAuthDto) {
-    const user = await this.validateUser(loginAuthDto);
+    const artist = await this.validateArtist(loginAuthDto);
 
-    const tokens = await this.issueTokens(user.id);
+    const tokens = await this.issueTokens(artist.id);
 
     return {
-      user: this.returnUserFields(user),
+      artist: this.returnArtistFields(artist),
       ...tokens,
     };
   }
 
   // Получить свой профайл
-  async getProfile(userId: number) {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+  async getProfile(artistId: number) {
+    const artist = await this.prisma.artist.findUnique({
+      where: { id: artistId },
     });
 
-    const tokens = await this.issueTokens(user.id);
+    if (!artist) {
+      throw new BadRequestException('Пользователь не найден');
+    }
+
+    const tokens = await this.issueTokens(artist.id);
 
     return {
-      user: this.returnUserFields(user),
+      artist: this.returnArtistFields(artist),
       ...tokens,
     };
   }
@@ -110,12 +123,12 @@ export class AuthService {
     const result = await this.jwt.verifyAsync(refreshToken);
     if (!refreshToken) throw new UnauthorizedException('Ошибка токена');
 
-    const user = await this.userService.byId(result.id);
+    const artist = await this.artistService.getByArtistId(result.id);
 
-    const tokens = await this.issueTokens(user.id);
+    const tokens = await this.issueTokens(artist.id);
 
     return {
-      user: this.returnUserFields(user),
+      artist: this.returnArtistFields(artist),
       ...tokens,
     };
   }

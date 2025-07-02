@@ -19,9 +19,10 @@ model Artist {
   password String
   avatar   String @default("/uploads/default-avatar.png") @map("avatar_path")
 
-  isAdmin Boolean @default(false) @map("is_admin")
+  role String @default("user") @map("is_admin")
 
-  tracks Track[]
+  tracks         Track[]
+  favoriteTracks Track[] @relation("FavoriteTracksByArtist")
 }
 
 model Comment {
@@ -55,6 +56,9 @@ model Track {
   artistId Int?
 
   comments Comment[]
+
+  favoriteArtist   Artist? @relation("FavoriteTracksByArtist", fields: [favoriteArtistId], references: [id])
+  favoriteArtistId Int?
 }
 
 enum EnumGenres {

@@ -1,31 +1,29 @@
-import { Body, Controller, Delete, Get } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param } from '@nestjs/common';
 import { Auth } from 'src/auth/decorators/auth.decorator';
-import { GetArtistByIdDto } from './dto/get-artist-by-id.dto';
-import { DeleteArtistDto } from './dto/delete-artist.dto';
 import { ArtistService } from './artist.service';
 
-@Controller('users')
+@Controller('artists')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   // Получение userа по id
-  @Get('id')
+  @Get(':id')
   @Auth()
-  getByArtistId(@Body() dto: GetArtistByIdDto) {
-    return this.artistService.getByArtistId(dto.artistId);
+  getByArtistId(@Param('id') id: number | string) {
+    return this.artistService.getByArtistId(+id);
   }
 
   // Получение всех пользователей администратором
-  @Get('/all')
+  @Get()
   @Auth('admin')
   getAllArtists() {
     return this.artistService.getAllArtists();
   }
 
   // Удаление пользователя администратором
-  @Delete()
+  @Delete(':id')
   @Auth('admin')
-  deleteArtist(@Body() dto: DeleteArtistDto) {
-    return this.artistService.deleteArtist(dto.artistId);
+  deleteArtist(@Param('id') id: number | string) {
+    return this.artistService.deleteArtist(+id);
   }
 }

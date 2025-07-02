@@ -1,10 +1,8 @@
-// Получаем данные текущего usera
-
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
-import { User } from 'generated/prisma';
+import { Artist } from 'generated/prisma';
 
-export const CurrentUser = createParamDecorator(
-  (data: keyof User, ctx: ExecutionContext) => {
+export const CurrentArtist = createParamDecorator(
+  (data: keyof Artist, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const user = request.user;
 

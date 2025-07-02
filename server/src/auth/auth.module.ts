@@ -5,9 +5,9 @@ import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
-import { UserService } from 'src/artist/artist.service';
-import { UserModule } from 'src/artist/artist.module';
 import { getJwtConfig } from 'src/config/jwt.config';
+import { ArtistService } from 'src/artist/artist.service';
+import { ArtistModule } from 'src/artist/artist.module';
 
 @Module({
   imports: [
@@ -17,9 +17,9 @@ import { getJwtConfig } from 'src/config/jwt.config';
       useFactory: getJwtConfig,
     }),
     ConfigModule,
-    UserModule,
+    ArtistModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, JwtStrategy, UserService],
+  providers: [AuthService, PrismaService, JwtStrategy, ArtistService],
 })
 export class AuthModule {}

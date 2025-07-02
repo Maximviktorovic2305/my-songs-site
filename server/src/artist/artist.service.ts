@@ -24,33 +24,21 @@ export class ArtistService {
     return artist;
   }
 
-  // Получение artist по id
-  async byId(id: number) {
-    const artist = await this.prisma.artist.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        ...returnArtistObject,
-      },
-    });
-
-    if (!artist) throw new NotFoundException('Пользователь не найден');
-
-    return artist;
-  }
-
   async create(dto: RegisterAuthDto) {
-    const { name, email, password } = dto
+    const { name, email, password, nickname, avatar } = dto;
 
-    const isAdmin = name === "AdminAdminAdmin" && password === "AdminAdminAdmin"
+    // @TODO переделать
+    const isAdmin =
+      name === 'AdminAdminAdmin' && password === 'AdminAdminAdmin';
 
     const artist = await this.prisma.artist.create({
       data: {
         name,
         email,
+        nickname,
+        avatar,
         password: await argon2.hash(password),
-        isAdmin: isAdmin ? true : false,
+        role: isAdmin ? 'admin' : 'user',
       },
       select: { ...returnArtistObject },
     });

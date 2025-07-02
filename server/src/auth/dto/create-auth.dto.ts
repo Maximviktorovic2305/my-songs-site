@@ -1,25 +1,43 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  isNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class LoginAuthDto {
+  @IsNotEmpty()
   @IsString()
   password: string;
 
+  @IsNotEmpty()
   @IsEmail()
   @IsString()
   email: string;
 }
 
 export class RegisterAuthDto {
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  name: string;   
+  nickname: string;
 
+  @IsNotEmpty()
   @IsString()
-  password: string;
+  name: string;
 
+  @IsNotEmpty()
   @IsEmail()
   @IsString()
   email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
+  @IsOptional()
+  @IsString()
+  avatar: string;
 }
 
 export class RefreshTokenDto {
