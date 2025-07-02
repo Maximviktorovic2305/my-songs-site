@@ -43,14 +43,13 @@ model Track {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  text        String
+  title       String
   src         String
   endlessTime String?
   rayting     Int?
-  img         String?     @default("/uploads/no-image.png") @map("no_image")
-  genre       EnumGenres?
+  img         String?      @default("/uploads/no-image.png") @map("no_image")
+  genres      EnumGenres[]
   isNew       Boolean?
-  isFavorite  Boolean     @default(false) @map("is_favorite")
 
   artist   Artist? @relation(fields: [artistId], references: [id])
   artistId Int?

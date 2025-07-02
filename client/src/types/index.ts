@@ -8,7 +8,7 @@ export interface Track {
 	rayting?: number
 	img?: string
 	comments?: Comment[]
-	genre?: GenresEnum
+	genres: GenresEnum
 	isNew: boolean
 	artist: Artist
 }
