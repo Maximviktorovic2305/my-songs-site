@@ -1,38 +1,37 @@
 'use client'
 
-// import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/constants/token.constants";
-// import { useActions } from "@/hooks/useActions";
-import { FC, PropsWithChildren } from "react";
-// import { usePathname } from "next/navigation";
-// import { useUser } from "@/hooks/useSelectors";
+// import { useActions } from '@/hooks/useActions'
+// import { useArtist } from '@/hooks/useSelectors'
+// import { getRefreshToken } from '@/services/api/auth/auth.helper'
+// import { usePathname } from 'next/navigation'
+import { FC, PropsWithChildren } from 'react'
 
 const AuthProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
-   // const { user } = useUser()
-   // const { checkAuth, getProfile } = useActions();
-   // const pathname = usePathname();
+	// const { artist } = useArtist()
+	// const { checkAuth } = useActions()
+	// const pathname = usePathname()
 
-   // useEffect(() => {
-   //    function getAccessToken(): string | null {
-   //       return localStorage.getItem(ACCESS_TOKEN);
-   //     }
-   //     const accessToken = getAccessToken()
-   //    if (accessToken) {
-   //       checkAuth();
-   //    }
-   // }, [checkAuth]);
+	// useEffect(() => {
+	// 	function getAccessToken(): string | null {
+	// 		return getAccessToken()
+	// 	}
+	// 	const accessToken = getAccessToken()
+	// 	if (accessToken) {
+	// 		checkAuth()
+	// 	}
+	// }, [checkAuth])
 
-   // useEffect(() => {
-   //    function getAccessToken(): string | null {
-   //       return localStorage.getItem(REFRESH_TOKEN);
-   //     }
-   //     const refreshToken = getAccessToken()
-   //    if (!refreshToken && user) {
-   //       getProfile();
-   //    }
-   // }, [getProfile, user, pathname]);
+	// useEffect(() => {
+	// 	function getAccessToken(): string | null {
+	// 		return getRefreshToken()
+	// 	}
+	// 	const refreshToken = getAccessToken()
+	// 	if (!refreshToken && artist) {
+	// 		checkAuth()
+	// 	}
+	// }, [artist, pathname, checkAuth])
 
-   return <>{children}</>;
+	return <>{children}</>
+}
 
-};
-
-export default AuthProvider;
+export default AuthProvider
