@@ -61,7 +61,7 @@ export class TrackController {
   async findFilteredTracks(
     @Query('genres') genresString?: string,
     @Query('title') title?: string,
-    @Query('artistId') artistId?: number,
+    @Query('artistId') artistId?: number | string,
     @Query('artistNickname') artistNickname?: string,
     @Query('sortRating') sortRating?: SortType,
     @Query('sortByDate') sortByDate?: SortType,
@@ -82,13 +82,6 @@ export class TrackController {
     });
   }
 
-  // Получить трек по id
-  @Get(':id')
-  @HttpCode(HttpStatus.OK)
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.trackService.findTrackById(id);
-  }
-
   // Поиск треков по названию
   @Get('search')
   @HttpCode(HttpStatus.OK)
@@ -97,7 +90,7 @@ export class TrackController {
   }
 
   // Поиск треков по жанру
-  @Get('genre')
+  @Get('genres')
   @HttpCode(HttpStatus.OK)
   async findTracksByGenre(@Query('genres') genresString: string) {
     const genres = genresString
@@ -125,41 +118,58 @@ export class TrackController {
   @Get('artist')
   @HttpCode(HttpStatus.OK)
   async getTracksByArtist(
-    @Query('artistId') artistId?: number,
+    @Query('artistId') artistId?: number | string,
     @Query('artistNickname') artistNickname?: string,
   ) {
     return this.trackService.findTracksByArtist(artistId, artistNickname);
   }
 
   // Добавить трек в избранное
-@Post(':id/favorite')
-@Auth()
-@HttpCode(HttpStatus.CREATED)
-async addToFavorites(
-  @Param('id') id: number | string,
-  @CurrentArtist('id') artistId: number | string,
-) {
-  return this.trackService.addTrackToFavorites(+artistId, +id);
-}
+  @Post(':id/favorite')
+  @Auth()
+  @HttpCode(HttpStatus.CREATED)
+  async addToFavorites(
+    @Param('id') id: number | string,
+    @CurrentArtist('id') artistId: number | string,
+  ) {
+    return this.trackService.addTrackToFavorites(+artistId, +id);
+  }
 
-// Удалить трек из избранного
-@Delete(':id/favorite')
-@Auth()
-@HttpCode(HttpStatus.NO_CONTENT)
-async removeFromFavorites(
-  @Param('id') id: number | string,
-  @CurrentArtist('id') artistId: number | string,
-) {
-  return this.trackService.removeTrackFromFavorites(+artistId, +id);
-}
+  // Удалить трек из избранного
+  @Delete(':id/favorite')
+  @Auth()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async removeFromFavorites(
+    @Param('id') id: number | string,
+    @CurrentArtist('id') artistId: number | string,
+  ) {
+    return this.trackService.removeTrackFromFavorites(+artistId, +id);
+  }
 
-// Получить все избранные треки
-@Get('favorites')
-@Auth()
-@HttpCode(HttpStatus.OK)
-async getFavoriteTracks(@CurrentArtist('id') artistId: number | string) {
-  return this.trackService.getFavoriteTracksByArtist(+artistId);
-}
+  // Получить все избранные треки
+  @Get('favorites')
+  @Auth()
+  @HttpCode(HttpStatus.OK)
+  async getFavoriteTracks(@CurrentArtist('id') artistId: number | string) {
+    return this.trackService.getFavoriteTracksByArtist(+artistId);
+  }
+
+  // Установить рейтинг для трека
+  @Patch(':id/rating/:rating')
+  @HttpCode(HttpStatus.OK)
+  async setTrackRating(
+    @Param('id', ParseIntPipe) id: number | string,
+    @Param('rating', ParseIntPipe) rating: number | string,
+  ) {
+    return this.trackService.setTrackRating(+id, +rating);
+  }
+
+  // Получить трек по id
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  findOne(@Param('id') id: number | string) {
+    return this.trackService.findTrackById(+id);
+  }
 
   // Удалить трек
   @Delete(':id')

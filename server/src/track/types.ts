@@ -5,7 +5,7 @@ export type SortType = 'asc' | 'desc'
 export type FilterOptions = {
   genres?: EnumGenres[];
   title?: string;
-  artistId?: number;
+  artistId?: number | string;
   artistNickname?: string;
   sortRating?: SortType
   sortByDate?: SortType

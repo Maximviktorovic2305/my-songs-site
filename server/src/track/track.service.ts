@@ -88,7 +88,7 @@ export class TrackService {
     });
   }
 
-  async findFilteredTracks(options: FilterOptions): Promise<Track[]> {
+  async findFilteredTracks(options: FilterOptions) {
     const { genres, title, artistId, artistNickname, sortRating, sortByDate } =
       options;
 
@@ -121,7 +121,7 @@ export class TrackService {
     const artistWhere: Prisma.ArtistWhereInput = {};
 
     if (artistId) {
-      artistWhere.id = artistId;
+      artistWhere.id = +artistId;
     }
 
     if (artistNickname) {
@@ -292,14 +292,14 @@ export class TrackService {
 
   // Получить треки, по id или имени артиста
   async findTracksByArtist(
-    artistId?: number,
+    artistId?: number | string,
     artistNickname?: string,
   ): Promise<Track[]> {
     const where: Prisma.TrackWhereInput = {};
 
     if (artistId) {
       where.artist = {
-        id: artistId,
+        id: +artistId,
       };
     } else if (artistNickname) {
       where.artist = {
@@ -393,6 +393,26 @@ async getFavoriteTracksByArtist(artistId: number) {
     },
   });
 }
+
+// Установить рейтинг для трека
+  async setTrackRating(trackId: number, rating: number): Promise<Track> {
+    if (rating < 0 || rating > 5) {
+      throw new BadRequestException('Рейтинг должен быть от 0 до 5 включительно.');
+    }
+
+    const existingTrack = await this.prisma.track.findUnique({
+      where: { id: trackId },
+    });
+
+    if (!existingTrack) {
+      throw new NotFoundException(`Трек с ID ${trackId} не найден.`);
+    }
+
+    return this.prisma.track.update({
+      where: { id: trackId },
+      data: { rayting: rating },
+    });
+  }
 
   // Удаление трека
   async deleteTrack(id: number) {

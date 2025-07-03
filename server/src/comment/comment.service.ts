@@ -25,10 +25,14 @@ export class CommentService {
         like: 0,
         dislike: 0,
       },
+      include: {
+        artist: true,
+        track: true
+      },
     });
   }
 
-  // Like-dislike комментария   
+  // Like-dislike комментария
   async likeOrDislike(commentId: number, type: 'like' | 'dislike') {
     const comment = await this.prisma.comment.findUnique({
       where: { id: commentId },
@@ -50,7 +54,7 @@ export class CommentService {
       where: { id: commentId },
       data: updateData,
     });
-  }         
+  }
 
   // Удалить комментарий
   async delete(commentId: number) {

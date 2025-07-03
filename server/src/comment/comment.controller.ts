@@ -6,6 +6,8 @@ import {
   Param,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -18,6 +20,7 @@ export class CommentController {
 
   // Создание комментария
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   @Auth()
   create(
     @Body() createCommentDto: CreateCommentDto,
@@ -28,6 +31,7 @@ export class CommentController {
 
   // Like-dislike комментария
   @Patch(':id/:type')
+  @HttpCode(HttpStatus.OK)
   @Auth()
   likeOrDislike(
     @Param('id') commentId: number | string,
@@ -38,14 +42,16 @@ export class CommentController {
 
   // Удалить комментарий
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Auth()
   delete(@Param('id') commentId: number | string) {
     return this.commentService.delete(+commentId);
   }
 
   // Получить все комментарии к треку
-  @Get('track/:trackId')
-  getAllByTrack(@Param('trackId') trackId: number | string) {
+  @Get('track/:id')
+  @HttpCode(HttpStatus.OK)
+  getAllByTrack(@Param('id') trackId: number | string) {
     return this.commentService.findByTrack(+trackId);
   }
 }
