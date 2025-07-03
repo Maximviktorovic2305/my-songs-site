@@ -18,6 +18,7 @@ export interface Comment {
 	createdAt: string
 	text: string
 	artist?: Artist
+	track?: Track
 	like?: number
 	dislike?: number
 }

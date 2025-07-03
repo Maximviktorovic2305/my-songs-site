@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { diskStorage } from 'multer';
 
-// Функция для обработки имени файла: возвращает оригинальное имя без изменений
+// Функция для обработки имени файла
 export const editFileName = (
   req: any,
   file: Express.Multer.File,
@@ -43,6 +43,7 @@ export const trackFileUploadOptions = {
     file: Express.Multer.File,
     callback: (error: Error | null, acceptFile: boolean) => void,
   ) => {
+    // Проверка по типу файла
     if (file.fieldname === 'image') {
       if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
         return callback(
@@ -50,6 +51,17 @@ export const trackFileUploadOptions = {
           false,
         );
       }
+
+      // 🔐 Дополнительная проверка — размер файла не более 5 МБ
+      if (file.size > 5 * 1024 * 1024) {
+        return callback(
+          new BadRequestException(
+            'Файл изображения слишком большой. Максимум 5 МБ.',
+          ),
+          false,
+        );
+      }
+
       callback(null, true);
     } else if (file.fieldname === 'audio') {
       if (!file.originalname.match(/\.(mp3|mpeg)$/i)) {
@@ -58,12 +70,13 @@ export const trackFileUploadOptions = {
           false,
         );
       }
+
       callback(null, true);
     } else {
       callback(new Error('Неожиданное имя поля файла!'), false);
     }
   },
   limits: {
-    fileSize: 15 * 1024 * 1024,
+    fileSize: 15 * 1024 * 1024, // Общее ограничение — 15 МБ
   },
 };

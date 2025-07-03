@@ -31,7 +31,3 @@ export class RegisterAuthDto {
 export class RefreshTokenDto {
   refreshToken: string;
 }
-
-export class GetProfileDto {
-  userId: number;
-}

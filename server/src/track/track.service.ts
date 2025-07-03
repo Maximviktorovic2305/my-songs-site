@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { PrismaService } from 'src/prisma.service';
-import { EnumGenres, Track } from 'generated/prisma';
+import { EnumGenres, Prisma, Track } from 'generated/prisma';
+import { FilterOptions, SortType } from './types';
 
 interface UploadedTrackFiles {
   audio?: Express.Multer.File[];
@@ -87,6 +88,82 @@ export class TrackService {
     });
   }
 
+  async findFilteredTracks(options: FilterOptions): Promise<Track[]> {
+    const { genres, title, artistId, artistNickname, sortRating, sortByDate } =
+      options;
+
+    // Валидация жанров
+    if (genres) {
+      const validEnumGenres = Object.values(EnumGenres);
+      for (const genre of genres) {
+        if (!validEnumGenres.includes(genre)) {
+          throw new BadRequestException(`Неверный жанр: ${genre}`);
+        }
+      }
+    }
+
+    // Формируем условия where
+    const where: Prisma.TrackWhereInput = {};
+
+    if (genres && genres.length > 0) {
+      where.genres = {
+        hasSome: genres,
+      };
+    }
+
+    if (title) {
+      where.title = {
+        contains: title.trim(),
+        mode: 'insensitive',
+      };
+    }
+
+    const artistWhere: Prisma.ArtistWhereInput = {};
+
+    if (artistId) {
+      artistWhere.id = artistId;
+    }
+
+    if (artistNickname) {
+      artistWhere.nickname = {
+        contains: artistNickname.trim(),
+        mode: 'insensitive',
+      };
+    }
+
+    // Если были заданы условия фильтрации по артисту, добавляем их в основной запрос.
+    if (Object.keys(artistWhere).length > 0) {
+      where.artist = artistWhere;
+    }
+
+    // Сортировка
+    const orderBy: Prisma.TrackOrderByWithRelationInput[] = [];
+
+    if (sortRating) {
+      orderBy.push({ rayting: sortRating as Prisma.SortOrder });
+    }
+
+    if (sortByDate) {
+      orderBy.push({ createdAt: sortByDate as Prisma.SortOrder });
+    }
+
+    // Выполняем запрос
+    return this.prisma.track.findMany({
+      where,
+      include: {
+        artist: {
+          select: {
+            id: true,
+            nickname: true,
+            name: true,
+          },
+        },
+        comments: true,
+      },
+      orderBy: orderBy.length > 0 ? orderBy : undefined,
+    });
+  }
+
   // Найти трек по id
   async findTrackById(id: number) {
     const track = await this.prisma.track.findUnique({
@@ -102,6 +179,220 @@ export class TrackService {
     }
     return track;
   }
+
+  // Поиск треков по названию
+  async findTracksByTitle(title: string) {
+    if (!title || typeof title !== 'string') {
+      throw new BadRequestException('Название трека должно быть строкой.');
+    }
+
+    const tracks = await this.prisma.track.findMany({
+      where: {
+        title: {
+          contains: title.trim(), // Совпадение по части строки
+          mode: 'insensitive', // Регистронезависимый поиск
+        },
+      },
+      include: {
+        artist: {
+          select: {
+            id: true,
+            nickname: true,
+            name: true,
+          },
+        },
+        comments: true,
+      },
+    });
+
+    if (tracks.length === 0) {
+      throw new NotFoundException(`Треки с названием "${title}" не найдены.`);
+    }
+
+    return tracks;
+  }
+
+  // Найти треки по жанрам
+  async findTracksByGenres(genres: EnumGenres[]) {
+    if (!genres || genres.length === 0) {
+      throw new BadRequestException('Укажите хотя бы один жанр.');
+    }
+
+    // Проверка, что все переданные жанры существуют в enum
+    const validEnumGenres = Object.values(EnumGenres);
+    for (const genre of genres) {
+      if (!validEnumGenres.includes(genre)) {
+        throw new BadRequestException(`Неверный жанр: ${genre}`);
+      }
+    }
+
+    // Используем hasSome для получения всех треков, где есть хотя бы один из указанных жанров
+    const tracks = await this.prisma.track.findMany({
+      where: {
+        genres: {
+          hasSome: genres,
+        },
+      },
+      include: {
+        artist: {
+          select: {
+            id: true,
+            nickname: true,
+            name: true,
+          },
+        },
+        comments: true,
+      },
+    });
+
+    return tracks;
+  }
+
+  // Найти треки и отсортировать по рейтингу
+  async findTracksByRating(order: SortType) {
+    const tracks = await this.prisma.track.findMany({
+      include: {
+        artist: {
+          select: {
+            id: true,
+            nickname: true,
+            name: true,
+          },
+        },
+        comments: true,
+      },
+      orderBy: {
+        rayting: order as Prisma.SortOrder,
+      },
+    });
+
+    return tracks;
+  }
+
+  // Получить треки, сортировка по дате добавления
+  async findTracksByDate(order: SortType) {
+    const tracks = await this.prisma.track.findMany({
+      include: {
+        artist: {
+          select: {
+            id: true,
+            nickname: true,
+            name: true,
+          },
+        },
+        comments: true,
+      },
+      orderBy: {
+        createdAt: order as Prisma.SortOrder,
+      },
+    });
+
+    return tracks;
+  }
+
+  // Получить треки, по id или имени артиста
+  async findTracksByArtist(
+    artistId?: number,
+    artistNickname?: string,
+  ): Promise<Track[]> {
+    const where: Prisma.TrackWhereInput = {};
+
+    if (artistId) {
+      where.artist = {
+        id: artistId,
+      };
+    } else if (artistNickname) {
+      where.artist = {
+        nickname: {
+          equals: artistNickname.trim(),
+          mode: 'insensitive',
+        },
+      };
+    } else {
+      throw new BadRequestException('Укажите ID или nickname артиста.');
+    }
+
+    return this.prisma.track.findMany({
+      where,
+      include: {
+        artist: {
+          select: {
+            id: true,
+            nickname: true,
+            name: true,
+          },
+        },
+        comments: true,
+      },
+    });
+  }
+
+  // Добавить трек в избранное артиста
+async addTrackToFavorites(artistId: number, trackId: number) {
+  const existing = await this.prisma.track.findUnique({
+    where: { id: trackId },
+    select: { favoriteArtistId: true },
+  });
+
+  if (existing?.favoriteArtistId === artistId) {
+    throw new BadRequestException('Трек уже добавлен в избранное.');
+  }
+
+  return this.prisma.track.update({
+    where: { id: trackId },
+    data: {
+      favoriteArtist: { connect: { id: artistId } },
+    },
+    include: {
+      artist: {
+        select: {
+          id: true,
+          nickname: true,
+          name: true,
+        },
+      },
+      comments: true,
+    },
+  });
+}
+
+// Удалить трек из избранного артиста
+async removeTrackFromFavorites(artistId: number, trackId: number) {
+  const existing = await this.prisma.track.findUnique({
+    where: { id: trackId },
+    select: { favoriteArtistId: true },
+  });
+
+  if (!existing || existing.favoriteArtistId !== artistId) {
+    throw new NotFoundException('Трек не найден в избранном.');
+  }
+
+  await this.prisma.track.update({
+    where: { id: trackId },
+    data: {
+      favoriteArtist: { disconnect: true },
+    },
+  });
+}
+
+// Получить все избранные треки текущего артиста
+async getFavoriteTracksByArtist(artistId: number) {
+  return this.prisma.track.findMany({
+    where: {
+      favoriteArtistId: artistId,
+    },
+    include: {
+      artist: {
+        select: {
+          id: true,
+          nickname: true,
+          name: true,
+        },
+      },
+      comments: true,
+    },
+  });
+}
 
   // Удаление трека
   async deleteTrack(id: number) {

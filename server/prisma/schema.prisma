@@ -23,6 +23,8 @@ model Artist {
 
   tracks         Track[]
   favoriteTracks Track[] @relation("FavoriteTracksByArtist")
+
+  comments Comment[]
 }
 
 model Comment {
@@ -34,8 +36,11 @@ model Comment {
   like    Int?
   dislike Int?
 
-  track   Track? @relation(fields: [trackId], references: [id])
-  trackId Int?
+  track    Track?  @relation(fields: [trackId], references: [id])
+  trackId  Int?
+
+  artist   Artist? @relation(fields: [artistId], references: [id])
+  artistId Int?
 }
 
 model Track {

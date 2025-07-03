@@ -1,34 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Get,
+} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { CurrentArtist } from 'src/auth/decorators/artist.decorator';
 
-@Controller('comment')
+@Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
+  // Создание комментария
   @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentService.create(createCommentDto);
+  @Auth()
+  create(
+    @Body() createCommentDto: CreateCommentDto,
+    @CurrentArtist('id') id: number | string,
+  ) {
+    return this.commentService.create(createCommentDto, +id);
   }
 
-  @Get()
-  findAll() {
-    return this.commentService.findAll();
+  // Like-dislike комментария
+  @Patch(':id/:type')
+  @Auth()
+  likeOrDislike(
+    @Param('id') commentId: number | string,
+    @Param('type') type: 'like' | 'dislike',
+  ) {
+    return this.commentService.likeOrDislike(+commentId, type);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
-  }
-
+  // Удалить комментарий
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+  @Auth()
+  delete(@Param('id') commentId: number | string) {
+    return this.commentService.delete(+commentId);
+  }
+
+  // Получить все комментарии к треку
+  @Get('track/:trackId')
+  getAllByTrack(@Param('trackId') trackId: number | string) {
+    return this.commentService.findByTrack(+trackId);
   }
 }
