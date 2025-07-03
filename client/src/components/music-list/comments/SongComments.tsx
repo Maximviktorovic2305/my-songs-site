@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Comment from './Comment'
-import { Track } from '@/types'
 import { MusicAddComment } from '../add-comment/MusicAddComment'
+import { Track } from '@/types/track'
+import Comment from './Comment'
 
 const SongComments = ({ song }: { song: Track }) => {
 	const [likes, setLikes] = useState<Record<number, 'like' | 'dislike' | null>>(

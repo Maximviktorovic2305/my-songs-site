@@ -1,6 +1,6 @@
 import MusicArtist from '@/components/music-list/MusicArtist'
 import { playlist } from '@/data/playlist'
-import { Track } from '@/types'
+import { Track } from '@/types/track'
 
 interface SongArtistPageProps {
 	params: Promise<{

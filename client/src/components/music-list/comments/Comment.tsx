@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import LikeButton from './LikeButton'
-import type { Comment } from '@/types'
+import type { Comment } from '@/types/comment'
 
 interface CommentProps {
     comment: Comment
@@ -17,9 +17,9 @@ const Comment = ({ comment, onToggleLike, likeStatus, isLast }: CommentProps) =>
                     <Image
                         width={100}
                         height={100}
-                        src={comment.artist?.avatar ?? '/no-image-avatar.png'}
+                        src={comment.artist?.avatar ? comment.artist?.avatar : '/no-image-avatar.png'}
                         alt={comment.artist?.name ?? ''}
-                        className='rounded overflow-hidden w-[4.375rem] h-[4.375rem]'
+                        className='rounded overflow-hidden shadow-md shadow-primary w-[4.375rem] h-[4.375rem]'
                     />
                 </div>
 
@@ -28,9 +28,9 @@ const Comment = ({ comment, onToggleLike, likeStatus, isLast }: CommentProps) =>
                     <Image
                         width={100}
                         height={100}
-                        src={comment.artist?.avatar ?? '/no-image-avatar.png'}
+                        src={comment.artist?.avatar ? comment.artist?.avatar : '/no-image-avatar.png'}
                         alt={comment.artist?.name ?? ''}
-                        className='rounded overflow-hidden w-[4.375rem] h-[4.375rem] float-left mr-3'
+                        className='rounded overflow-hidden shadow-md shadow-primary w-[4.375rem] h-[4.375rem] float-left mr-3'
                     />
                 </div>
 

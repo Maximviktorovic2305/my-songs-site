@@ -1,11 +1,12 @@
 'use client'
 
-import { InteractionEvent, Track } from '@/types'
+import { InteractionEvent } from '@/types'
 import { Download } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import StarRating from '../base/StarRating'
 import PlayingImage from '../base/PlayingImage'
 import LoveIcon from '../base/LoveIcon'
+import { Track } from '@/types/track'
 
 interface Props {
 	song: Track
@@ -30,7 +31,7 @@ const MusicItem = ({ song }: Props) => {
 				<PlayingImage song={song} />
 
 				<div className='flex flex-col justify-between'>
-					<span className='font-bold text-primary/90'>{song.title}</span>
+					<span className='font-bold text-primary/90 text-shadow'>{song.title}</span>
 					<span className='text-sm text-muted-foreground/80 font-semibold'>
 						{song.artist.name}
 					</span>

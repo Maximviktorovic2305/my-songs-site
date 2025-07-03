@@ -1,6 +1,6 @@
 'use client'
 
-import { Track } from '@/types'
+import { Track } from '@/types/track'
 import { Card } from '../ui/card'
 import MusicList from './MusicList'
 import SongDetailItem from './SongDetailItem'
@@ -17,11 +17,11 @@ const MusicArtist = ({ songs }: Props) => {
 	return (
 		<Card className=''>
 			<Image
-				src={artist.avatar ?? '/no-image-avatar.png'}
+				src={artist.avatar ? artist.avatar : '/no-image-avatar.png'}
 				width={200}
 				height={200}
 				alt={song.title}
-				className={`mb-3 sm:max-h-[15.7rem] max-sm:justify-self-center shadow-md ${
+				className={`mb-3 sm:max-h-[15.7rem] max-sm:justify-self-center shadow-lg ${
 					artist.avatar ? 'rounded-lg' : 'rounded-full  overflow-hidden'
 				}`}
 			/>

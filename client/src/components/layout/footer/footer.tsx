@@ -12,7 +12,6 @@ const Footer = () => {
 				<MusicPlayer
 					src={currentTrack.src ?? undefined}
 					title={currentTrack.title}
-					artist={currentTrack.artist}
 				/>
 			)}
 		</footer>

@@ -1,4 +1,3 @@
-// MusicPlayer.tsx
 'use client'
 
 import { FC, useEffect, useRef } from 'react'
@@ -16,7 +15,6 @@ import EqualizerWave from './Equalizer/EqualizerWave'
 interface MusicPlayerProps {
 	src?: string
 	title?: string | null
-	artist?: string | null
 	onEnded?: () => void
 }
 

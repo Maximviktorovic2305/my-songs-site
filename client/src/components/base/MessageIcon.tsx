@@ -1,4 +1,4 @@
-import { Track } from '@/types'
+import { Track } from '@/types/track'
 import { MessageSquare } from 'lucide-react'
 
 interface Props {

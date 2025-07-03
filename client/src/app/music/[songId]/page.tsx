@@ -1,6 +1,6 @@
 import MusicSongDatail from '@/components/music-list/MusicSongDatail'
 import { playlist } from '@/data/playlist'
-import { Track } from '@/types'
+import { Track } from '@/types/track'
 
 interface SongDetailPageProps {
 	params: Promise<{

@@ -15,7 +15,7 @@ const NewSongs = () => {
 				className='w-full'
 				defaultValue='item-1'>
 				<AccordionItem value='item-1'>
-					<AccordionTrigger>Новинки</AccordionTrigger>
+					<AccordionTrigger className='text-shadow'>Новинки</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
 						{newSongs.map((song, i) => (
 							<p key={i}>{song.title}</p>

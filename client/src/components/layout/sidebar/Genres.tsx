@@ -15,7 +15,7 @@ const Genres = () => {
 				className='w-full'
 				defaultValue='item-1'>
 				<AccordionItem value='item-1'>
-					<AccordionTrigger>Жанры</AccordionTrigger>
+					<AccordionTrigger className='text-shadow'>Жанры</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
 						{genres.map((genre, i) => (
 							<p key={i}>{genre}</p>

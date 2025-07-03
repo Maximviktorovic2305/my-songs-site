@@ -1,11 +1,12 @@
 'use client'
 
-import { InteractionEvent, Track } from '@/types'
+import { InteractionEvent } from '@/types'
 import { useDispatch } from 'react-redux'
 import { play, pause, setCurrentTrack } from '@/store/playerSlice/player.slice'
 import { Pause, Play } from 'lucide-react'
 import { usePlayer } from '@/hooks/useSelectors'
 import Image from 'next/image'
+import { Track } from '@/types/track'
 
 interface Props {
 	song: Track
@@ -35,7 +36,7 @@ const PlayingImage = ({ song }: Props) => {
 				width={40}
 				height={40}
 				alt='song'
-				className={`rounded overflow-hidden transition-all duration-200 ${
+				className={`rounded overflow-hidden transition-all shadow-md shadow-primary duration-200 ${
 					isActive ? 'ring-2 ring-accent' : ''
 				}`}
 			/>

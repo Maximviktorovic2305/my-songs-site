@@ -15,7 +15,7 @@ const Albums = () => {
 				className='w-full'
 				defaultValue='item-1'>
 				<AccordionItem value='item-1'>
-					<AccordionTrigger>Albums</AccordionTrigger>
+					<AccordionTrigger className='text-shadow'>Albums</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
 						{albums.map((album, i) => (
 							<p key={i}>{album}</p>

@@ -16,7 +16,7 @@ const LikeButton = ({
     return (
         <div className='relative'>
             <Icon
-                className={`rounded border p-1 size-6 cursor-pointer duration-200 ${
+                className={`rounded border shadow-sm p-1 size-6 cursor-pointer duration-200 ${
                     active ? 'border-accent' : ''
                 }`}
                 stroke={active ? '#73dde3' : '#c7c4c4'}

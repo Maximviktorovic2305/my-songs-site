@@ -33,7 +33,9 @@ const SongDetailItem = ({ title, value, redirectId }: Props) => {
 		<div className='flex items-center gap-1'>
 			<span className='font-semibold'>{title}:</span>
 			<span
-				className={`font-normal flex items-center gap-1 text-gray-500 ${redirectId ? 'cursor-pointer hover:text-primary/90 duration-200' : ''}`}
+				className={`font-normal flex items-center gap-1 text-gray-500 ${
+					redirectId ? 'cursor-pointer hover:text-primary/90 duration-200' : ''
+				} `}
 				onClick={handleRedirect}>
 				{renderIcon()}
 				{typeof value !== 'boolean' && value}

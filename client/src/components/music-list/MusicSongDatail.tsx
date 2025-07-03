@@ -1,6 +1,5 @@
 'use client'
 
-import { Track } from '@/types'
 import Image from 'next/image'
 import { Card } from '../ui/card'
 import { Title } from '../ui/title'
@@ -13,13 +12,14 @@ import { useDispatch } from 'react-redux'
 import SongComments from './comments/SongComments'
 import StarRating from '../base/StarRating'
 import LoveIcon from '../base/LoveIcon'
+import { Track } from '@/types/track'
 
 interface Props {
 	song: Track
 }
 
 const MusicSongDatail = ({ song }: Props) => {
-	const { currentTrack, isPlaying } = usePlayer()
+	const { currentTrack } = usePlayer()
 	const dispatch = useDispatch()
 	const isFavorite = false
 
@@ -33,14 +33,14 @@ const MusicSongDatail = ({ song }: Props) => {
 		<Card className=''>
 			<div className='relative mb-4 flex items-center gap-3 max-sm:flex max-sm:flex-col'>
 				<Image
-					src={song.img ?? '/no-image.png'}
+					src={song.img ? song.img : '/no-image.png'}
 					width={200}
 					height={200}
 					alt={song.title}
-					className={`sm:max-h-[15.7rem] rounded-lg max-sm:justify-self-center shadow-md `}
+					className={`sm:max-h-[15.7rem] rounded-lg max-sm:justify-self-center shadow-md shadow-primary`}
 				/>
 				<div className='max-sm:self-start'>
-					<Title as='h1' className='mb-1 text-primary/90'>
+					<Title as='h1' className='mb-1 text-shadow text-primary/90'>
 						{song.title}
 					</Title>
 					<SongDetailItem

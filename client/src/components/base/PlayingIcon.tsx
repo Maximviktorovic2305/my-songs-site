@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Pause, Play } from 'lucide-react'
 import { usePlayer } from '@/hooks/useSelectors'
 import { play, pause, setCurrentTrack } from '@/store/playerSlice/player.slice'
-import { Track } from '@/types'
+import { Track } from '@/types/track'
 
 interface Props {
 	song: Track
@@ -29,7 +29,7 @@ const PlayingIcon = ({ song }: Props) => {
 
 	return (
 		<div className='relative cursor-pointer group'>
-			<div className='w-10 h-10 rounded-md border-1 flex items-center justify-center transition-colors duration-200 border-accent/90'>
+			<div className='w-10 h-10 rounded-md border-1 flex items-center shadow-md justify-center transition-colors duration-200 border-accent/90'>
 				{isActive && isPlaying ? (
 					<Pause
 						size={24}

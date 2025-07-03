@@ -1,5 +1,6 @@
-import { Comment, Track } from '@/types'
+import { Comment } from '@/types/comment'
 import { GenresEnum } from '@/types/enums'
+import { Track } from '@/types/track'
 
 export const playlist: Track[] = [
 	{
@@ -9,10 +10,12 @@ export const playlist: Track[] = [
 			id: 4,
 			name: 'Максим Викторович',
 			email: 'maxim@gmail.com',
+			nickname: '',
+			avatar: '',
 		},
 		src: '/music/song1.mp3',
 		isNew: false,
-		genre: GenresEnum.rock,
+		genres: GenresEnum.rock,
 	},
 	{
 		id: 2,
@@ -21,10 +24,12 @@ export const playlist: Track[] = [
 			id: 4,
 			name: 'Максим Викторович',
 			email: 'maxim@gmail.com',
+			nickname: '',
+			avatar: '',
 		},
 		src: '/music/song2.mp3',
 		isNew: false,
-		genre: GenresEnum.reggae,
+		genres: GenresEnum.reggae,
 	},
 	{
 		id: 3,
@@ -33,6 +38,8 @@ export const playlist: Track[] = [
 			id: 4,
 			name: 'Максим Викторович',
 			email: 'maxim@gmail.com',
+			nickname: '',
+			avatar: '',
 		},
 		src: '/music/song3.mp3',
 		comments: [
@@ -47,6 +54,7 @@ export const playlist: Track[] = [
 					name: 'Иван',
 					email: 'ivan@gmail.com',
 					avatar: 'https://github.com/leerob.png',
+					nickname: '',
 				},
 			},
 			{
@@ -60,6 +68,7 @@ export const playlist: Track[] = [
 					name: 'Гришка',
 					email: 'grishka@gmail.com',
 					avatar: 'https://github.com/shadcn.png',
+					nickname: '',
 				},
 			},
 			{
@@ -74,12 +83,13 @@ export const playlist: Track[] = [
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
 					avatar: 'https://github.com/evilrabbit.png',
+					nickname: '',
 				},
 			},
 		],
 
 		isNew: true,
-		genre: GenresEnum.soul,
+		genres: GenresEnum.soul,
 	},
 	{
 		id: 4,
@@ -88,10 +98,12 @@ export const playlist: Track[] = [
 			id: 3,
 			name: 'Максим',
 			email: 'maxim@gmail.com',
+			nickname: '',
+			avatar: '',
 		},
 		src: '/music/5.wav',
 		isNew: true,
-		genre: GenresEnum.classical,
+		genres: GenresEnum.classical,
 	},
 	{
 		id: 5,
@@ -100,10 +112,12 @@ export const playlist: Track[] = [
 			id: 2,
 			name: 'Максим Переверзев',
 			email: 'maxim@gmail.com',
+			nickname: '',
+			avatar: '',
 		},
 		src: '/music/song3.mp3',
 		isNew: false,
-		genre: GenresEnum.classical,
+		genres: GenresEnum.classical,
 	},
 	{
 		id: 6,
@@ -112,6 +126,8 @@ export const playlist: Track[] = [
 			id: 1,
 			name: 'Максим',
 			email: 'maxim@gmail.com',
+			nickname: '',
+			avatar: '',
 		},
 		src: '/music/song2.mp3',
 		comments: [
@@ -124,6 +140,7 @@ export const playlist: Track[] = [
 					name: 'Иван',
 					email: 'ivan@gmail.com',
 					avatar: 'https://github.com/leerob.png',
+					nickname: '',
 				},
 			},
 			{
@@ -135,6 +152,7 @@ export const playlist: Track[] = [
 					name: 'Гришка',
 					email: 'grishka@gmail.com',
 					avatar: 'https://github.com/shadcn.png',
+					nickname: '',
 				},
 			},
 			{
@@ -145,6 +163,8 @@ export const playlist: Track[] = [
 					id: 3,
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
+					nickname: '',
+					avatar: '',
 				},
 			},
 			{
@@ -156,6 +176,7 @@ export const playlist: Track[] = [
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
 					avatar: 'https://github.com/evilrabbit.png',
+					nickname: '',
 				},
 			},
 			{
@@ -167,6 +188,7 @@ export const playlist: Track[] = [
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
 					avatar: 'https://github.com/evilrabbit.png',
+					nickname: '',
 				},
 			},
 			{
@@ -177,12 +199,14 @@ export const playlist: Track[] = [
 					id: 3,
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
+					nickname: '',
+					avatar: '',
 				},
 			},
 		],
 
 		isNew: false,
-		genre: GenresEnum.blues,
+		genres: GenresEnum.blues,
 	},
 	{
 		id: 7,
@@ -191,6 +215,8 @@ export const playlist: Track[] = [
 			id: 1,
 			name: 'Максим',
 			email: 'maxim@gmail.com',
+			nickname: '',
+			avatar: '',
 		},
 		src: '/music/song3.mp3',
 		comments: [
@@ -203,6 +229,7 @@ export const playlist: Track[] = [
 					name: 'Иван',
 					email: 'ivan@gmail.com',
 					avatar: 'https://github.com/leerob.png',
+					nickname: '',
 				},
 			},
 			{
@@ -214,6 +241,7 @@ export const playlist: Track[] = [
 					name: 'Гришка',
 					email: 'grishka@gmail.com',
 					avatar: 'https://github.com/shadcn.png',
+					nickname: '',
 				},
 			},
 			{
@@ -225,12 +253,13 @@ export const playlist: Track[] = [
 					name: 'Никитка',
 					email: 'nikitka@gmail.com',
 					avatar: 'https://github.com/evilrabbit.png',
+					nickname: '',
 				},
 			},
 		],
 
 		isNew: false,
-		genre: GenresEnum.funk,
+		genres: GenresEnum.funk,
 	},
 ]
 
@@ -244,6 +273,7 @@ export const comments: Comment[] = [
 			name: 'Иван',
 			email: 'ivan@gmail.com',
 			avatar: 'https://github.com/leerob.png',
+			nickname: '',
 		},
 	},
 	{
@@ -255,6 +285,7 @@ export const comments: Comment[] = [
 			name: 'Гришка',
 			email: 'grishka@gmail.com',
 			avatar: 'https://github.com/shadcn.png',
+			nickname: '',
 		},
 	},
 	{
@@ -266,6 +297,7 @@ export const comments: Comment[] = [
 			name: 'Никитка',
 			email: 'nikitka@gmail.com',
 			avatar: 'https://github.com/evilrabbit.png',
+			nickname: '',
 		},
 	},
 ]

@@ -14,7 +14,6 @@ export class CreateTrackDto {
   @IsOptional()
   img: string;
 
-  @IsOptional()
   @IsString()
   src: string;
 }

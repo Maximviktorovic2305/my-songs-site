@@ -1,4 +1,4 @@
-import { Track } from '@/types'
+import { Track } from '@/types/track'
 import MusicItem from './MusicItem'
 
 interface Props {

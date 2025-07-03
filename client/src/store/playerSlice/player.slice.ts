@@ -1,4 +1,5 @@
-import { Artist, Track } from '@/types'
+import { Artist } from '@/types/artist'
+import { Track } from '@/types/track'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface PlayerState {
