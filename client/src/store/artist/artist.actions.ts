@@ -1,10 +1,10 @@
 import { errorCatch } from '@/api/api.helper'
 import { removeFromStorage } from '@/services/api/auth/auth.helper'
 import { AuthService } from '@/services/api/auth/auth.service'
-import { IAuthResponse, LoginForm, RegisterForm } from '@/types/auth'
+import { IAuthResponse, LoginForm } from '@/types/auth'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const register = createAsyncThunk<IAuthResponse, RegisterForm>(
+export const register = createAsyncThunk<IAuthResponse, FormData>(
 	'auth/register',
 	async (data, thunkApi) => {
 		try {
@@ -21,6 +21,7 @@ export const login = createAsyncThunk<IAuthResponse, LoginForm>(
 	async (data, thunkApi) => {
 		try {
 			const response = await AuthService.login(data)
+
 			return response
 		} catch (error) {
 			return thunkApi.rejectWithValue(error)
@@ -47,4 +48,3 @@ export const checkAuth = createAsyncThunk<IAuthResponse>(
 		}
 	},
 )
-         

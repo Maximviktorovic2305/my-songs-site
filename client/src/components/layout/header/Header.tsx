@@ -4,9 +4,11 @@ import AuthModal from '@/components/auth/AuthModal'
 import BackButton from '@/components/base/BackButton'
 import Logo from '@/components/base/Logo'
 import { MusicAddSong } from '@/components/music-list/add-song/MusicAddSong'
+import { useArtist } from '@/hooks/useSelectors'
 import { useState } from 'react'
 
 const Header = () => {
+	const { artist } = useArtist()
 	const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 	const [authType, setAuthType] = useState<'login' | 'register'>('register')
 
@@ -26,6 +28,8 @@ const Header = () => {
 					<Logo />
 				</div>
 
+				<div>{artist?.name}</div>
+
 				<div className='flex items-center gap-4'>
 					<MusicAddSong />
 					<span
@@ -38,6 +42,7 @@ const Header = () => {
 
 			<AuthModal
 				isOpen={isAuthModalOpen}
+				setIsAuthModalOpen={setIsAuthModalOpen}
 				onClose={handleCloseModal}
 				authType={authType}
 				setAuthType={setAuthType}

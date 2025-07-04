@@ -2,7 +2,7 @@ import { GenresEnum } from '@/types/enums'
 
 interface GenreSelectorProps {
 	selectedGenres: string[]
-	onSelect: (genre: string) => void
+	onSelect: (genre: GenresEnum) => void
 }
 
 export const GenreSelector: React.FC<GenreSelectorProps> = ({
@@ -21,9 +21,7 @@ export const GenreSelector: React.FC<GenreSelectorProps> = ({
 							? 'bg-accent text-white'
 							: 'bg-gray-200 text-gray-800 hover:bg-gray-300'
 					}`}
-					disabled={
-						selectedGenres.includes(genre) && selectedGenres.length >= 3
-					}>
+					disabled={false}>
 					{genre}
 				</button>
 			))}

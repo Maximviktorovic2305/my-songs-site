@@ -9,6 +9,7 @@ interface AuthModalProps {
 	isOpen: boolean
 	onClose: () => void
 	setAuthType: React.Dispatch<React.SetStateAction<'login' | 'register'>>
+	setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 	authType: 'login' | 'register'
 }
 
@@ -17,6 +18,7 @@ const AuthModal = ({
 	authType = 'register',
 	setAuthType,
 	onClose,
+	setIsAuthModalOpen
 }: AuthModalProps) => {
 	return (
 		<BaseModal isOpen={isOpen} onClose={onClose}>
@@ -26,7 +28,7 @@ const AuthModal = ({
 				{authType === 'login' ? 'Вход' : 'Регистрация'}
 			</Title>
 
-			{authType === 'login' ? <LoginForm /> : <RegisterForm />}
+			{authType === 'login' ? <LoginForm setIsAuthModalOpen={setIsAuthModalOpen} /> : <RegisterForm setIsAuthModalOpen={setIsAuthModalOpen} />}
 
 			<p className='mt-4 text-center text-sm text-gray-500'>
 				{authType === 'login' ? 'Нет аккаунта? ' : 'Уже есть аккаунт? '}

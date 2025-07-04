@@ -1,0 +1,58 @@
+.loader-animation {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 4px solid #1f1d1d; 
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  position: relative; 
+}
+
+.loader-animation::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-left: 4px solid #73dde3; 
+  border-bottom: 4px solid transparent;
+  animation: rotation 0.5s linear infinite reverse;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Полноэкранный вариант */
+.fullscreen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.7); 
+}
+
+/* Лоадер внутри блока */
+.inline-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; 
+  height: 100%; 
+}

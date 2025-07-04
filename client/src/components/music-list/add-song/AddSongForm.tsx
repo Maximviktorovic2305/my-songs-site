@@ -5,15 +5,22 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { GenreSelector } from './GenreSelector'
+import { useCreateTrack } from '@/services/queries/track'
+import { GenresEnum } from '@/types/enums'
+import BaseLoader from '@/components/base/loader/BaseLoader'
 
 interface FormData {
 	title: string
-	genres: string[]
+	genres: GenresEnum[]
 	imageFile?: FileList | null
 	audioFile: FileList | null
 }
 
-const AddSongForm = () => {
+interface Props {
+	setOpen: (value: boolean) => void
+}
+
+const AddSongForm = ({ setOpen }: Props) => {
 	const {
 		register,
 		handleSubmit,
@@ -32,57 +39,12 @@ const AddSongForm = () => {
 	const [selectedAudioFileName, setSelectedAudioFileName] = useState<
 		string | null
 	>(null)
-	const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+	const [selectedGenres, setSelectedGenres] = useState<GenresEnum[]>([])
 	const [audioError, setAudioError] = useState<string | null>(null)
 	const [genreError, setGenreError] = useState<string | null>(null)
 
-	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		console.log('Форма отправлена:', data)
+	const { mutateAsync: createTrack, status, error } = useCreateTrack()
 
-		// Проверка на наличие аудио
-		if (!data.audioFile || !data.audioFile[0]) {
-			setAudioError('Аудиофайл обязателен.')
-			return
-		}
-
-		// Проверка на наличие жанра
-		if (data.genres.length === 0) {
-			setGenreError('Выберите хотя бы один жанр.')
-			return
-		}
-
-		const formData = new FormData()
-		formData.append('title', data.title)
-		formData.append('genres', data.genres.join(', '))
-
-		if (data.imageFile && data.imageFile[0]) {
-			formData.append('image', data.imageFile[0])
-		}
-
-		if (data.audioFile && data.audioFile[0]) {
-			formData.append('audio', data.audioFile[0])
-		}
-
-		try {
-			const response = await fetch('/api/upload-song', {
-				method: 'POST',
-				body: formData,
-			})
-
-			if (response.ok) {
-				console.log('Песня добавлена')
-				setSelectedImageFileName(null)
-				setSelectedAudioFileName(null)
-				setSelectedGenres([])
-				setAudioError(null)
-				setGenreError(null)
-			} else {
-				console.error('Ошибка при добавлении песни')
-			}
-		} catch (error) {
-			console.error('Ошибка сети:', error)
-		}
-	}
 	//  Выбор обложки
 	const handleImageFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
@@ -94,6 +56,7 @@ const AddSongForm = () => {
 			setValue('imageFile', null)
 		}
 	}
+
 	//  Выбор аудио
 	const handleAudioFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
@@ -126,10 +89,10 @@ const AddSongForm = () => {
 			setAudioError('Аудиофайл обязателен.')
 		}
 	}
+
 	//  Выбор жанра
-	const toggleGenre = (genre: string) => {
+	const toggleGenre = (genre: GenresEnum) => {
 		if (selectedGenres.includes(genre)) {
-			// Удалить жанр
 			const updated = selectedGenres.filter((g) => g !== genre)
 			setSelectedGenres(updated)
 			setValue('genres', updated)
@@ -139,7 +102,6 @@ const AddSongForm = () => {
 				setGenreError(null)
 			}
 		} else if (selectedGenres.length < 3) {
-			// Добавить жанр
 			const updated = [...selectedGenres, genre]
 			setSelectedGenres(updated)
 			setValue('genres', updated)
@@ -149,6 +111,38 @@ const AddSongForm = () => {
 
 	const fileInputClass =
 		'cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full'
+
+	const onSubmit: SubmitHandler<FormData> = async (formData) => {
+		console.log('Форма отправлена:', formData)
+
+		// Проверка на наличие аудио
+		if (!formData.audioFile || !formData.audioFile[0]) {
+			setAudioError('Аудиофайл обязателен.')
+			return
+		}
+
+		// Проверка на наличие жанра
+		if (formData.genres.length === 0) {
+			setGenreError('Выберите хотя бы один жанр.')
+			return
+		}
+
+		const data = {
+			title: formData.title,
+			genres: formData.genres,
+		}
+
+		const audioFile = formData.audioFile[0]
+		const imageFile = formData.imageFile?.[0]
+
+		try {
+			await createTrack({ data, audioFile, imageFile })
+			setOpen(false)
+		} catch (err) {
+			console.error('Ошибка загрузки трека:', err)
+			alert('Не удалось добавить трек')
+		}
+	}
 
 	return (
 		<form
@@ -225,6 +219,10 @@ const AddSongForm = () => {
 					<p className='mt-1 text-sm text-red-600'>{audioError}</p>
 				)}
 			</fieldset>
+
+			{/* Статусы */}
+			{status === 'pending' && <BaseLoader variant='fullscreen' />}
+			{error && <p>Ошибка: {error.message}</p>}
 		</form>
 	)
 }

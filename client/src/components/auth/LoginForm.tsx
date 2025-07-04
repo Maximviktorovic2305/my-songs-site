@@ -4,59 +4,43 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '../ui/button'
+import { useRouter } from 'next/navigation'
+import { useActions } from '@/hooks/useActions'
+import type { LoginForm } from '@/types/auth'
 
-interface FormData {
-	nickname: string
-	name: string
-	email: string
-	password: string
-	confirmPassword: string
-	avatar?: FileList | null
+interface Props {
+	setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const LoginForm = () => {
+const LoginForm = ({ setIsAuthModalOpen }: Props) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		setValue,
-	} = useForm<FormData>({
+	} = useForm<LoginForm>({
 		defaultValues: {
-			nickname: '',
-			name: '',
 			email: '',
 			password: '',
-			confirmPassword: '',
-			avatar: null,
 		},
 	})
+	const { login } = useActions()
+	const router = useRouter()
 
 	const resetForm = () => {
 		setValue('email', '')
 		setValue('password', '')
 	}
 
-	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		console.log('Форма отправлена:', data)
-
-		const formData = new FormData()
-		formData.append('email', data.email)
-		formData.append('password', data.password)
-
+	const onSubmit: SubmitHandler<LoginForm> = async (data) => {
 		try {
-			const response = await fetch('/api/login', {
-				method: 'POST',
-				body: formData,
-			})
+			login(data)
 
-			if (response.ok) {
-				alert('Авторизация успешна')
-				resetForm()
-			} else {
-				alert('Ошибка авторизации')
-			}
+			setIsAuthModalOpen(false)
+			router.replace('/')
+			resetForm()
 		} catch (error) {
-			console.error('Ошибка сети:', error)
+			console.error('Ошибка авторизации:', error)
 		}
 	}
 

@@ -5,24 +5,22 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '../ui/button'
+import { useRouter } from 'next/navigation'
+import type { RegisterForm } from '@/types/auth'
+import { useActions } from '@/hooks/useActions'
 
-interface FormData {
-	nickname: string
-	name: string
-	email: string
-	password: string
-	confirmPassword: string
-	avatar?: FileList | null
+interface Props {
+	setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const RegisterForm = () => {
+const RegisterForm = ({ setIsAuthModalOpen }: Props) => {
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors },
 		setValue,
-	} = useForm<FormData>({
+	} = useForm<RegisterForm>({
 		defaultValues: {
 			nickname: '',
 			name: '',
@@ -33,9 +31,9 @@ const RegisterForm = () => {
 		},
 	})
 
-	const [selectedAvatarFileName, setSelectedAvatarFileName] = useState<
-		string | null
-	>(null)
+	const router = useRouter()
+	const { register: registerArtist } = useActions();
+	const [selectedAvatarFileName, setSelectedAvatarFileName] = useState<string | null>(null)
 	const [passwordError, setPasswordError] = useState<string | null>(null)
 
 	const resetForm = () => {
@@ -49,9 +47,7 @@ const RegisterForm = () => {
 		setPasswordError(null)
 	}
 
-	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		console.log('Форма отправлена:', data)
-
+	const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
 		if (data.password !== data.confirmPassword) {
 			setPasswordError('Пароли не совпадают')
 			return
@@ -68,17 +64,10 @@ const RegisterForm = () => {
 		}
 
 		try {
-			const response = await fetch('/api/register', {
-				method: 'POST',
-				body: formData,
-			})
-
-			if (response.ok) {
-				alert('Регистрация успешна')
-				resetForm()
-			} else {
-				alert('Ошибка регистрации')
-			}
+			registerArtist(formData)
+			setIsAuthModalOpen(false)
+			router.replace('/')
+			resetForm()
 		} catch (error) {
 			console.error('Ошибка сети:', error)
 		}

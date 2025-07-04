@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import {
 	Drawer,
@@ -11,13 +13,41 @@ import {
 } from '@/components/ui/drawer'
 import Image from 'next/image'
 import AddSongForm from './AddSongForm'
+import { useArtist } from '@/hooks/useSelectors'
+import { useEffect, useState } from 'react'
 
 export function MusicAddSong() {
+	const [isClient, setIsClient] = useState(false)
+	const [open, setOpen] = useState(false)
+
+	const { artist } = useArtist()
+
+	useEffect(() => {
+		setIsClient(true)
+	}, [])
+
 	return (
-		<Drawer>
-			<DrawerTrigger asChild>
-				<Image width={24} height={24} src='/upload-song.png' alt='upload-song' className='cursor-pointer hover:opacity-80 duration-200' />
-			</DrawerTrigger>
+		<Drawer open={open} onOpenChange={setOpen}>
+			{isClient && artist ? (
+				<DrawerTrigger asChild>
+					<Image
+						width={24}
+						height={24}
+						src='/upload-song.png'
+						alt='upload-song'
+						className='cursor-pointer hover:opacity-80 duration-200'
+					/>
+				</DrawerTrigger>
+			) : (
+				<Image
+					width={24}
+					height={24}
+					src='/upload-song.png'
+					alt='upload-song'
+					className='cursor-pointer hover:opacity-80 duration-200'
+				/>
+			)}
+
 			<DrawerContent>
 				<div className='w-full min-w-full'>
 					<div className='mx-auto max-w-2xl'>
@@ -26,7 +56,7 @@ export function MusicAddSong() {
 							<DrawerDescription>Заполни форму</DrawerDescription>
 						</DrawerHeader>
 						<div className='mb-2 p-4 max-sm:px-0 pb-0'>
-							<AddSongForm />
+							<AddSongForm setOpen={setOpen} />
 						</div>
 						<DrawerFooter>
 							<Button type='submit' form='add-song-form'>
