@@ -1,11 +1,15 @@
-import { ExecutionContext, createParamDecorator } from '@nestjs/common';
-import { Artist } from 'generated/prisma';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const CurrentArtist = createParamDecorator(
-  (data: keyof Artist, ctx: ExecutionContext) => {
+  (data: string | undefined, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    const user = request.user;
-
-    return data ? user[data] : user;
+    const artist = request.user?.artist;
+    if (!artist) {
+      return undefined;
+    }
+    if (data) {
+      return artist[data];
+    }
+    return artist;
   },
 );

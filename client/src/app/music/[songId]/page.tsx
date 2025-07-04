@@ -1,6 +1,5 @@
 import MusicSongDatail from '@/components/music-list/MusicSongDatail'
-import { playlist } from '@/data/playlist'
-import { Track } from '@/types/track'
+import { TrackService } from '@/services/api/track.service'
 
 interface SongDetailPageProps {
 	params: Promise<{
@@ -9,17 +8,15 @@ interface SongDetailPageProps {
 }
 
 // Заглушка для получения данных о песне
-async function getSongDetails(songId: number): Promise<Track | null> {
-	return playlist.find((song) => song.id === songId) || null
+async function getSongDetails(songId: number) {
+	try {
+		const response = await TrackService.getTrackById(songId)
+		console.log(response.data)
+		return response.data
+	} catch (e) {
+		console.log(e)
+	}
 }
-
-// Статически генерировать маршруты во время сборки (SSG)
-// export async function generateStaticParams() {
-//   const songs = await getAllSongsFromAPI(); // Ваша функция для получения всех песен
-//   return songs.map((song) => ({
-//     songId: song.id,
-//   }));
-// }
 
 export default async function SongDetailPage({ params }: SongDetailPageProps) {
 	const { songId } = await params

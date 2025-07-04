@@ -1,31 +1,26 @@
 import MusicArtist from '@/components/music-list/MusicArtist'
-import { playlist } from '@/data/playlist'
-import { Track } from '@/types/track'
+import { TrackService } from '@/services/api/track.service'
 
-interface SongArtistPageProps {
+interface Props {
 	params: Promise<{
 		artistId: string
 	}>
 }
 
 // Заглушка для получения данных о песне
-async function getSongs(artistId: string): Promise<Track[] | null> {
-	return playlist.filter((song) => song.artist.id === +artistId)
+async function getSongs(artistId: number | string) {
+	try {
+		const response = await TrackService.getTracksByArtist(artistId)
+		return response.data
+	} catch (e) {
+		console.log(e)
+	}
 }
 
-// Статически генерировать маршруты во время сборки (SSG)
-// export async function generateStaticParams() {
-//   const songs = await getAllSongsFromAPI(); // Ваша функция для получения всех песен
-//   return songs.map((song) => ({
-//     songId: song.id,
-//   }));
-// }
-
-export default async function SongArtistPage({ params }: SongArtistPageProps) {
+export default async function SongArtistPage({ params }: Props) {
 	const { artistId } = await params
 	const songs = await getSongs(artistId)
 
-	console.log(artistId)
 	console.log(songs)
 
 	if (!songs) {

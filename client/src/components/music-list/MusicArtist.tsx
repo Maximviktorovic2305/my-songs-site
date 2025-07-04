@@ -30,7 +30,7 @@ const MusicArtist = ({ songs }: Props) => {
 				<SongDetailItem title='Кол-во песен' value={songs.length ?? '--'} />
 			</div>
 
-			<MusicList list={songs} />
+			<MusicList songs={songs} />
 		</Card>
 	)
 }

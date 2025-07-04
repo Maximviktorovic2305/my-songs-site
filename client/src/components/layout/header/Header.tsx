@@ -5,12 +5,18 @@ import BackButton from '@/components/base/BackButton'
 import Logo from '@/components/base/Logo'
 import { MusicAddSong } from '@/components/music-list/add-song/MusicAddSong'
 import { useArtist } from '@/hooks/useSelectors'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const Header = () => {
 	const { artist } = useArtist()
 	const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 	const [authType, setAuthType] = useState<'login' | 'register'>('register')
+	const [isClient, setIsClient] = useState(false)
+
+
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
 
 	const handleLoginClick = () => {
 		setIsAuthModalOpen(true)
@@ -28,7 +34,7 @@ const Header = () => {
 					<Logo />
 				</div>
 
-				<div>{artist?.name}</div>
+				<div>{isClient && artist?.name}</div>
 
 				<div className='flex items-center gap-4'>
 					<MusicAddSong />
