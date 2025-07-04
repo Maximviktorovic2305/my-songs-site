@@ -44,7 +44,7 @@ export const trackFileUploadOptions = {
     callback: (error: Error | null, acceptFile: boolean) => void,
   ) => {
     // Проверка по типу файла
-    if (file.fieldname === 'image') {
+    if (file.fieldname === 'image' || file.fieldname === 'avatar') {
       if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
         return callback(
           new BadRequestException('Разрешены только файлы изображений!'),

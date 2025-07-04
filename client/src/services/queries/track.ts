@@ -89,13 +89,13 @@ export const useGetTracksByArtist = (
 
 // Получение избранных треков
 export const useGetFavoriteTracks = () => {
-	const { data, status, error } = useQuery({
-		queryKey: ['tracks', 'favorites'],
-		queryFn: async () => TrackService.getFavoriteTracks(),
-		select: ({ data }) => data,
-	})
+    const { data, status, error } = useQuery({
+      queryKey: ['tracks', 'favorites'],
+      queryFn: async () => TrackService.getFavoriteTracks(),
+      select: ({ data }) => data,
+    })
 
-	return { data, status, error }
+    return { data, status, error }
 }
 
 // Получение трека по ID
@@ -133,34 +133,21 @@ export const useCreateTrack = () => {
 	return { mutateAsync, status, error }
 }
 
-// Добавление трека в избранное
-export const useAddTrackToFavorites = () => {
-	const queryClient = useQueryClient()
+// Переключение состояния избранного трека         
+export const useToggleFavorite = () => {
+    const queryClient = useQueryClient()
 
-	const { mutateAsync, status, error } = useMutation({
-		mutationFn: async (trackId: number | string) =>
-			TrackService.addTrackToFavorites(trackId),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['tracks', 'favorites'] })
-		},
-	})
+    const { mutateAsync, status, error } = useMutation({
+      mutationFn: async (trackId: number | string) =>
+          TrackService.toggleFavorite(trackId),
+      onSuccess: (response, trackId) => {
+        queryClient.invalidateQueries({ queryKey: ['tracks', 'favorites'] })
+        queryClient.invalidateQueries({ queryKey: ['tracks', trackId] })
+        queryClient.invalidateQueries({ queryKey: ['tracks'] })
+      },
+    })
 
-	return { mutateAsync, status, error }
-}
-
-// Удаление трека из избранного
-export const useRemoveTrackFromFavorites = () => {
-	const queryClient = useQueryClient()
-
-	const { mutateAsync, status, error } = useMutation({
-		mutationFn: async (trackId: number | string) =>
-			TrackService.removeTrackFromFavorites(trackId),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['tracks', 'favorites'] })
-		},
-	})
-
-	return { mutateAsync, status, error }
+    return { mutateAsync, status, error }
 }
 
 // Установка рейтинга трека

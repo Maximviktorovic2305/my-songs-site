@@ -6,11 +6,19 @@ import {
   HttpCode,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Auth } from './decorators/auth.decorator';
 import { CurrentArtist } from './decorators/artist.decorator';
-import { LoginAuthDto, RefreshTokenDto, RegisterAuthDto } from './dto/create-auth.dto';
+import {
+  LoginAuthDto,
+  RefreshTokenDto,
+  RegisterAuthDto,
+} from './dto/create-auth.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { trackFileUploadOptions } from 'src/utils/file-upload';
 
 @Controller('auth')
 export class AuthController {
@@ -18,10 +26,15 @@ export class AuthController {
 
   // Регистрация для Userа
   @Post('register')
-  @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  register(@Body() registerAuthDto: RegisterAuthDto) {
-    return this.authService.register(registerAuthDto);
+  @UseInterceptors(FileInterceptor('avatar', trackFileUploadOptions))
+  async register(
+    @Body() registerAuthDto: RegisterAuthDto, 
+    @UploadedFile() avatar: Express.Multer.File,
+  ) {
+    const avatarPath = avatar ? `/uploads/${avatar.filename}` : null;
+
+    return this.authService.register(registerAuthDto, avatarPath); 
   }
 
   // Логин для Userа

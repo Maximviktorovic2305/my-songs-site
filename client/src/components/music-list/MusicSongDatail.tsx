@@ -11,6 +11,7 @@ import SongComments from './comments/SongComments'
 import LoveIcon from '../base/LoveIcon'
 import { Track } from '@/types/track'
 import MusicSongDatailInfo from './MusicSongDatailInfo'
+import { useGetFavoriteTracks } from '@/services/queries/track'
 
 interface Props {
 	song: Track
@@ -19,7 +20,10 @@ interface Props {
 const MusicSongDatail = ({ song }: Props) => {
 	const { currentTrack } = usePlayer()
 	const dispatch = useDispatch()
-	const isFavorite = false
+	const { data: favoriteTracks } = useGetFavoriteTracks()         
+
+	// Определяем, является ли текущий трек избранным для пользователя
+    const isFavorite = favoriteTracks?.some(favTrack => favTrack.id === song.id) || false;
 
 	const tracImg = song.img
 		? `${process.env.NEXT_PUBLIC_SERVER_URL}/${song.img.replace(/^\/+/, '')}`

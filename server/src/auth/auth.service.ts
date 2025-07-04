@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   // Зарегистрировать пользователя
-  async register(registerAuthDto: RegisterAuthDto) {
+  async register(registerAuthDto: RegisterAuthDto, avatarPath: string | null) {
     const isArtistWithEmailExists = await this.prisma.artist.findUnique({
       where: { email: registerAuthDto.email },
     });
@@ -79,7 +79,17 @@ export class AuthService {
       );
     }
 
-    const artist = await this.artistService.create(registerAuthDto);
+    const hashedPassword = await argon2.hash(registerAuthDto.password);
+
+    const dtoWithHashedPassword = {
+      ...registerAuthDto,
+      password: hashedPassword,
+    };
+
+    const artist = await this.artistService.create(
+      dtoWithHashedPassword,
+      avatarPath,
+    );
     const tokens = await this.issueTokens(artist.id);
 
     return {

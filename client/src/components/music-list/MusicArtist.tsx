@@ -14,10 +14,14 @@ const MusicArtist = ({ songs }: Props) => {
 	const song = songs[0]
 	const { artist } = song
 
+	const avatarImg = artist.avatar
+		? `${process.env.NEXT_PUBLIC_SERVER_URL}/${artist.avatar.replace(/^\/+/, '')}`
+		: '/no-image-avatar.png'
+
 	return (
 		<Card className=''>
 			<Image
-				src={artist.avatar ? artist.avatar : '/no-image-avatar.png'}
+				src={avatarImg}
 				width={200}
 				height={200}
 				alt={song.title}

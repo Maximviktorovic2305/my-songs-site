@@ -24,26 +24,18 @@ export class ArtistService {
     return artist;
   }
 
-  async create(dto: RegisterAuthDto) {
-    const { name, email, password, nickname, avatar } = dto;
+  async create(dto: RegisterAuthDto, avatarPath: string | null) { 
+    const { nickname, name, email, password } = dto; 
 
-    // @TODO переделать
-    const isAdmin =
-      name === 'AdminAdminAdmin' && password === 'AdminAdminAdmin';
-
-    const artist = await this.prisma.artist.create({
+    return this.prisma.artist.create({
       data: {
+        nickname,
         name,
         email,
-        nickname,
-        avatar,
-        password: await argon2.hash(password),
-        role: isAdmin ? 'admin' : 'user',
+        password,
+        avatar: avatarPath, 
       },
-      select: { ...returnArtistObject },
     });
-
-    return artist;
   }
 
   // Получение всех пользователей администратором

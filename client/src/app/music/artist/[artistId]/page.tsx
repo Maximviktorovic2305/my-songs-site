@@ -21,8 +21,6 @@ export default async function SongArtistPage({ params }: Props) {
 	const { artistId } = await params
 	const songs = await getSongs(artistId)
 
-	console.log(songs)
-
 	if (!songs) {
 		return (
 			<div className='flex flex-col items-center justify-center min-h-screen text-red-500'>

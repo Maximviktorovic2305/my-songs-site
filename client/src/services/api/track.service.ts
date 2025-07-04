@@ -117,19 +117,11 @@ export const TrackService = {
 		})
 	},
 
-	// Добавить трек в избранное
-	async addTrackToFavorites(trackId: number | string) {
-		return instanse<Track>({
+	// Добавление/удаление трека из избранного
+	async toggleFavorite(trackId: number | string) {
+		return instanse<{ message: string; isFavorite: boolean }>({
 			url: `${TRACK_ADDRESS}/${trackId}/favorite`,
-			method: 'POST',
-		})
-	},
-
-	// Удалить трек из избранного
-	async removeTrackFromFavorites(trackId: number | string) {
-		return instanse<void>({
-			url: `${TRACK_ADDRESS}/${trackId}/favorite`,
-			method: 'DELETE',
+			method: 'PATCH', 
 		})
 	},
 

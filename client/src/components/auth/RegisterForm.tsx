@@ -32,8 +32,10 @@ const RegisterForm = ({ setIsAuthModalOpen }: Props) => {
 	})
 
 	const router = useRouter()
-	const { register: registerArtist } = useActions();
-	const [selectedAvatarFileName, setSelectedAvatarFileName] = useState<string | null>(null)
+	const { register: registerArtist } = useActions()
+	const [selectedAvatarFileName, setSelectedAvatarFileName] = useState<
+		string | null
+	>(null)
 	const [passwordError, setPasswordError] = useState<string | null>(null)
 
 	const resetForm = () => {
@@ -45,6 +47,17 @@ const RegisterForm = ({ setIsAuthModalOpen }: Props) => {
 		setValue('avatar', null)
 		setSelectedAvatarFileName(null)
 		setPasswordError(null)
+	}
+
+	const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files.length > 0) {
+			const file = e.target.files[0]
+			setSelectedAvatarFileName(file.name)
+			setValue('avatar', e.target.files)
+		} else {
+			setSelectedAvatarFileName(null)
+			setValue('avatar', null)
+		}
 	}
 
 	const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
@@ -70,17 +83,6 @@ const RegisterForm = ({ setIsAuthModalOpen }: Props) => {
 			resetForm()
 		} catch (error) {
 			console.error('Ошибка сети:', error)
-		}
-	}
-
-	const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files && e.target.files.length > 0) {
-			const file = e.target.files[0]
-			setSelectedAvatarFileName(file.name)
-			setValue('avatar', e.target.files)
-		} else {
-			setSelectedAvatarFileName(null)
-			setValue('avatar', null)
 		}
 	}
 

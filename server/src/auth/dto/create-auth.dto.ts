@@ -23,9 +23,7 @@ export class RegisterAuthDto {
   @IsString()
   password: string;
 
-  @IsOptional()
-  @IsString()
-  avatar: string;
+  // avatar?: string | null
 }
 
 export class RefreshTokenDto {

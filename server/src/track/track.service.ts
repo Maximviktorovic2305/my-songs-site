@@ -329,34 +329,21 @@ export class TrackService {
 
   // Единый метод для добавления или удаления трека из избранного
   async toggleFavoriteTrack(artistId: number, trackId: number) {
-  console.log("artistId:", artistId); // Для отладки
-  console.log("trackId:", trackId);
+    const trackExists = await this.prisma.track.findUnique({
+      where: { id: trackId },
+    });
+    if (!trackExists) {
+      throw new NotFoundException(`Трек с ID ${trackId} не найден.`);
+    }
 
-  const trackExists = await this.prisma.track.findUnique({
-    where: { id: trackId },
-  });
-  if (!trackExists) {
-    throw new NotFoundException(`Трек с ID ${trackId} не найден.`);
-  }
+    const artistExists = await this.prisma.artist.findUnique({
+      where: { id: artistId },
+    });
+    if (!artistExists) {
+      throw new NotFoundException(`Артист с ID ${artistId} не найден.`);
+    }
 
-  const artistExists = await this.prisma.artist.findUnique({
-    where: { id: artistId },
-  });
-  if (!artistExists) {
-    throw new NotFoundException(`Артист с ID ${artistId} не найден.`);
-  }
-
-  const existingFavorite = await this.prisma.favoriteOnArtist.findUnique({
-    where: {
-      artistId_trackId: {
-        artistId,
-        trackId,
-      },
-    },
-  });
-
-  if (existingFavorite) {
-    await this.prisma.favoriteOnArtist.delete({
+    const existingFavorite = await this.prisma.favoriteOnArtist.findUnique({
       where: {
         artistId_trackId: {
           artistId,
@@ -364,17 +351,27 @@ export class TrackService {
         },
       },
     });
-    return false;
-  } else {
-    await this.prisma.favoriteOnArtist.create({
-      data: {
-        artistId,
-        trackId,
-      },
-    });
-    return true;
+
+    if (existingFavorite) {
+      await this.prisma.favoriteOnArtist.delete({
+        where: {
+          artistId_trackId: {
+            artistId,
+            trackId,
+          },
+        },
+      });
+      return false;
+    } else {
+      await this.prisma.favoriteOnArtist.create({
+        data: {
+          artistId,
+          trackId,
+        },
+      });
+      return true;
+    }
   }
-}
 
   // Получить все избранные треки текущего артиста
   async getFavoriteTracksByArtist(artistId: number) {

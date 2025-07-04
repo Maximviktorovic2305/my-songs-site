@@ -46,7 +46,6 @@ export class TrackController {
     @UploadedFiles()
     files: { audio?: Express.Multer.File[]; image?: Express.Multer.File[] },
   ) {
-    console.log(+id);
     return this.trackService.createTrack(body, files, +id);
   }
 
@@ -131,10 +130,10 @@ export class TrackController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   async toggleFavorite(
-    @Param('id') id: string | number,
-    @CurrentArtist('id') artistId: string | number,
+    @Param('id') trackId: number | string,
+    @CurrentArtist('id') artistId: number | string,
   ) {
-    const isAdded = await this.trackService.toggleFavoriteTrack(+id, +artistId);
+    const isAdded = await this.trackService.toggleFavoriteTrack(+artistId, +trackId, );
 
     return {
       message: isAdded

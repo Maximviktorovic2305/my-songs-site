@@ -11,7 +11,6 @@ interface SongDetailPageProps {
 async function getSongDetails(songId: number) {
 	try {
 		const response = await TrackService.getTrackById(songId)
-		console.log(response.data)
 		return response.data
 	} catch (e) {
 		console.log(e)
@@ -20,7 +19,6 @@ async function getSongDetails(songId: number) {
 
 export default async function SongDetailPage({ params }: SongDetailPageProps) {
 	const { songId } = await params
-
 	const song = await getSongDetails(+songId)
 
 	if (!song) {
