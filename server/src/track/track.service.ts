@@ -327,77 +327,87 @@ export class TrackService {
     });
   }
 
-  // Добавить трек в избранное артиста
-async addTrackToFavorites(artistId: number, trackId: number) {
-  const existing = await this.prisma.track.findUnique({
-    where: { id: trackId },
-    select: { favoriteArtistId: true },
-  });
+  // Единый метод для добавления или удаления трека из избранного
+  async toggleFavoriteTrack(artistId: number, trackId: number) {
+  console.log("artistId:", artistId); // Для отладки
+  console.log("trackId:", trackId);
 
-  if (existing?.favoriteArtistId === artistId) {
-    throw new BadRequestException('Трек уже добавлен в избранное.');
+  const trackExists = await this.prisma.track.findUnique({
+    where: { id: trackId },
+  });
+  if (!trackExists) {
+    throw new NotFoundException(`Трек с ID ${trackId} не найден.`);
   }
 
-  return this.prisma.track.update({
-    where: { id: trackId },
-    data: {
-      favoriteArtist: { connect: { id: artistId } },
-    },
-    include: {
-      artist: {
-        select: {
-          id: true,
-          nickname: true,
-          name: true,
-        },
-      },
-      comments: true,
-    },
+  const artistExists = await this.prisma.artist.findUnique({
+    where: { id: artistId },
   });
-}
-
-// Удалить трек из избранного артиста
-async removeTrackFromFavorites(artistId: number, trackId: number) {
-  const existing = await this.prisma.track.findUnique({
-    where: { id: trackId },
-    select: { favoriteArtistId: true },
-  });
-
-  if (!existing || existing.favoriteArtistId !== artistId) {
-    throw new NotFoundException('Трек не найден в избранном.');
+  if (!artistExists) {
+    throw new NotFoundException(`Артист с ID ${artistId} не найден.`);
   }
 
-  await this.prisma.track.update({
-    where: { id: trackId },
-    data: {
-      favoriteArtist: { disconnect: true },
-    },
-  });
-}
-
-// Получить все избранные треки текущего артиста
-async getFavoriteTracksByArtist(artistId: number) {
-  return this.prisma.track.findMany({
+  const existingFavorite = await this.prisma.favoriteOnArtist.findUnique({
     where: {
-      favoriteArtistId: artistId,
-    },
-    include: {
-      artist: {
-        select: {
-          id: true,
-          nickname: true,
-          name: true,
-        },
+      artistId_trackId: {
+        artistId,
+        trackId,
       },
-      comments: true,
     },
   });
+
+  if (existingFavorite) {
+    await this.prisma.favoriteOnArtist.delete({
+      where: {
+        artistId_trackId: {
+          artistId,
+          trackId,
+        },
+      },
+    });
+    return false;
+  } else {
+    await this.prisma.favoriteOnArtist.create({
+      data: {
+        artistId,
+        trackId,
+      },
+    });
+    return true;
+  }
 }
 
-// Установить рейтинг для трека
+  // Получить все избранные треки текущего артиста
+  async getFavoriteTracksByArtist(artistId: number) {
+    // Находим все записи в FavoriteOnArtist для данного артиста
+    const favoriteEntries = await this.prisma.favoriteOnArtist.findMany({
+      where: {
+        artistId: artistId,
+      },
+      include: {
+        track: {
+          include: {
+            artist: {
+              select: {
+                id: true,
+                nickname: true,
+                name: true,
+              },
+            },
+            comments: true,
+          },
+        },
+      },
+    });
+
+    return favoriteEntries.map((entry) => entry.track);
+  }
+
+  // Установить рейтинг для трека
   async setTrackRating(trackId: number, rating: number): Promise<Track> {
     if (rating < 0 || rating > 5) {
-      throw new BadRequestException('Рейтинг должен быть от 0 до 5 включительно.');
+      throw new BadRequestException(
+        'Рейтинг должен быть от 0 до 5 включительно.',
+      );
     }
 
     const existingTrack = await this.prisma.track.findUnique({

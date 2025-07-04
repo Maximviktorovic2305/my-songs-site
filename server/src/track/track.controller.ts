@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Patch,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { TrackService } from './track.service';
@@ -45,6 +46,7 @@ export class TrackController {
     @UploadedFiles()
     files: { audio?: Express.Multer.File[]; image?: Express.Multer.File[] },
   ) {
+    console.log(+id);
     return this.trackService.createTrack(body, files, +id);
   }
 
@@ -124,34 +126,37 @@ export class TrackController {
     return this.trackService.findTracksByArtist(artistId, artistNickname);
   }
 
-  // Добавить трек в избранное
-  @Post(':id/favorite')
+  // Добавление/удаление трека из избранного
+  @Patch(':id/favorite')
   @Auth()
-  @HttpCode(HttpStatus.CREATED)
-  async addToFavorites(
-    @Param('id') id: number | string,
-    @CurrentArtist('id') artistId: number | string,
+  @HttpCode(HttpStatus.OK)
+  async toggleFavorite(
+    @Param('id') id: string | number,
+    @CurrentArtist('id') artistId: string | number,
   ) {
-    return this.trackService.addTrackToFavorites(+artistId, +id);
+    const isAdded = await this.trackService.toggleFavoriteTrack(+id, +artistId);
+
+    return {
+      message: isAdded
+        ? 'Трек добавлен в избранное.'
+        : 'Трек удален из избранного.',
+      isFavorite: isAdded,
+    };
   }
 
-  // Удалить трек из избранного
-  @Delete(':id/favorite')
-  @Auth()
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async removeFromFavorites(
-    @Param('id') id: number | string,
-    @CurrentArtist('id') artistId: number | string,
-  ) {
-    return this.trackService.removeTrackFromFavorites(+artistId, +id);
-  }
-
-  // Получить все избранные треки
+  // Получить все избранные треки текущего артиста
   @Get('favorites')
   @Auth()
   @HttpCode(HttpStatus.OK)
-  async getFavoriteTracks(@CurrentArtist('id') artistId: number | string) {
-    return this.trackService.getFavoriteTracksByArtist(+artistId);
+  async getFavoriteTracks(@CurrentArtist('id') artistId: number) {
+    return this.trackService.getFavoriteTracksByArtist(artistId);
+  }
+
+  // Получить трек по id
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  findOne(@Param('id') id: number | string) {
+    return this.trackService.findTrackById(+id);
   }
 
   // Установить рейтинг для трека
@@ -162,13 +167,6 @@ export class TrackController {
     @Param('rating', ParseIntPipe) rating: number | string,
   ) {
     return this.trackService.setTrackRating(+id, +rating);
-  }
-
-  // Получить трек по id
-  @Get(':id')
-  @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: number | string) {
-    return this.trackService.findTrackById(+id);
   }
 
   // Удалить трек

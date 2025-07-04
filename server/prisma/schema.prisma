@@ -9,60 +9,58 @@ datasource db {
 }
 
 model Artist {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  nickname String @unique @map("nick_name")
-  name     String
-  email    String @unique
-  password String
-  avatar   String @default("/uploads/default-avatar.png") @map("avatar_path")
-
-  role String @default("user") @map("is_admin")
-
+  id             Int                @id @default(autoincrement())
+  createdAt      DateTime           @default(now()) @map("created_at")
+  updatedAt      DateTime           @updatedAt @map("updated_at")
+  nickname       String             @unique @map("nick_name")
+  name           String
+  email          String             @unique
+  password       String
+  avatar         String             @default("/uploads/default-avatar.png") @map("avatar_path")
+  role           String             @default("user") @map("is_admin")
+  comments       Comment[]
+  favoriteTracks FavoriteOnArtist[]
   tracks         Track[]
-  favoriteTracks Track[] @relation("FavoriteTracksByArtist")
-
-  comments Comment[]
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
-  text    String
-  like    Int?
-  dislike Int?
-
-  track    Track?  @relation(fields: [trackId], references: [id], onDelete: Cascade)
-  trackId  Int?
-
-  artist   Artist? @relation(fields: [artistId], references: [id], onDelete: SetNull)
-  artistId Int?
+  text      String
+  like      Int?
+  dislike   Int?
+  trackId   Int?
+  artistId  Int?
+  artist    Artist?  @relation(fields: [artistId], references: [id])
+  track     Track?   @relation(fields: [trackId], references: [id], onDelete: Cascade)
 }
 
 model Track {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id                 Int                @id @default(autoincrement())
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+  title              String
+  src                String
+  endlessTime        String?
+  rayting            Int?
+  genres             EnumGenres[]
+  isNew              Boolean?
+  artistId           Int?
+  img                String?
+  comments           Comment[]
+  favoritedByArtists FavoriteOnArtist[]
+  artist             Artist?            @relation(fields: [artistId], references: [id], onDelete: Cascade)
+}
 
-  title       String
-  src         String
-  endlessTime String?
-  rayting     Int?
-  img         String?      
-  genres      EnumGenres[]
-  isNew       Boolean?
+model FavoriteOnArtist {
+  artistId   Int
+  trackId    Int
+  assignedAt DateTime @default(now())
+  artist     Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  track      Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
 
-  artist   Artist? @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  artistId Int?
-
-  comments Comment[]
-
-  favoriteArtist   Artist? @relation("FavoriteTracksByArtist", fields: [favoriteArtistId], references: [id])
-  favoriteArtistId Int?
+  @@id([artistId, trackId])
 }
 
 enum EnumGenres {
