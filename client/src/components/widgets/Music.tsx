@@ -1,17 +1,16 @@
-'use client'
-
 import React from 'react'
-import { playlist } from '@/data/playlist'
 import { Card } from '../ui/card'
-
 import MusicList from '../music-list/MusicList'
+import { Title } from '../ui/title'
 
 const Music = () => {
 	return (
 		<Card>
 			<div>
-				<h3>Плейлист:</h3>
-				<MusicList list={playlist} />
+				<Title className='mb-2 text-shadow opacity-80' as='h2'>
+					Плейлист:
+				</Title>
+				<MusicList />
 			</div>
 		</Card>
 	)

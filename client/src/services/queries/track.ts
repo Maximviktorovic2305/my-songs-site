@@ -1,3 +1,5 @@
+'use client'
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { CreateTrackDto, FilterOptions } from '@/types/track'
 import { TrackService } from '../api/track.service'

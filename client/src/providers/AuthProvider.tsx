@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 
 // import { useActions } from '@/hooks/useActions'
 // import { useArtist } from '@/hooks/useSelectors'

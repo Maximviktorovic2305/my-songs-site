@@ -23,6 +23,8 @@ const MusicSongDatail = ({ song }: Props) => {
 	const dispatch = useDispatch()
 	const isFavorite = false
 
+	const tracImg = `${process.env.NEXT_PUBLIC_SERVER_URL}${currentTrack?.img}`
+
 	useEffect(() => {
 		if (currentTrack.title === song.title) {
 			dispatch(play())
@@ -33,7 +35,7 @@ const MusicSongDatail = ({ song }: Props) => {
 		<Card className=''>
 			<div className='relative mb-4 flex items-center gap-3 max-sm:flex max-sm:flex-col'>
 				<Image
-					src={song.img ? song.img : '/no-image.png'}
+					src={song.img ? tracImg : '/no-image.png'}
 					width={200}
 					height={200}
 					alt={song.title}

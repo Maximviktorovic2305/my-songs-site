@@ -16,6 +16,10 @@ const PlayingImage = ({ song }: Props) => {
 	const { currentTrack, isPlaying } = usePlayer()
 	const dispatch = useDispatch()
 
+	const tracImg = song.img
+		? `${process.env.NEXT_PUBLIC_SERVER_URL}/${song.img.replace(/^\/+/, '')}`
+		: '/no-image.png'
+
 	const isActive = currentTrack?.id === song.id
 
 	const handlePlay = (e: InteractionEvent) => {
@@ -32,11 +36,11 @@ const PlayingImage = ({ song }: Props) => {
 	return (
 		<div className='relative cursor-pointer group'>
 			<Image
-				src={song.img ? song.img : '/no-image.png'}
+				src={tracImg}
 				width={40}
 				height={40}
 				alt='song'
-				className={`rounded overflow-hidden transition-all shadow-md shadow-primary duration-200 ${
+				className={`rounded overflow-hidden transition-all shadow-md shadow-primary duration-200 min-h-10 object-cover ${
 					isActive ? 'ring-2 ring-accent' : ''
 				}`}
 			/>

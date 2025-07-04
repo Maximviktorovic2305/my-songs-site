@@ -1,16 +1,23 @@
-import { Track } from '@/types/track'
+'use client'
+
+import { useGetAllTracks } from '@/services/queries/track'
 import MusicItem from './MusicItem'
+import SkeletonMusicItem from '../skeletons/SkeletonMusicItem'
 
-interface Props {
-	list: Track[]
-}
+const MusicList = () => {
+	const { data } = useGetAllTracks()
 
-const MusicList = ({ list }: Props) => {
 	return (
 		<ul>
-			{list.map((song, i) => (
-				<MusicItem song={song} key={i} />
-			))}
+			{data ? (
+				data.map((song, i) => <MusicItem song={song} key={i} />)
+			) : (
+				<ul>
+					{Array.from({ length: 12 }).map((_, i) => (
+						<SkeletonMusicItem key={i} />
+					))}
+				</ul>
+			)}
 		</ul>
 	)
 }

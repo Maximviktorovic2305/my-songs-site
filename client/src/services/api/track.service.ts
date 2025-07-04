@@ -1,4 +1,4 @@
-import { instanse } from '@/api/api.interceptor'
+import { axiosClassic, instanse } from '@/api/api.interceptor'
 import { SortType } from '@/types'
 import { GenresEnum } from '@/types/enums'
 import { CreateTrackDto, FilterOptions, Track } from '@/types/track'
@@ -28,7 +28,7 @@ export const TrackService = {
 
 	// Получить все треки
 	async getAllTracks() {
-		return instanse<Track[]>({
+		return axiosClassic<Track[]>({
 			url: TRACK_ADDRESS,
 			method: 'GET',
 		})
@@ -57,7 +57,7 @@ export const TrackService = {
 			params.append('sortByDate', options.sortByDate)
 		}
 
-		return instanse<Track[]>({
+		return axiosClassic<Track[]>({
 			url: `${TRACK_ADDRESS}/filter`,
 			method: 'GET',
 			params,
@@ -66,7 +66,7 @@ export const TrackService = {
 
 	// Поиск треков по названию
 	async searchTracksByTitle(title: string) {
-		return instanse<Track[]>({
+		return axiosClassic<Track[]>({
 			url: `${TRACK_ADDRESS}/search`,
 			method: 'GET',
 			params: { title },
@@ -76,7 +76,7 @@ export const TrackService = {
 	// Поиск треков по жанру
 	async getTracksByGenres(genres: GenresEnum[]) {
 		const genresString = genres.join(',')
-		return instanse<Track[]>({
+		return axiosClassic<Track[]>({
 			url: `${TRACK_ADDRESS}/genres`,
 			method: 'GET',
 			params: { genres: genresString },
@@ -85,7 +85,7 @@ export const TrackService = {
 
 	// Получить треки, отсортированные по рейтингу
 	async getTracksByRating(order: SortType = 'desc') {
-		return instanse<Track[]>({
+		return axiosClassic<Track[]>({
 			url: `${TRACK_ADDRESS}/rating`,
 			method: 'GET',
 			params: { order },
@@ -94,7 +94,7 @@ export const TrackService = {
 
 	// Получить треки, сортировка по дате добавления
 	async getTracksByDate(order: SortType = 'desc') {
-		return instanse<Track[]>({
+		return axiosClassic<Track[]>({
 			url: `${TRACK_ADDRESS}/date`,
 			method: 'GET',
 			params: { order },
@@ -110,7 +110,7 @@ export const TrackService = {
 		if (artistNickname) {
 			params.append('artistNickname', artistNickname)
 		}
-		return instanse<Track[]>({
+		return axiosClassic<Track[]>({
 			url: `${TRACK_ADDRESS}/artist`,
 			method: 'GET',
 			params,
@@ -143,7 +143,7 @@ export const TrackService = {
 
 	// Установить рейтинг для трека
 	async setTrackRating(trackId: number | string, rating: number | string) {
-		return instanse<Track>({
+		return axiosClassic<Track>({
 			url: `${TRACK_ADDRESS}/${trackId}/rating/${rating}`,
 			method: 'PATCH',
 		})
@@ -151,7 +151,7 @@ export const TrackService = {
 
 	// Получить трек по id
 	async getTrackById(id: number | string) {
-		return instanse<Track>({
+		return axiosClassic<Track>({
 			url: `${TRACK_ADDRESS}/${id}`,
 			method: 'GET',
 		})

@@ -7,7 +7,7 @@ export default function Home() {
 			<Head>
 				<meta
 					name='description'
-					content='Простой музыкальный проигрыватель на Next.js с TypeScript'
+					content='Выкладывай свою музыку для оценки'
 				/>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
