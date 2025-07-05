@@ -21,6 +21,8 @@ model Artist {
   comments       Comment[]
   favoriteTracks FavoriteOnArtist[]
   tracks         Track[]
+
+  givenRatings TrackRating[]
 }
 
 model Comment {
@@ -43,7 +45,7 @@ model Track {
   title              String
   src                String
   endlessTime        String?
-  rayting            Int?
+  rayting            Float?
   genres             EnumGenres[]
   isNew              Boolean?
   artistId           Int?
@@ -51,6 +53,23 @@ model Track {
   comments           Comment[]
   favoritedByArtists FavoriteOnArtist[]
   artist             Artist?            @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  ratings TrackRating[]
+}
+
+model TrackRating {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rating   Int
+  trackId  Int
+  artistId Int
+
+  track  Track  @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([trackId, artistId])
 }
 
 model FavoriteOnArtist {

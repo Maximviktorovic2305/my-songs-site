@@ -399,26 +399,83 @@ export class TrackService {
     return favoriteEntries.map((entry) => entry.track);
   }
 
-  // Установить рейтинг для трека
-  async setTrackRating(trackId: number, rating: number): Promise<Track> {
+  // Добавление/обновление рейтинга трека
+  async addOrUpdateTrackRating(
+    trackId: number,
+    artistId: number,
+    rating: number,
+  ): Promise<Track> {
     if (rating < 0 || rating > 5) {
       throw new BadRequestException(
         'Рейтинг должен быть от 0 до 5 включительно.',
       );
     }
 
-    const existingTrack = await this.prisma.track.findUnique({
+    const trackExists = await this.prisma.track.findUnique({
       where: { id: trackId },
     });
-
-    if (!existingTrack) {
+    if (!trackExists) {
       throw new NotFoundException(`Трек с ID ${trackId} не найден.`);
     }
 
+    const artistExists = await this.prisma.artist.findUnique({
+      where: { id: artistId },
+    });
+    if (!artistExists) {
+      throw new NotFoundException(`Артист с ID ${artistId} не найден.`);
+    }
+
+    // Создаем или обновляем запись рейтинга
+    await this.prisma.trackRating.upsert({
+      where: {
+        trackId_artistId: {
+          trackId,
+          artistId,
+        },
+      },
+      update: {
+        rating: rating,
+      },
+      create: {
+        trackId,
+        artistId,
+        rating,
+      },
+    });
+
+    return this.calculateAverageRating(trackId);
+  }
+
+  // Вспомогательный метод для пересчета среднего рейтинга трека
+  private async calculateAverageRating(trackId: number): Promise<Track> {
+    const ratings = await this.prisma.trackRating.findMany({
+      where: { trackId },
+      select: { rating: true },
+    });
+
+    if (ratings.length === 0) {
+      // Если нет оценок, устанавливаем рейтинг в null или 0
+      return this.prisma.track.update({
+        where: { id: trackId },
+        data: { rayting: null },
+      });
+    }
+
+    const totalRating = ratings.reduce((sum, r) => sum + r.rating, 0);
+    const averageRating = parseFloat((totalRating / ratings.length).toFixed(1)); // Округляем до одного знака после запятой
+
     return this.prisma.track.update({
       where: { id: trackId },
-      data: { rayting: rating },
+      data: { rayting: averageRating },
     });
+  }
+
+  async setTrackRating(
+    trackId: number,
+    rating: number,
+    artistId: number, 
+  ): Promise<Track> {
+    return this.addOrUpdateTrackRating(trackId, artistId, rating);
   }
 
   // Удаление трека

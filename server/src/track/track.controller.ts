@@ -133,7 +133,10 @@ export class TrackController {
     @Param('id') trackId: number | string,
     @CurrentArtist('id') artistId: number | string,
   ) {
-    const isAdded = await this.trackService.toggleFavoriteTrack(+artistId, +trackId, );
+    const isAdded = await this.trackService.toggleFavoriteTrack(
+      +artistId,
+      +trackId,
+    );
 
     return {
       message: isAdded
@@ -160,12 +163,15 @@ export class TrackController {
 
   // Установить рейтинг для трека
   @Patch(':id/rating/:rating')
+  @Auth()
   @HttpCode(HttpStatus.OK)
   async setTrackRating(
-    @Param('id', ParseIntPipe) id: number | string,
-    @Param('rating', ParseIntPipe) rating: number | string,
+    @Param('id') trackId: number | string,
+    @Param('rating') rating: number | string,
+    @CurrentArtist('id') artistId: number | string,
   ) {
-    return this.trackService.setTrackRating(+id, +rating);
+    // console.log(`[TrackController] setTrackRating: Track ID: ${trackId}, Rating: ${rating}, Artist ID: ${artistId}`);
+    return this.trackService.setTrackRating(+trackId, +rating, +artistId);
   }
 
   // Удалить трек
