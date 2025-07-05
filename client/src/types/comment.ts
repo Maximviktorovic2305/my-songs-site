@@ -6,13 +6,13 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
   text: string;
-  like: number | null;
-  dislike: number | null;
-  trackId: number | null;
-  artistId: number | null;
-  artist: Artist | null;
-  track: Track | null;
-  currentUserVoteStatus?: 'like' | 'dislike' | null; 
+  like: number 
+  dislike: number 
+  trackId: number 
+  artistId: number 
+  artist: Artist 
+  track: Track 
+  currentUserVoteStatus?: 'like' | 'dislike' 
 }
 
 export interface CreateCommentDto {
