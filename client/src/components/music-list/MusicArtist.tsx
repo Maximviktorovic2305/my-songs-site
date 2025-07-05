@@ -25,9 +25,7 @@ const MusicArtist = ({ songs }: Props) => {
 				width={200}
 				height={200}
 				alt={song.title}
-				className={`mb-3 sm:max-h-[15.7rem] max-sm:justify-self-center shadow-lg ${
-					artist.avatar ? 'rounded-lg' : 'rounded-full  overflow-hidden'
-				}`}
+				className={`mb-3 sm:max-h-[15.7rem] max-sm:justify-self-center shadow-primary rounded-md shadow-lg`}
 			/>
 			<SongDetailItem title='Артист' value={artist.name ?? '--'} />
 			<div className='mb-3 border-b pb-3'>

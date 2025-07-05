@@ -20,7 +20,7 @@ export function MusicAddComment() {
 	return (
 		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger asChild>
-				<div className='flex text-gray-400 cursor-pointer hover:text-primary/90 items-center duration-200 gap-2 text-sm self-end'>
+				<div className='flex text-gray-400 cursor-pointer hover:text-primary/90 items-center duration-200 gap-2 text-sm self-start'>
 					<span>Добавить комментарий</span>
 					<PlusCircle className='size-4' />
 				</div>

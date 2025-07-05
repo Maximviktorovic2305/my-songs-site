@@ -4,15 +4,14 @@ import AuthModal from '@/components/auth/AuthModal'
 import BackButton from '@/components/base/BackButton'
 import Logo from '@/components/base/Logo'
 import { MusicAddSong } from '@/components/music-list/add-song/MusicAddSong'
-import { useActions } from '@/hooks/useActions'
-import { useArtist } from '@/hooks/useSelectors'
+import { useArtist, useLogout } from '@/services/queries/auth'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const Header = () => {
-	const { artist } = useArtist()
-	const { logout } = useActions()
+	const { data: artist } = useArtist()
+	const { mutateAsync: logoutAsync } = useLogout()
 	const queryClient = useQueryClient()
 	const router = useRouter()
 	const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
@@ -27,11 +26,11 @@ const Header = () => {
 		setIsAuthModalOpen(true)
 	}
 
-	const handleLogotClick = () => {
+	const handleLogotClick = async () => {
 		setIsAuthModalOpen(false)
 
 		try {
-			logout()
+			await logoutAsync()
 			queryClient.clear()
 			router.replace('/')
 		} catch (error) {
@@ -51,7 +50,7 @@ const Header = () => {
 					<Logo />
 				</div>
 
-				<div>{isClient && artist?.name}</div>
+				<div>{isClient && artist?.artist.nickname}</div>
 
 				<div className='flex items-center gap-4'>
 					<MusicAddSong />

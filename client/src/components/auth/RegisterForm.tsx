@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
 import type { RegisterForm } from '@/types/auth'
-import { useActions } from '@/hooks/useActions'
+import { useAuth } from '@/hooks/useAuth'
 
 interface Props {
 	setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -15,76 +15,74 @@ interface Props {
 
 const RegisterForm = ({ setIsAuthModalOpen }: Props) => {
 	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors },
-		setValue,
-	} = useForm<RegisterForm>({
-		defaultValues: {
-			nickname: '',
-			name: '',
-			email: '',
-			password: '',
-			confirmPassword: '',
-			avatar: null,
-		},
-	})
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+        setValue,
+    } = useForm<RegisterForm>({
+        defaultValues: {
+            nickname: '',
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            avatar: null,
+        },
+    })
 
-	const router = useRouter()
-	const { register: registerArtist } = useActions()
-	const [selectedAvatarFileName, setSelectedAvatarFileName] = useState<
-		string | null
-	>(null)
-	const [passwordError, setPasswordError] = useState<string | null>(null)
+    const router = useRouter()
+    const { register: registerArtist } = useAuth()
+    const [selectedAvatarFileName, setSelectedAvatarFileName] = useState<string | null>(null)
+    const [passwordError, setPasswordError] = useState<string | null>(null)
 
-	const resetForm = () => {
-		setValue('nickname', '')
-		setValue('name', '')
-		setValue('email', '')
-		setValue('password', '')
-		setValue('confirmPassword', '')
-		setValue('avatar', null)
-		setSelectedAvatarFileName(null)
-		setPasswordError(null)
-	}
+    const resetForm = () => {
+        setValue('nickname', '')
+        setValue('name', '')
+        setValue('email', '')
+        setValue('password', '')
+        setValue('confirmPassword', '')
+        setValue('avatar', null)
+        setSelectedAvatarFileName(null)
+        setPasswordError(null)
+    }
 
-	const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files && e.target.files.length > 0) {
-			const file = e.target.files[0]
-			setSelectedAvatarFileName(file.name)
-			setValue('avatar', e.target.files)
-		} else {
-			setSelectedAvatarFileName(null)
-			setValue('avatar', null)
-		}
-	}
+    const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0]
+            setSelectedAvatarFileName(file.name)
+            setValue('avatar', e.target.files)
+        } else {
+            setSelectedAvatarFileName(null)
+            setValue('avatar', null)
+        }
+    }
 
-	const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
-		if (data.password !== data.confirmPassword) {
-			setPasswordError('Пароли не совпадают')
-			return
-		}
+    const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
+        if (data.password !== data.confirmPassword) {
+            setPasswordError('Пароли не совпадают')
+            return
+        }
 
-		const formData = new FormData()
-		formData.append('nickname', data.nickname)
-		formData.append('name', data.name)
-		formData.append('email', data.email)
-		formData.append('password', data.password)
+        const formData = new FormData()
+        formData.append('nickname', data.nickname)
+        formData.append('name', data.name)
+        formData.append('email', data.email)
+        formData.append('password', data.password)
+        if (data.avatar && data.avatar[0]) {
+            formData.append('avatar', data.avatar[0])
+        }
 
-		if (data.avatar && data.avatar[0]) {
-			formData.append('avatar', data.avatar[0])
-		}
-
-		try {
-			registerArtist(formData)
-			setIsAuthModalOpen(false)
-			router.replace('/')
-			resetForm()
-		} catch (error) {
-			console.error('Ошибка сети:', error)
-		}
-	}
+        try {
+            await registerArtist(formData)
+            setIsAuthModalOpen(false)
+            router.replace('/')
+            resetForm()
+				console.log('I register')
+        } catch (error) {
+            console.error('Ошибка сети:', error)
+        }
+    }
 
 	const fileInputClass =
 		'cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full'

@@ -43,7 +43,7 @@ const MusicSongDatail = ({ song }: Props) => {
 					width={200}
 					height={200}
 					alt={song.title}
-					className={`sm:max-h-[15.7rem] rounded-lg max-sm:justify-self-center shadow-md shadow-primary`}
+					className={`sm:max-h-[15.7rem] rounded-md max-sm:justify-self-center shadow-md shadow-primary`}
 				/>
 				<MusicSongDatailInfo song={song} />
 

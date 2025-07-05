@@ -4,7 +4,6 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion'
-import { topCharts } from '@/data/playlist'
 
 const TopCharts = () => {
 	return (
@@ -17,9 +16,7 @@ const TopCharts = () => {
 				<AccordionItem value='item-1'>
 					<AccordionTrigger><span className='text-shadow'>Топ чарты</span></AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
-						{topCharts.map((song, i) => (
-							<p key={i}>{song.title}</p>
-						))}
+						asdasdas
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>

@@ -1,6 +1,7 @@
 import LikeButton from './LikeButton'
 import type { Comment } from '@/types/comment'
 import CommentImage from './CommentImage'
+import { formateDate } from '@/utils/format-date'
 
 interface CommentProps {
 	comment: Comment
@@ -26,7 +27,7 @@ const Comment = ({
 							{comment.artist?.name}
 						</span>
 						<div className='text-sm text-muted-foreground'>
-							<span>{comment.createdAt}</span>
+							<span>{formateDate(comment.createdAt)}</span>
 						</div>
 					</div>
 

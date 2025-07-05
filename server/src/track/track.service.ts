@@ -58,7 +58,7 @@ export class TrackService {
         title: createTrackDto.title,
         genres: validatedGenres,
         src: audioPath,
-        img: imagePath || '/uploads/no-image.png',
+        img: imagePath,
         artist: artistId ? { connect: { id: artistId } } : undefined,
       },
     });

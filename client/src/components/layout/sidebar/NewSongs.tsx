@@ -4,7 +4,6 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion'
-import { newSongs } from '@/data/playlist'
 
 const NewSongs = () => {
 	return (
@@ -17,9 +16,7 @@ const NewSongs = () => {
 				<AccordionItem value='item-1'>
 					<AccordionTrigger className='text-shadow'>Новинки</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
-						{newSongs.map((song, i) => (
-							<p key={i}>{song.title}</p>
-						))}
+						asdasda
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>

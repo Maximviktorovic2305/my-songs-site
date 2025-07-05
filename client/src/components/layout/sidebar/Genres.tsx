@@ -4,7 +4,6 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion'
-import { genres } from '@/data/playlist'
 
 const Genres = () => {
 	return (
@@ -17,9 +16,7 @@ const Genres = () => {
 				<AccordionItem value='item-1'>
 					<AccordionTrigger className='text-shadow'>Жанры</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
-						{genres.map((genre, i) => (
-							<p key={i}>{genre}</p>
-						))}
+						asdasds
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>

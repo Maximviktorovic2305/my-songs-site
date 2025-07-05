@@ -1,6 +1,6 @@
-import { IAuthResponse, LoginForm } from '@/types/auth'
-import { getRefreshToken, saveToStorage } from './auth.helper'
 import { axiosClassic } from '@/api/api.interceptor'
+import { IAuthResponse, LoginForm } from '@/types/auth'
+import { getAccessToken, getRefreshToken, removeFromStorage, saveToStorage } from './auth.helper'
 
 const AUTH_ADDRESS = '/auth'
 
@@ -11,9 +11,7 @@ export const AuthService = {
 			method: 'POST',
 			data,
 		})
-
 		if (response.data.accessToken) saveToStorage(response.data)
-
 		return response.data
 	},
 
@@ -23,21 +21,36 @@ export const AuthService = {
 			method: 'POST',
 			data,
 		})
-
 		if (response.data.accessToken) saveToStorage(response.data)
-
 		return response.data
 	},
 
 	async getNewTokens() {
 		const refreshToken = getRefreshToken()
-
-		const response = await axiosClassic.post<string, { data: IAuthResponse }>(
+		const response = await axiosClassic.post<IAuthResponse>(
 			`${AUTH_ADDRESS}/login/access-token`,
 			{ refreshToken },
 		)
 		if (response.data.accessToken) saveToStorage(response.data)
-
-		return response
+		return response.data
 	},
-}         
+
+	async getProfile() {
+		const accessToken = getAccessToken()
+		if (!accessToken) throw new Error('Access token not found')
+
+		const response = await axiosClassic.get<IAuthResponse>(
+			`${AUTH_ADDRESS}/me`,
+			{
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			},
+		)
+		return response.data
+	},
+
+	async logout() {
+		removeFromStorage()
+	},
+}

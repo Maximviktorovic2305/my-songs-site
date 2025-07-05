@@ -37,10 +37,10 @@ const PlayingImage = ({ song }: Props) => {
 		<div className='relative cursor-pointer group'>
 			<Image
 				src={tracImg}
-				width={40}
-				height={40}
+				width={48}
+				height={48}
 				alt='song'
-				className={`rounded overflow-hidden transition-all shadow-md shadow-primary duration-200 min-h-10 object-cover ${
+				className={`rounded overflow-hidden transition-all shadow-md shadow-primary duration-200 min-h-12 max-h-11 max-w-12 object-cover ${
 					isActive ? 'ring-2 ring-accent' : ''
 				}`}
 			/>

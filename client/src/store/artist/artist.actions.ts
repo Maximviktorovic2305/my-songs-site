@@ -6,13 +6,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const register = createAsyncThunk<IAuthResponse, FormData>(
 	'auth/register',
-	async (data, thunkApi) => {
-		try {
-			const response = await AuthService.register(data)
-			return response
-		} catch (error) {
-			return thunkApi.rejectWithValue(error)
-		}
+	async (data) => {
+		const response = await AuthService.register(data)
+		return response
 	},
 )
 

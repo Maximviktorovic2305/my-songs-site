@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
-import { useActions } from '@/hooks/useActions'
 import type { LoginForm } from '@/types/auth'
+import { useAuth } from '@/hooks/useAuth'
 
 interface Props {
 	setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -14,35 +14,35 @@ interface Props {
 
 const LoginForm = ({ setIsAuthModalOpen }: Props) => {
 	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		setValue,
-	} = useForm<LoginForm>({
-		defaultValues: {
-			email: '',
-			password: '',
-		},
-	})
-	const { login } = useActions()
-	const router = useRouter()
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+    } = useForm<LoginForm>({
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+    })
 
-	const resetForm = () => {
-		setValue('email', '')
-		setValue('password', '')
-	}
+    const { login: loginArtist } = useAuth()
+    const router = useRouter()
 
-	const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-		try {
-			login(data)
+    const resetForm = () => {
+        setValue('email', '')
+        setValue('password', '')
+    }
 
-			setIsAuthModalOpen(false)
-			router.replace('/')
-			resetForm()
-		} catch (error) {
-			console.error('Ошибка авторизации:', error)
-		}
-	}
+    const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+        try {
+            await loginArtist(data)
+            setIsAuthModalOpen(false)
+            router.replace('/')
+            resetForm()
+        } catch (error) {
+            console.error('Ошибка авторизации:', error)
+        }
+    }
 
 	return (
 		<form
