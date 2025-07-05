@@ -43,6 +43,7 @@ export default function StarRating({
 		<section>
 			{type === 'normal' ? (
 				<Rating
+					key={rating}
 					onClick={!readonly ? handleRating : undefined}
 					initialValue={rating}
 					SVGstyle={{ display: 'inline-block' }}
@@ -55,10 +56,13 @@ export default function StarRating({
 			) : (
 				<Popover>
 					<PopoverTrigger asChild>
-						 <StarIconWithRating rating={rating ?? 0} />
+						<button className='p-0 bg-transparent border-none cursor-pointer'>
+							<StarIconWithRating rating={rating ?? 0} />
+						</button>
 					</PopoverTrigger>
 					<PopoverContent className='w-fit h-fit'>
 						<Rating
+							key={rating}
 							onClick={!readonly ? handleRating : undefined}
 							initialValue={rating}
 							SVGstyle={{ display: 'inline-block' }}

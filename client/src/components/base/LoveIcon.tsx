@@ -14,8 +14,7 @@ const LoveIcon = ({ initialIsFavorite = false, songId, size = 'sm' }: Props) => 
 
     const handleToggleFavorite = async () => {
         try {
-            const result = await toggleFavoriteMutation(songId);
-            console.log('Toggle favorite result:', result);
+            toggleFavoriteMutation(songId);
         } catch (error) {
             console.error('Error toggling favorite:', error);
         }
