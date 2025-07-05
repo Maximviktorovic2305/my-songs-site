@@ -36,7 +36,7 @@ const MusicItemExtended = ({ song }: Props) => {
 					/>
 
 					<div className='z-50 mb-2'>
-						<StarRating rating={song.rayting ?? 0} trackId={song.id} />
+						<StarRating rating={song.rayting} trackId={song.id} />
 					</div>
 				</div>
 			</div>

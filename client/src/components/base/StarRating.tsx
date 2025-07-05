@@ -1,24 +1,24 @@
 'use client'
 
 import { Rating } from 'react-simple-star-rating'
-import { Star } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { useSetTrackRating } from '@/services/queries/track'
+import StarIconWithRating from './StarWithRating'
 
 interface Props {
+	trackId?: number
 	type?: 'normal' | 'popup'
 	rating?: number
 	setRating?: (value: number) => void
 	readonly?: boolean
-	trackId?: number | string
 }
 
 export default function StarRating({
+	trackId,
 	type = 'normal',
-	rating = 0,
+	rating,
 	setRating,
 	readonly = false,
-	trackId,
 }: Props) {
 	const { mutateAsync: setTrackRatingMutation } = useSetTrackRating()
 
@@ -36,10 +36,6 @@ export default function StarRating({
 					error,
 				)
 			}
-		} else {
-			console.log(
-				`[StarRating] Условие trackId && !readonly ЛОЖНО. trackId: ${trackId}, readonly: ${readonly}`,
-			)
 		}
 	}
 
@@ -59,7 +55,7 @@ export default function StarRating({
 			) : (
 				<Popover>
 					<PopoverTrigger asChild>
-						<Star className='w-4.5 h-auto text-gray-400 cursor-pointer' />
+						 <StarIconWithRating rating={rating ?? 0} />
 					</PopoverTrigger>
 					<PopoverContent className='w-fit h-fit'>
 						<Rating
