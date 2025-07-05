@@ -1,6 +1,8 @@
-import { Comment, CreateCommentDto } from '@/types/comment'
+'use client'
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { CommentService } from '../api/comment.service'
+import { CreateCommentDto, Comment } from '@/types/comment'
 
 // Получить все комментарии по треку
 export const useGetAllCommentsByTrack = (trackId: number | string) => {
@@ -24,12 +26,11 @@ export const useCreateComment = (trackId: number | string) => {
 			return response.data
 		},
 		onSuccess: (newComment) => {
-			queryClient.invalidateQueries({
-				queryKey: ['comments', 'track', newComment.id],
-			})
-			queryClient.invalidateQueries({
-				queryKey: ['comments', 'track', trackId],
-			})
+			if (newComment.trackId) {
+				queryClient.invalidateQueries({
+					queryKey: ['comments', 'track', trackId],
+				})
+			}
 		},
 	})
 
@@ -55,6 +56,12 @@ export const useLikeOrDislikeComment = () => {
 			return response.data as Comment
 		},
 		onSuccess: (updatedComment) => {
+			if (updatedComment.track?.id) {
+				queryClient.invalidateQueries({
+					queryKey: ['comments', 'track', updatedComment.track.id],
+				})
+			}
+
 			queryClient.invalidateQueries({
 				queryKey: ['comments', updatedComment.id],
 			})
@@ -62,30 +69,31 @@ export const useLikeOrDislikeComment = () => {
 			queryClient.invalidateQueries({
 				queryKey: ['comments', 'track'],
 			})
-
-			queryClient.invalidateQueries({
-				queryKey: ['comments', 'track', updatedComment.track?.id],
-			})
 		},
 	})
 
 	return { mutateAsync, status, error }
 }
 
-//   Удалить комментарий
-export const useDeleteComment = () => {
-	const queryClient = useQueryClient()
+// Удалить комментарий
+// export const useDeleteComment = () => {
+//   const queryClient = useQueryClient()
 
-	const { mutateAsync, status, error } = useMutation({
-		mutationFn: async (commentId: number | string) =>
-			CommentService.deleteComment(commentId),
-		onSuccess: (commentId) => {
-			// Инвалидируем кэш конкретного комментария
-			queryClient.invalidateQueries({
-				queryKey: ['comments', commentId],
-			})
-		},
-	})
+//   const { mutateAsync, status, error } = useMutation({
+//     mutationFn: async (commentId: number | string) =>
+//       CommentService.deleteComment(commentId),
+//     onSuccess: (deletedComment) => {
+//       console.log(`[useDeleteComment] Комментарий успешно удален:`, deletedComment);
+//       if (deletedComment.track?.id) {
+//         queryClient.invalidateQueries({
+//           queryKey: ['comments', 'track', deletedComment.track.id],
+//         });
+//       } else {
+//         queryClient.invalidateQueries({ queryKey: ['comments'] });
+//       }
+//       queryClient.invalidateQueries({ queryKey: ['comments', deletedComment.id] });
+//     },
+//   })
 
-	return { mutateAsync, status, error }
-}
+//   return { mutateAsync, status, error }
+// }

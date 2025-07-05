@@ -5,12 +5,14 @@ import CommentImage from './CommentImage'
 interface CommentProps {
   comment: Comment
   onToggleLike: (commentId: number, type: 'like' | 'dislike') => void
+  likeStatus?: 'like' | 'dislike' | null;
   isLast?: boolean
 }
 
 const Comment = ({
   comment,
   onToggleLike,
+  likeStatus,
   isLast,
 }: CommentProps) => {
   return (
@@ -36,12 +38,14 @@ const Comment = ({
             <LikeButton
               type='like'
               onClick={() => onToggleLike(comment.id, 'like')}
+              active={likeStatus === 'like'} 
               count={comment.like}
               commentId={comment.id}
             />
             <LikeButton
               type='dislike'
               onClick={() => onToggleLike(comment.id, 'dislike')}
+              active={likeStatus === 'dislike'} 
               count={comment.dislike}
               commentId={comment.id}
             />

@@ -8,12 +8,11 @@ import SkeletonCommentItem from '@/components/skeletons/SkeletonCommentItem'
 import { useLikeOrDislikeComment } from '@/services/queries/comment'
 
 const SongComments = () => {
-
   const { songId } = useParams<{ songId: string }>()
   const { data: comments, status } = useGetAllCommentsByTrack(songId)
   const { mutateAsync: likeOrDislikeComment } = useLikeOrDislikeComment()
 
-  const handleToggleLike = async (commentId: number, type: 'like' | 'dislike') => { 
+  const handleToggleLike = async (commentId: number, type: 'like' | 'dislike') => {
     try {
       await likeOrDislikeComment({ commentId, type })
     } catch (error) {
@@ -39,7 +38,8 @@ const SongComments = () => {
           <Comment
             key={comment.id}
             comment={comment}
-            onToggleLike={handleToggleLike} 
+            onToggleLike={handleToggleLike}
+            likeStatus={comment.currentUserVoteStatus} 
             isLast={index === comments.length - 1}
           />
         )

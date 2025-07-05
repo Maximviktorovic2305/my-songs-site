@@ -4,7 +4,25 @@ import { Comment, CreateCommentDto } from '@/types/comment'
 const COMMENT_ADDRESS = 'comments'
 
 export const CommentService = {
-	// Создать комментарий
+	// Получает все комментарии для определенного трека.
+	async getAllCommentsByTrack(
+		trackId: number | string,
+		currentArtistId?: number | string,
+	) {
+		if (currentArtistId) {
+			return instanse<Comment[]>({
+				url: `${COMMENT_ADDRESS}/track/${trackId}`,
+				method: 'GET',
+			})
+		} else {
+			return axiosClassic<Comment[]>({
+				url: `${COMMENT_ADDRESS}/track/${trackId}`,
+				method: 'GET',
+			})
+		}
+	},
+
+	// Создает новый комментарий.
 	async createComment(data: CreateCommentDto) {
 		return instanse<Comment>({
 			url: COMMENT_ADDRESS,
@@ -13,7 +31,7 @@ export const CommentService = {
 		})
 	},
 
-	// Поставить лайк или дизлайк
+	// Like dislike comment
 	async likeOrDislikeComment(
 		commentId: number | string,
 		type: 'like' | 'dislike',
@@ -24,19 +42,11 @@ export const CommentService = {
 		})
 	},
 
-	//   Удалить комментарий
+	//   Delete comment
 	async deleteComment(commentId: number | string) {
-		return instanse({
+		return instanse<Comment>({
 			url: `${COMMENT_ADDRESS}/${commentId}`,
 			method: 'DELETE',
-		})
-	},
-
-	// Получить все комментарии по треку
-	async getAllCommentsByTrack(trackId: number | string) {
-		return axiosClassic<Comment[]>({
-			url: `${COMMENT_ADDRESS}/track/${trackId}`,
-			method: 'GET',
 		})
 	},
 }

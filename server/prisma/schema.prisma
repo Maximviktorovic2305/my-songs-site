@@ -22,7 +22,9 @@ model Artist {
   favoriteTracks FavoriteOnArtist[]
   tracks         Track[]
 
-  givenRatings TrackRating[]
+  givenRatings TrackRating[]         
+
+  commentVotes     CommentVote[] 
 }
 
 model Comment {
@@ -36,6 +38,8 @@ model Comment {
   artistId  Int?
   artist    Artist?  @relation(fields: [artistId], references: [id])
   track     Track?   @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  votes     CommentVote[] 
 }
 
 model Track {
@@ -80,6 +84,21 @@ model FavoriteOnArtist {
   track      Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
 
   @@id([artistId, trackId])
+}
+
+model CommentVote {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  type      String   // 'like' or 'dislike'
+  commentId Int
+  artistId  Int
+
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  artist    Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, artistId]) 
 }
 
 enum EnumGenres {
