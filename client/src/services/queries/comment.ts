@@ -1,4 +1,4 @@
-import { CreateCommentDto } from '@/types/comment'
+import { Comment, CreateCommentDto } from '@/types/comment'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { CommentService } from '../api/comment.service'
 
@@ -7,7 +7,7 @@ export const useGetAllCommentsByTrack = (trackId: number | string) => {
 	const { data, status, error } = useQuery({
 		queryKey: ['comments', 'track', trackId],
 		queryFn: async () => CommentService.getAllCommentsByTrack(trackId),
-      select: ({ data }) => data,
+		select: ({ data }) => data,
 		enabled: !!trackId,
 	})
 
@@ -15,7 +15,7 @@ export const useGetAllCommentsByTrack = (trackId: number | string) => {
 }
 
 // Создать комментарий
-export const useCreateComment = () => {
+export const useCreateComment = (trackId: number | string) => {
 	const queryClient = useQueryClient()
 
 	const { mutateAsync, status, error } = useMutation({
@@ -26,6 +26,9 @@ export const useCreateComment = () => {
 		onSuccess: (newComment) => {
 			queryClient.invalidateQueries({
 				queryKey: ['comments', 'track', newComment.id],
+			})
+			queryClient.invalidateQueries({
+				queryKey: ['comments', 'track', trackId],
 			})
 		},
 	})
@@ -49,17 +52,19 @@ export const useLikeOrDislikeComment = () => {
 				commentId,
 				type,
 			)
-			return response.data
+			return response.data as Comment
 		},
 		onSuccess: (updatedComment) => {
-			// Инвалидируем кэш конкретного комментария
 			queryClient.invalidateQueries({
 				queryKey: ['comments', updatedComment.id],
 			})
 
-			// Инвалидируем список комментариев по треку
 			queryClient.invalidateQueries({
-				queryKey: ['comments', 'track', updatedComment.id],
+				queryKey: ['comments', 'track'],
+			})
+
+			queryClient.invalidateQueries({
+				queryKey: ['comments', 'track', updatedComment.track?.id],
 			})
 		},
 	})

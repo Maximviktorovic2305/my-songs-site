@@ -28,7 +28,7 @@ export function MusicAddComment() {
 							<DrawerTitle className='text-lg'>Добавь комментарий</DrawerTitle>
 							<DrawerDescription>Заполни форму</DrawerDescription>
 						</DrawerHeader>
-						<div className='mb-2 p-4 pb-0'>
+						<div className='mb-2 px-2 pb-0'>
 							<AddCommentForm />
 						</div>
 						<DrawerFooter>

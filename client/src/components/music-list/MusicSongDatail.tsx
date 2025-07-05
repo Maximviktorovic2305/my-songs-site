@@ -36,7 +36,7 @@ const MusicSongDatail = ({ song }: Props) => {
 	}, [currentTrack.title, dispatch, song.title])
 
 	return (
-		<Card className=''>
+		<Card>
 			<div className='relative mb-4 flex items-center gap-3 max-sm:flex max-sm:flex-col'>
 				<Image
 					src={tracImg}
@@ -56,7 +56,7 @@ const MusicSongDatail = ({ song }: Props) => {
 				<MusicItemExtended song={song} />
 			</div>
 
-			<SongComments song={song} />
+			<SongComments />
 		</Card>
 	)
 }

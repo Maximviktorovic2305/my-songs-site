@@ -6,6 +6,7 @@ import Header from '@/components/layout/header/Header'
 import MainProvider from '@/providers/MainProvider'
 import Footer from '@/components/layout/footer/footer'
 import AuthProvider from '@/providers/AuthProvider'
+import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -40,6 +41,7 @@ export default function RootLayout({
 							</div>
 							<div className='w-full'>{children}</div>
 						</div>
+							<Toaster position='bottom-right' />
 						<Footer />
 					</AuthProvider>
 				</MainProvider>

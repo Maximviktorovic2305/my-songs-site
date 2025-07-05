@@ -13,5 +13,4 @@ export interface Comment {
 
 export interface CreateCommentDto {
   text: string;
-  trackId?: number | string; 
 }

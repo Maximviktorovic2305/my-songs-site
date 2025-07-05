@@ -1,15 +1,16 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { PrismaService } from 'src/prisma.service';
+import { Comment, Prisma } from 'generated/prisma';
 
 @Injectable()
 export class CommentService {
   constructor(private readonly prisma: PrismaService) {}
 
   // Создание комментария
-  create(createCommentDto: CreateCommentDto, id: number) {
+  create(createCommentDto: CreateCommentDto, id: number): Promise<Comment> {
     if (!createCommentDto.text)
-      return new BadRequestException('Comment text is required');
+      throw new BadRequestException('Comment text is required');
 
     return this.prisma.comment.create({
       data: {
@@ -26,8 +27,10 @@ export class CommentService {
         dislike: 0,
       },
       include: {
-        artist: true,
-        track: true
+        artist: {
+          select: { id: true, nickname: true, name: true, avatar: true },
+        },
+        track: { select: { id: true, title: true } },
       },
     });
   }
@@ -42,7 +45,7 @@ export class CommentService {
       throw new BadRequestException('Comment not found');
     }
 
-    const updateData: any = {};
+    const updateData: Prisma.CommentUpdateInput = {};
 
     if (type === 'like') {
       updateData.like = (comment.like ?? 0) + 1;
@@ -53,6 +56,16 @@ export class CommentService {
     return this.prisma.comment.update({
       where: { id: commentId },
       data: updateData,
+      include: {
+        track: {
+          select: {
+            id: true,
+          },
+        },
+        artist: {
+          select: { id: true, nickname: true, name: true, avatar: true },
+        },
+      },
     });
   }
 
@@ -68,6 +81,9 @@ export class CommentService {
 
     return this.prisma.comment.delete({
       where: { id: commentId },
+      include: {
+        track: { select: { id: true } },
+      },
     });
   }
 
@@ -80,9 +96,13 @@ export class CommentService {
           select: {
             nickname: true,
             avatar: true,
+            name: true,
+            id: true,
           },
         },
+        track: { select: { id: true, title: true } },
       },
+      orderBy: { createdAt: 'desc' },
     });
   }
 }

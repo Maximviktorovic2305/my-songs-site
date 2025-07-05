@@ -8,6 +8,8 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  ParseIntPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -34,9 +36,14 @@ export class CommentController {
   @HttpCode(HttpStatus.OK)
   @Auth()
   likeOrDislike(
-    @Param('id') commentId: number | string,
+    @Param('id', ParseIntPipe) commentId: string | number,
     @Param('type') type: 'like' | 'dislike',
   ) {
+    if (type !== 'like' && type !== 'dislike') {
+      throw new BadRequestException(
+        'Неверный тип оценки. Допустимо: "like" или "dislike".',
+      );
+    }
     return this.commentService.likeOrDislike(+commentId, type);
   }
 
@@ -44,14 +51,14 @@ export class CommentController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @Auth()
-  delete(@Param('id') commentId: number | string) {
+  delete(@Param('id') commentId: string | number) {
     return this.commentService.delete(+commentId);
   }
 
   // Получить все комментарии к треку
   @Get('track/:id')
   @HttpCode(HttpStatus.OK)
-  getAllByTrack(@Param('id') trackId: number | string) {
+  getAllByTrack(@Param('id') trackId: string | number) {
     return this.commentService.findByTrack(+trackId);
   }
 }
