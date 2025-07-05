@@ -9,7 +9,11 @@ import { toast } from 'sonner'
 import { useParams } from 'next/navigation'
 import { CreateCommentDto } from '@/types/comment'
 
-export default function AddCommentForm() {
+interface Props {
+	setOpen: (value: boolean) => void
+}
+
+export default function AddCommentForm({ setOpen }: Props) {
 	const {
 		register,
 		handleSubmit,
@@ -32,8 +36,8 @@ export default function AddCommentForm() {
 		try {
 			await createComment(commentData)
 			reset()
+			setOpen(false)
 			toast.success('Комментарий успешно добавлен')
-			console.log(commentData)
 		} catch (err) {
 			console.error('Ошибка при создании комментария:', err)
 			toast.error('Не удалось добавить комментарий')

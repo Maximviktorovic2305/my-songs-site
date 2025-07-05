@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import {
 	Drawer,
@@ -11,10 +13,12 @@ import {
 } from '@/components/ui/drawer'
 import AddCommentForm from './AddCommentForm'
 import { PlusCircle } from 'lucide-react'
+import { useState } from 'react'
 
 export function MusicAddComment() {
+	const [open, setOpen] = useState(false)
 	return (
-		<Drawer>
+		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger asChild>
 				<div className='flex text-gray-400 cursor-pointer hover:text-primary/90 items-center duration-200 gap-2 text-sm self-end'>
 					<span>Добавить комментарий</span>
@@ -29,7 +33,7 @@ export function MusicAddComment() {
 							<DrawerDescription>Заполни форму</DrawerDescription>
 						</DrawerHeader>
 						<div className='mb-2 px-2 pb-0'>
-							<AddCommentForm />
+							<AddCommentForm setOpen={setOpen} />
 						</div>
 						<DrawerFooter>
 							<Button type='submit' form='add-comment-form'>

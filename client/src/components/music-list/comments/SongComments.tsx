@@ -15,7 +15,7 @@ const SongComments = () => {
 
     const { songId } = useParams<{ songId: string }>()
     const { data: comments, status } = useGetAllCommentsByTrack(songId)
-    const { mutateAsync: likeOrDislikeComment } = useLikeOrDislikeComment()
+    const { mutateAsync: likeOrDislikeComment, status: likeOrDislikeStatus } = useLikeOrDislikeComment()
 
     const handleToggleLike = async (
         commentId: number,
@@ -34,6 +34,9 @@ const SongComments = () => {
         // Затем вызываем мутацию на сервере
         try {
             await likeOrDislikeComment({ commentId, type })
+            if (likeOrDislikeStatus === 'success') {
+                
+            }
         } catch (error) {
             console.error('Ошибка при установке оценки', error)
         }

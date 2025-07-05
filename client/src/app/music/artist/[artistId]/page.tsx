@@ -7,7 +7,6 @@ interface Props {
 	}>
 }
 
-// Заглушка для получения данных о песне
 async function getSongs(artistId: number | string) {
 	try {
 		const response = await TrackService.getTracksByArtist(artistId)
