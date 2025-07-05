@@ -31,7 +31,7 @@ const MusicItem = ({ song }: Props) => {
 	}
 
 	return (
-		<li className='py-1.5 flex gap-3 justify-between items-center w-full min-w-full'>
+		<li className='py-2 flex gap-3 justify-between items-center border-b border-gray-100 w-full min-w-full'>
 			<div
 				className='flex cursor-pointer items-center gap-3'
 				onClick={handleRedirect}>
