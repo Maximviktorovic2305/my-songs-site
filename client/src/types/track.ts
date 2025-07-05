@@ -16,6 +16,7 @@ export interface Track {
 	artist: Artist
 	favoriteArtistId?: number
 	isFavoriteArtistId?: number
+	currentUserRating?: number
 }
 
 export interface CreateTrackDto {

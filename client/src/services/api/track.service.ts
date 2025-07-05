@@ -135,7 +135,7 @@ export const TrackService = {
 
 	// Установить рейтинг для трека
 	async setTrackRating(trackId: number | string, rating: number | string) {
-		return axiosClassic<Track>({
+		return instanse<Track>({
 			url: `${TRACK_ADDRESS}/${trackId}/rating/${rating}`,
 			method: 'PATCH',
 		})

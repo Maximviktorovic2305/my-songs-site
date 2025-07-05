@@ -89,13 +89,13 @@ export const useGetTracksByArtist = (
 
 // Получение избранных треков
 export const useGetFavoriteTracks = () => {
-    const { data, status, error } = useQuery({
-      queryKey: ['tracks', 'favorites'],
-      queryFn: async () => TrackService.getFavoriteTracks(),
-      select: ({ data }) => data,
-    })
+	const { data, status, error } = useQuery({
+		queryKey: ['tracks', 'favorites'],
+		queryFn: async () => TrackService.getFavoriteTracks(),
+		select: ({ data }) => data,
+	})
 
-    return { data, status, error }
+	return { data, status, error }
 }
 
 // Получение трека по ID
@@ -133,21 +133,21 @@ export const useCreateTrack = () => {
 	return { mutateAsync, status, error }
 }
 
-// Переключение состояния избранного трека         
+// Переключение состояния избранного трека
 export const useToggleFavorite = () => {
-    const queryClient = useQueryClient()
+	const queryClient = useQueryClient()
 
-    const { mutateAsync, status, error } = useMutation({
-      mutationFn: async (trackId: number | string) =>
-          TrackService.toggleFavorite(trackId),
-      onSuccess: (response, trackId) => {
-        queryClient.invalidateQueries({ queryKey: ['tracks', 'favorites'] })
-        queryClient.invalidateQueries({ queryKey: ['tracks', trackId] })
-        queryClient.invalidateQueries({ queryKey: ['tracks'] })
-      },
-    })
+	const { mutateAsync, status, error } = useMutation({
+		mutationFn: async (trackId: number | string) =>
+			TrackService.toggleFavorite(trackId),
+		onSuccess: (response, trackId) => {
+			queryClient.invalidateQueries({ queryKey: ['tracks', 'favorites'] })
+			queryClient.invalidateQueries({ queryKey: ['tracks', trackId] })
+			queryClient.invalidateQueries({ queryKey: ['tracks'] })
+		},
+	})
 
-    return { mutateAsync, status, error }
+	return { mutateAsync, status, error }
 }
 
 // Установка рейтинга трека
@@ -155,20 +155,32 @@ export const useSetTrackRating = () => {
 	const queryClient = useQueryClient()
 
 	const { mutateAsync, status, error } = useMutation({
-		mutationFn: ({
+		mutationFn: async ({
 			trackId,
 			rating,
 		}: {
 			trackId: number | string
 			rating: number | string
-		}) => TrackService.setTrackRating(trackId, rating),
-		onSuccess: async (updatedTrack) => {
-			queryClient.invalidateQueries({ queryKey: ['tracks', updatedTrack.data.id] })
+		}) => {
+			try {
+				const response = await TrackService.setTrackRating(trackId, rating)
+				return response
+			} catch (err) {
+				console.error(`[useSetTrackRating] Ошибка в mutationFn:`, err)
+				throw err
+			}
+		},
+		onSuccess: async (response) => {
+			queryClient.invalidateQueries({ queryKey: ['tracks', response.data.id] })
 			queryClient.invalidateQueries({ queryKey: ['tracks', 'favorites'] })
+			queryClient.invalidateQueries({ queryKey: ['tracks'] })
+		},
+		onError: (err) => {
+			console.error(`[useSetTrackRating] Ошибка мутации:`, err)
 		},
 	})
 
-   return { mutateAsync, status, error }
+	return { mutateAsync, status, error }
 }
 
 // Удаление трека
@@ -182,7 +194,7 @@ export const useDeleteTrack = () => {
 			queryClient.invalidateQueries({ queryKey: ['tracks', id] })
 			queryClient.invalidateQueries({ queryKey: ['tracks', 'favorites'] })
 		},
-	})   
+	})
 
-   return { mutateAsync, status, error }         
+	return { mutateAsync, status, error }
 }
