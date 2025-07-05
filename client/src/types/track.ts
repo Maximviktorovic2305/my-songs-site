@@ -9,9 +9,10 @@ export interface Track {
 	src: string
 	endlessTime?: string
 	rayting?: number
+	createdAt: string
 	img?: string
 	comments?: Comment[]
-	genres: GenresEnum
+	genres: GenresEnum[]
 	isNew: boolean
 	artist: Artist
 	favoriteArtistId?: number

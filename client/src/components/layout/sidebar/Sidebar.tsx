@@ -1,5 +1,4 @@
 import { Card } from '../../ui/card'
-import Albums from './Albums'
 import Genres from './Genres'
 import NewSongs from './NewSongs'
 import TopCharts from './TopCharts'
@@ -10,7 +9,6 @@ const Sidebar = () => {
 			<Card className='mb-3'>
 				<TopCharts />
 				<NewSongs />
-				<Albums />
 				<Genres />
 			</Card>
 			<Card>
