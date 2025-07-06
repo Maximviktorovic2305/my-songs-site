@@ -5,8 +5,14 @@ import {
 	AccordionTrigger,
 } from '@/components/ui/accordion'
 import { GenresEnum } from '@/types/enums'
+import { Disc, Milestone } from 'lucide-react'
 
-const Genres = () => {
+interface GenresProps {
+	activeTab: string | null
+	onGenreSelect: (genre: string) => void
+}
+
+const Genres = ({ activeTab, onGenreSelect }: GenresProps) => {
 	return (
 		<section>
 			<Accordion
@@ -15,15 +21,26 @@ const Genres = () => {
 				className='w-full'
 				defaultValue='item-1'>
 				<AccordionItem value='item-1'>
-					<AccordionTrigger className='text-shadow'>Жанры</AccordionTrigger>
+					<AccordionTrigger className='text-shadow'>
+						<div className='flex items-center gap-2'>
+							<Disc className='size-4' />
+							<span>Жанры</span>
+						</div>
+					</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-1'>
 						{Object.values(GenresEnum).map((genre) => (
 							<button
 								key={genre}
 								type='button'
-								className='px-3 py-1 rounded-md text-left uppercase hover:underline hover:font-semibold duration-200 text-sm cursor-pointer transition-all'
+								onClick={() => onGenreSelect(genre)}
+								className={`px-3 py-1 rounded-md text-left uppercase text-sm transition-all duration-200 cursor-pointer ${
+									activeTab === genre ? 'underline font-bold' : ''
+								}`}
 								disabled={false}>
-								{genre}
+								<div className='flex items-center gap-2'>
+									{activeTab === genre && <Milestone className='size-4' />}
+									{genre}
+								</div>
 							</button>
 						))}
 					</AccordionContent>

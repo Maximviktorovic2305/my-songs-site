@@ -23,7 +23,7 @@ const LoveIcon = ({ initialIsFavorite = false, songId, size = 'sm' }: Props) => 
     return (
         <div className='relative'>
             <Heart
-                className={`${size === 'sm' ? 'size-4' : 'size-6'} cursor-pointer transition-colors ${
+                className={`${size === 'sm' ? 'size-4' : 'size-6'} cursor-pointer transition-colors text-shadow ${
                     initialIsFavorite 
                         ? 'text-red-500 hover:text-red-500'
                         : 'text-gray-400 hover:text-gray-700'
